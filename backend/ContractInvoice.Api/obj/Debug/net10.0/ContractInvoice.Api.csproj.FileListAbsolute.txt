@@ -1,35 +1,71 @@
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\appsettings.Development.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\appsettings.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.staticwebassets.endpoints.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.exe
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.deps.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.runtimeconfig.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.pdb
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\Microsoft.OpenApi.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.csproj.AssemblyReference.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\rpswa.dswa.cache.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.GeneratedMSBuildEditorConfig.editorconfig
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.AssemblyInfoInputs.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.AssemblyInfo.cs
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.csproj.CoreCompileInputs.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cs
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\rjimswa.dswa.cache.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\scopedcss\bundle\ContractInvoice.Api.styles.css
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\staticwebassets.build.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\staticwebassets.build.json.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\staticwebassets.development.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\staticwebassets.build.endpoints.json
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\swae.build.ex.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\Contract.5687F837.Up2Date
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\refint\ContractInvoice.Api.dll
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.pdb
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.genruntimeconfig.cache
-E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ref\ContractInvoice.Api.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/appsettings.Development.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/appsettings.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.staticwebassets.endpoints.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.exe
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.deps.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.runtimeconfig.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.pdb
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/Microsoft.OpenApi.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.csproj.AssemblyReference.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/rpswa.dswa.cache.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.GeneratedMSBuildEditorConfig.editorconfig
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.AssemblyInfoInputs.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.AssemblyInfo.cs
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.csproj.CoreCompileInputs.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cs
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/rjimswa.dswa.cache.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/scopedcss/bundle/ContractInvoice.Api.styles.css
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.json.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.development.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.endpoints.json
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/swae.build.ex.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/Contract.5687F837.Up2Date
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/refint/ContractInvoice.Api.dll
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.pdb
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.genruntimeconfig.cache
+E:/ContractProjectMain/backend/ContractInvoice.Api/obj/Debug/net10.0/ref/ContractInvoice.Api.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/appsettings.Development.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/appsettings.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.staticwebassets.endpoints.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.deps.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.runtimeconfig.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/ContractInvoice.Api.pdb
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/Microsoft.OpenApi.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.csproj.AssemblyReference.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/rpswa.dswa.cache.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.AssemblyInfoInputs.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.AssemblyInfo.cs
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.csproj.CoreCompileInputs.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cs
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.MvcApplicationPartsAssemblyInfo.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.sourcelink.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/rjimswa.dswa.cache.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/scopedcss/bundle/ContractInvoice.Api.styles.css
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.json.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.development.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/staticwebassets.build.endpoints.json
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/swae.build.ex.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/Contract.5687F837.Up2Date
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/refint/ContractInvoice.Api.dll
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.pdb
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ContractInvoice.Api.genruntimeconfig.cache
+/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/Debug/net10.0/ref/ContractInvoice.Api.dll

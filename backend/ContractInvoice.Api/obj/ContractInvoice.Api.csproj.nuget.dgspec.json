@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj": {}
+    "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj": {}
   },
   "projects": {
-    "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj": {
+    "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj",
+        "projectUniqueName": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj",
         "projectName": "ContractInvoice.Api",
-        "projectPath": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj",
-        "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-        "outputPath": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\obj\\",
+        "projectPath": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj",
+        "packagesPath": "/Users/farrr/.nuget/packages/",
+        "outputPath": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/farrr/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
