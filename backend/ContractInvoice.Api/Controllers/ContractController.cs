@@ -1,5 +1,7 @@
 using ContractInvoice.Api.Model;
 using Microsoft.AspNetCore.Mvc;
+using ContractInvoice.Api.Services;
+using ContractInvoice.Api.DTOs;
 
 namespace ContractInvoice.Api.Controller;
 
@@ -7,9 +9,35 @@ namespace ContractInvoice.Api.Controller;
 [Route("api/[controller]")]
 public class ContractController : ControllerBase
 {
-    [HttpPost]
-    public IActionResult Post(Contract contract)
+    private readonly ContractService _contractService;
+    public ContractController(ContractService contractService)
     {
-        return Ok(contract);
+        _contractService = contractService;
+    }
+   
+    [HttpPost]
+    public IActionResult Post(CreateContractDto contract)
+    {
+        var newContract = new Contract
+        {
+          ContractCode = contract.ContractCode,
+          Title = contract.Title,
+          Amount = contract.Amount  
+        };
+        try
+        {
+           return Ok(_contractService.Add(newContract)); 
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok(_contractService.GetAll());
     }
 }
