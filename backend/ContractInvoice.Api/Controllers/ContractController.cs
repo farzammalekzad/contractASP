@@ -40,4 +40,52 @@ public class ContractController : ControllerBase
     {
         return Ok(_contractService.GetAll());
     }
+
+    [HttpGet("{id}")]
+    
+    public IActionResult GetById(int id)
+    {
+        var contract = _contractService.GetById(id);
+        if (contract == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(contract);
+    }
+
+    [HttpPut("{id}")]
+
+    public IActionResult Update(int id, UpdateContractDto updatedContract)
+    {
+        var contractToUpdate = new Contract
+        {
+            ContractCode = updatedContract.ContractCode,
+            Title = updatedContract.Title,
+            Amount = updatedContract.Amount
+        };
+        var contract = _contractService.Update(id, contractToUpdate);
+        
+        if(contract == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(contract);
+
+    }
+
+    [HttpDelete]
+
+    public IActionResult Delete(int id)
+    {
+        var deleted = _contractService.DeleteById(id);
+
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

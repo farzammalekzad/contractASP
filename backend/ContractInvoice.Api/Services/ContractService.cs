@@ -38,4 +38,37 @@ public class ContractService
         _nextId = _nextId + 1;
         return contract;
     }
+
+    public Contract? GetById(int id)
+    {
+        return _contracts.FirstOrDefault(c => c.Id == id);
+    }
+
+    public Contract? Update(int id, Contract updatedContract)
+    {
+        var existingContract = _contracts.FirstOrDefault(c => c.Id == id);
+        if(existingContract == null)
+        {
+            return null;
+        }
+        existingContract.ContractCode = updatedContract.ContractCode;
+        existingContract.Title = updatedContract.Title;
+        existingContract.Amount = updatedContract.Amount;
+
+        return existingContract;
+    }
+
+    public bool DeleteById(int id)
+    {
+        var contract = _contracts.FirstOrDefault(c => c.Id == id);
+        
+        if(contract == null)
+        {
+            return false;
+        }
+        _contracts.Remove(contract);
+
+        return true;
+
+    }
 };
