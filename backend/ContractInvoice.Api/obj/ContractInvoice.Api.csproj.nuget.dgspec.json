@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj": {}
+    "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj": {}
   },
   "projects": {
-    "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj": {
+    "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj",
+        "projectUniqueName": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj",
         "projectName": "ContractInvoice.Api",
-        "projectPath": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/ContractInvoice.Api.csproj",
-        "packagesPath": "/Users/farrr/.nuget/packages/",
-        "outputPath": "/Volumes/Macintosh External /Projects/contractASP/backend/ContractInvoice.Api/obj/",
+        "projectPath": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\ContractInvoice.Api.csproj",
+        "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
+        "outputPath": "E:\\ContractProjectMain\\backend\\ContractInvoice.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/farrr/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -46,6 +46,16 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
               "version": "[10.1.0, )"
@@ -74,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

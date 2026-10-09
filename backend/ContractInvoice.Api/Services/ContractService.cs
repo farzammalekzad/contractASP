@@ -1,72 +1,80 @@
 using ContractInvoice.Api.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContractInvoice.Api.Services;
 
+
 public class ContractService
 {
-    private int _nextId = 3;
-    private readonly List<Contract> _contracts = new List<Contract>
+    
+    private readonly AppDbContext _context;
+    public ContractService(AppDbContext context)
     {
-        new Contract
-        {
-            Id = 1,
-            ContractCode = "C-1001",
-            Title = "ساخت نیروگاه",
-            Amount = 5000000000
-        },
-        new Contract
-        {
-            Id = 2,
-            ContractCode = "C-1002",
-            Title = "نظارت بر پروژه",
-            Amount = 2500000000
-        }
-    };
+        _context = context;
+    }
     public List<Contract> GetAll()
     {
-        return _contracts;
+        return _context.Contracts.ToList();
     }
 
     public Contract Add(Contract contract)
     {
-        if (_contracts.Any(c => c.ContractCode == contract.ContractCode))
+        /* var exist = _context.Contracts.Any(c => c.ContractCode == contract.ContractCode);
+        if (exist)
         {
             throw new ArgumentException("Contract Code already exists.");
+        } */
+
+        _context.Contracts.Add(contract);
+        try
+        {
+            _context.SaveChanges();
         }
-        contract.Id = _nextId;
-        _contracts.Add(contract);
-        _nextId = _nextId + 1;
+        catch (DbUpdateException ex)
+        {
+            throw new ArgumentException(ex.Message);
+        }
+        
         return contract;
     }
 
     public Contract? GetById(int id)
     {
-        return _contracts.FirstOrDefault(c => c.Id == id);
+        return _context.Contracts.Find(id);
     }
 
     public Contract? Update(int id, Contract updatedContract)
     {
-        var existingContract = _contracts.FirstOrDefault(c => c.Id == id);
+        var existingContract = _context.Contracts.Find(id);
         if(existingContract == null)
         {
             return null;
         }
+        var duplicateExists = _context.Contracts.Any(c => c.ContractCode == updatedContract.ContractCode && c.Id != id);
+        if (duplicateExists)
+        {
+            throw new ArgumentException("Contract code already exists.");
+        }
+        
         existingContract.ContractCode = updatedContract.ContractCode;
         existingContract.Title = updatedContract.Title;
         existingContract.Amount = updatedContract.Amount;
+
+        _context.SaveChanges();
 
         return existingContract;
     }
 
     public bool DeleteById(int id)
     {
-        var contract = _contracts.FirstOrDefault(c => c.Id == id);
+        var contract = _context.Contracts.Find(id);
         
         if(contract == null)
         {
             return false;
         }
-        _contracts.Remove(contract);
+        _context.Contracts.Remove(contract);
+        _context.SaveChanges();
 
         return true;
 
