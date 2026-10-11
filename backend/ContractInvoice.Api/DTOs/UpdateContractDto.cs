@@ -1,12 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace ContractInvoice.Api.DTOs;
+
 public class UpdateContractDto
 {
     [Required]
-    public string ContractCode {get; set;}
+    [Display(Name = "کد قرارداد")]
+    public string ContractCode { get; set; } = string.Empty;
 
     [Required]
-    public string Title {get; set;}
+    [Display(Name = "عنوان قرارداد")]
+    public string Title { get; set; } = string.Empty;
 
-    public decimal Amount {get; set;}
+    [Range(0, 1000000)]
+    [Display(Name = "مبلغ قرارداد")]
+    public decimal Amount { get; set; }
 }

@@ -19,20 +19,20 @@ public class ContractService
 
     public Contract Add(Contract contract)
     {
-        /* var exist = _context.Contracts.Any(c => c.ContractCode == contract.ContractCode);
+        var exist = _context.Contracts.Any(c => c.ContractCode == contract.ContractCode);
         if (exist)
         {
             throw new ArgumentException("Contract Code already exists.");
-        } */
+        }
 
         _context.Contracts.Add(contract);
         try
         {
             _context.SaveChanges();
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException("Unable to save the contract. Please try again.");
         }
         
         return contract;
@@ -60,7 +60,14 @@ public class ContractService
         existingContract.Title = updatedContract.Title;
         existingContract.Amount = updatedContract.Amount;
 
-        _context.SaveChanges();
+        try
+        {
+            _context.SaveChanges();
+        }
+        catch (DbUpdateException)
+        {
+            throw new ArgumentException("Unable to update the contract. Please try again.");
+        }
 
         return existingContract;
     }

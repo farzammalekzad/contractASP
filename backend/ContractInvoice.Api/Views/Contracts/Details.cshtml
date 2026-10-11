@@ -1,0 +1,23 @@
+@model ContractInvoice.Api.Model.Contract
+
+@{
+    ViewData["Title"] = "Contract Details";
+}
+
+<h2 class="mb-4">Contract Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Id</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Contract Code</dt>
+    <dd class="col-sm-9">@Model.ContractCode</dd>
+
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+
+    <dt class="col-sm-3">Amount</dt>
+    <dd class="col-sm-9">@Model.Amount.ToString("N0")</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

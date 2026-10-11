@@ -64,7 +64,15 @@ public class ContractController : ControllerBase
             Title = updatedContract.Title,
             Amount = updatedContract.Amount
         };
-        var contract = _contractService.Update(id, contractToUpdate);
+        Contract? contract;
+        try
+        {
+            contract = _contractService.Update(id, contractToUpdate);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
         
         if(contract == null)
         {
@@ -75,7 +83,7 @@ public class ContractController : ControllerBase
 
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
 
     public IActionResult Delete(int id)
     {

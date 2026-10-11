@@ -21,6 +21,7 @@
             <th>Contract Code</th>
             <th>Title</th>
             <th>Amount</th>
+            <th>Actions</th>
         </tr>
     </thead>
 
@@ -32,6 +33,11 @@
                 <td>@contract.ContractCode</td>
                 <td>@contract.Title</td>
                 <td>@contract.Amount.ToString("N0")</td>
+                <td class="text-nowrap">
+                    <a asp-action="Details" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
             </tr>
         }
     </tbody>
