@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ContractService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
@@ -29,7 +29,11 @@ app.MapGet("/api/health", () =>
 })
 .WithName("HealthCheck");
 
-
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 app.MapControllers();
 
 app.Run();

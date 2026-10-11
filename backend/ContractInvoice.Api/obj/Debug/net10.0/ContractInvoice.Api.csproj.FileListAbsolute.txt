@@ -237,3 +237,5 @@ E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\refint\Cont
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.pdb
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.genruntimeconfig.cache
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ref\ContractInvoice.Api.dll
+E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.RazorAssemblyInfo.cache
+E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.RazorAssemblyInfo.cs
