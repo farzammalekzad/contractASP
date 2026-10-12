@@ -1,0 +1,120 @@
+using ContractInvoice.Api.DTOs;
+using ContractInvoice.Api.Model;
+using ContractInvoice.Api.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+public class ProgressPaymentsController : Controller
+{
+    private readonly IProgressPaymentService _progressPaymentService;
+    private readonly ContractService _contractService;
+
+    public ProgressPaymentsController(IProgressPaymentService progressPaymentService, ContractService contractService)
+    {
+        _progressPaymentService = progressPaymentService;
+        _contractService = contractService;
+    }
+
+    public IActionResult Index() => View(_progressPaymentService.GetAll());
+
+    public IActionResult Details(int id)
+    {
+        var payment = _progressPaymentService.GetById(id);
+        return payment is null ? NotFound() : View(payment);
+    }
+
+    [HttpGet]
+    public IActionResult Create(int? contractId)
+    {
+        PopulateContracts(contractId);
+        return View(new CreateProgressPaymentDto { ContractId = contractId ?? 0 });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(CreateProgressPaymentDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            PopulateContracts(dto.ContractId);
+            return View(dto);
+        }
+
+        try
+        {
+            _progressPaymentService.Add(ToEntity(dto));
+        }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            PopulateContracts(dto.ContractId);
+            return View(dto);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var payment = _progressPaymentService.GetById(id);
+        if (payment is null) return NotFound();
+        PopulateContracts(payment.ContractId);
+        return View(ToDto(payment));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, UpdateProgressPaymentDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            PopulateContracts(dto.ContractId);
+            return View(dto);
+        }
+
+        try
+        {
+            if (_progressPaymentService.Update(id, ToEntity(dto)) is null) return NotFound();
+        }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            PopulateContracts(dto.ContractId);
+            return View(dto);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var payment = _progressPaymentService.GetById(id);
+        return payment is null ? NotFound() : View(payment);
+    }
+
+    [HttpPost, ActionName(nameof(Delete))]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteConfirmed(int id) => !_progressPaymentService.Delete(id) ? NotFound() : RedirectToAction(nameof(Index));
+
+    private void PopulateContracts(int? selectedContractId) => ViewBag.Contracts = new SelectList(
+        _contractService.GetAll().OrderBy(c => c.ContractCode).Select(c => new { c.Id, Name = $"{c.ContractCode} - {c.Title}" }),
+        "Id", "Name", selectedContractId);
+
+    private static ProgressPayment ToEntity(CreateProgressPaymentDto dto) => new()
+    {
+        ContractId = dto.ContractId, PaymentNo = dto.PaymentNo, Title = dto.Title, PaymentType = dto.PaymentType,
+        PeriodStartDate = dto.PeriodStartDate, PeriodEndDate = dto.PeriodEndDate, RequestLetterNo = dto.RequestLetterNo,
+        RequestLetterDate = dto.RequestLetterDate, ApprovalLetterNo = dto.ApprovalLetterNo, ApprovalDate = dto.ApprovalDate,
+        ProposedAmount = dto.ProposedAmount, ApprovedAmount = dto.ApprovedAmount, Status = dto.Status
+    };
+
+    private static UpdateProgressPaymentDto ToDto(ProgressPayment p) => new()
+    {
+        ContractId = p.ContractId, PaymentNo = p.PaymentNo, Title = p.Title, PaymentType = p.PaymentType,
+        PeriodStartDate = p.PeriodStartDate, PeriodEndDate = p.PeriodEndDate, RequestLetterNo = p.RequestLetterNo,
+        RequestLetterDate = p.RequestLetterDate, ApprovalLetterNo = p.ApprovalLetterNo, ApprovalDate = p.ApprovalDate,
+        ProposedAmount = p.ProposedAmount, ApprovedAmount = p.ApprovedAmount, Status = p.Status
+    };
+}

@@ -1,0 +1,6 @@
+@model ContractInvoice.Api.Model.ProgressPayment
+@{ ViewData["Title"] = "حذف صورت وضعیت"; }
+<h2 class="mb-4">حذف صورت وضعیت</h2>
+<div class="alert alert-warning">آیا از حذف این صورت وضعیت مطمئن هستید؟</div>
+<dl class="row"><dt class="col-sm-3">قرارداد</dt><dd class="col-sm-9">@Model.Contract.ContractCode - @Model.Contract.Title</dd><dt class="col-sm-3">شماره</dt><dd class="col-sm-9">@Model.PaymentNo</dd><dt class="col-sm-3">عنوان</dt><dd class="col-sm-9">@Model.Title</dd></dl>
+<form asp-action="Delete" method="post"><input type="hidden" asp-for="Id" /><button type="submit" class="btn btn-danger">حذف</button> <a asp-action="Index" class="btn btn-secondary">انصراف</a></form>

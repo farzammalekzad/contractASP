@@ -85,6 +85,12 @@ public class ContractService
 
     public bool DeleteById(int id)
     {
+        var hasProgressPayments = _context.ProgressPayments.Any(p => p.ContractId == id);
+
+        if (hasProgressPayments)
+        {
+            throw new InvalidOperationException("این قرارداد دارای صورت وضعیت است و قابل حذف نیست");
+        }
         var contract = _context.Contracts.Find(id);
         
         if(contract == null)

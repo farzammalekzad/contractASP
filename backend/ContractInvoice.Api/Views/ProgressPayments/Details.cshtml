@@ -1,0 +1,11 @@
+@model ContractInvoice.Api.Model.ProgressPayment
+@{ ViewData["Title"] = "جزئیات صورت وضعیت"; }
+<h2 class="mb-4">جزئیات صورت وضعیت</h2>
+<dl class="row">
+    <dt class="col-sm-3">قرارداد</dt><dd class="col-sm-9">@Model.Contract.ContractCode - @Model.Contract.Title</dd>
+    <dt class="col-sm-3">شماره صورت وضعیت</dt><dd class="col-sm-9">@Model.PaymentNo</dd><dt class="col-sm-3">عنوان</dt><dd class="col-sm-9">@Model.Title</dd>
+    <dt class="col-sm-3">نوع</dt><dd class="col-sm-9">@Model.PaymentType</dd><dt class="col-sm-3">دوره</dt><dd class="col-sm-9">@Model.PeriodStartDate تا @Model.PeriodEndDate</dd>
+    <dt class="col-sm-3">نامه درخواست</dt><dd class="col-sm-9">@Model.RequestLetterNo - @Model.RequestLetterDate</dd><dt class="col-sm-3">نامه تایید</dt><dd class="col-sm-9">@Model.ApprovalLetterNo - @Model.ApprovalDate</dd>
+    <dt class="col-sm-3">مبلغ پیشنهادی</dt><dd class="col-sm-9">@Model.ProposedAmount.ToString("N2")</dd><dt class="col-sm-3">مبلغ تایید شده</dt><dd class="col-sm-9">@Model.ApprovedAmount?.ToString("N2")</dd><dt class="col-sm-3">وضعیت</dt><dd class="col-sm-9">@Model.Status</dd>
+</dl>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">ویرایش</a> <a asp-action="Index" class="btn btn-secondary">بازگشت</a>

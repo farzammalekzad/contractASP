@@ -1,0 +1,8 @@
+@model ContractInvoice.Api.DTOs.CreateProgressPaymentDto
+@{ ViewData["Title"] = "صورت وضعیت جدید"; }
+<h2 class="mb-4">صورت وضعیت جدید</h2>
+<form asp-action="Create" method="post">
+    <partial name="_Form" model="Model" />
+    <button type="submit" class="btn btn-primary">ذخیره</button> <a asp-action="Index" class="btn btn-secondary">انصراف</a>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

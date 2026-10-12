@@ -16,4 +16,5 @@ public class Contract
   public string? NotificationLetterNo {get; set;}
   public string? NotificationLetterDate {get; set;}
   public string? RelatedRevenueContractCode {get; set;}
+  public ICollection<ProgressPayment> ProgressPayments { get; set; } = new List<ProgressPayment>();
 }
