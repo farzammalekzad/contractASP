@@ -58,7 +58,18 @@ public class ContractService
         
         existingContract.ContractCode = updatedContract.ContractCode;
         existingContract.Title = updatedContract.Title;
+        existingContract.ContractType = updatedContract.ContractType;
+        existingContract.ProjectCode = updatedContract.ProjectCode;
+        existingContract.Employer = updatedContract.Employer;
+        existingContract.ProjectManager = updatedContract.ProjectManager;
+        existingContract.ProjectSponsor = updatedContract.ProjectSponsor;
         existingContract.Amount = updatedContract.Amount;
+        existingContract.AdvancePaymentAmount = updatedContract.AdvancePaymentAmount;
+        existingContract.NotificationLetterNo = updatedContract.NotificationLetterNo;
+        existingContract.NotificationLetterDate = updatedContract.NotificationLetterDate;
+        existingContract.ContractStartDate = updatedContract.ContractStartDate;
+        existingContract.ContractEndDate = updatedContract.ContractEndDate;
+        existingContract.RelatedRevenueContractCode = updatedContract.RelatedRevenueContractCode;
 
         try
         {

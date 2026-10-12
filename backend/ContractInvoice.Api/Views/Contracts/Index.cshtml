@@ -20,6 +20,7 @@
             <th>Id</th>
             <th>Contract Code</th>
             <th>Title</th>
+            <th>Project Manager</th>
             <th>Amount</th>
             <th>Actions</th>
         </tr>
@@ -32,6 +33,7 @@
                 <td>@contract.Id</td>
                 <td>@contract.ContractCode</td>
                 <td>@contract.Title</td>
+                <td>@contract.ProjectManager</td>
                 <td>@contract.Amount.ToString("N0")</td>
                 <td class="text-nowrap">
                     <a asp-action="Details" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-info">Details</a>

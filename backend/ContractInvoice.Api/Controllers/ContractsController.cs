@@ -38,7 +38,18 @@ public class ContractsController : Controller
             {
                 ContractCode = dto.ContractCode,
                 Title = dto.Title,
-                Amount = dto.Amount
+                ContractType = dto.ContractType,
+                ProjectCode = dto.ProjectCode,
+                Employer = dto.Employer,
+                ProjectManager = dto.ProjectManager,
+                ProjectSponsor = dto.ProjectSponsor,
+                Amount = dto.Amount,
+                AdvancePaymentAmount = dto.AdvancePaymentAmount,
+                NotificationLetterNo = dto.NotificationLetterNo,
+                NotificationLetterDate = dto.NotificationLetterDate,
+                ContractStartDate = dto.ContractStartDate,
+                ContractEndDate = dto.ContractEndDate,
+                RelatedRevenueContractCode = dto.RelatedRevenueContractCode
             });
         }
         catch (ArgumentException ex)
@@ -69,7 +80,18 @@ public class ContractsController : Controller
         {
             ContractCode = contract.ContractCode,
             Title = contract.Title,
-            Amount = contract.Amount
+            ContractType = contract.ContractType,
+            ProjectCode = contract.ProjectCode,
+            Employer = contract.Employer,
+            ProjectManager = contract.ProjectManager,
+            ProjectSponsor = contract.ProjectSponsor,
+            Amount = contract.Amount,
+            AdvancePaymentAmount = contract.AdvancePaymentAmount,
+            NotificationLetterNo = contract.NotificationLetterNo,
+            NotificationLetterDate = contract.NotificationLetterDate,
+            ContractStartDate = contract.ContractStartDate,
+            ContractEndDate = contract.ContractEndDate,
+            RelatedRevenueContractCode = contract.RelatedRevenueContractCode
         });
     }
 
@@ -88,7 +110,18 @@ public class ContractsController : Controller
             {
                 ContractCode = dto.ContractCode,
                 Title = dto.Title,
-                Amount = dto.Amount
+                ContractType = dto.ContractType,
+                ProjectCode = dto.ProjectCode,
+                Employer = dto.Employer,
+                ProjectManager = dto.ProjectManager,
+                ProjectSponsor = dto.ProjectSponsor,
+                Amount = dto.Amount,
+                AdvancePaymentAmount = dto.AdvancePaymentAmount,
+                NotificationLetterNo = dto.NotificationLetterNo,
+                NotificationLetterDate = dto.NotificationLetterDate,
+                ContractStartDate = dto.ContractStartDate,
+                ContractEndDate = dto.ContractEndDate,
+                RelatedRevenueContractCode = dto.RelatedRevenueContractCode
             });
 
             if (updatedContract is null)

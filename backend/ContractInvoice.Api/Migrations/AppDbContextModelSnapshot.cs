@@ -28,6 +28,9 @@ namespace ContractInvoice.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal?>("AdvancePaymentAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
@@ -35,6 +38,39 @@ namespace ContractInvoice.Api.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContractEndDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractStartDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Employer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationLetterDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationLetterNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectManager")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectSponsor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RelatedRevenueContractCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()

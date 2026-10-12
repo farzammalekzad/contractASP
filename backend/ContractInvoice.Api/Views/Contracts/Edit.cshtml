@@ -27,6 +27,65 @@
         <span asp-validation-for="Amount" class="text-danger"></span>
     </div>
 
+    <div class="mb-3">
+    <label asp-for="ContractType" class="form-label"></label>
+    <input asp-for="ContractType" class="form-control" />
+    <span asp-validation-for="ContractType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProjectCode" class="form-label"></label>
+        <input asp-for="ProjectCode" class="form-control" />
+        <span asp-validation-for="ProjectCode" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employer" class="form-label"></label>
+        <input asp-for="Employer" class="form-control" />
+        <span asp-validation-for="Employer" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProjectManager" class="form-label"></label>
+        <input asp-for="ProjectManager" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProjectSponsor" class="form-label"></label>
+        <input asp-for="ProjectSponsor" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AdvancePaymentAmount" class="form-label"></label>
+        <input asp-for="AdvancePaymentAmount" class="form-control" />
+        <span asp-validation-for="AdvancePaymentAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NotificationLetterNo" class="form-label"></label>
+        <input asp-for="NotificationLetterNo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NotificationLetterDate" class="form-label"></label>
+        <input asp-for="NotificationLetterDate" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ContractStartDate" class="form-label"></label>
+        <input asp-for="ContractStartDate" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ContractEndDate" class="form-label"></label>
+        <input asp-for="ContractEndDate" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RelatedRevenueContractCode" class="form-label"></label>
+        <input asp-for="RelatedRevenueContractCode" class="form-control" />
+    </div>
+
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>

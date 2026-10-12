@@ -10,14 +10,48 @@
     <dt class="col-sm-3">Id</dt>
     <dd class="col-sm-9">@Model.Id</dd>
 
-    <dt class="col-sm-3">Contract Code</dt>
+    <dl class="row">
+    <dt class="col-sm-3">کد قرارداد</dt>
     <dd class="col-sm-9">@Model.ContractCode</dd>
 
-    <dt class="col-sm-3">Title</dt>
+    <dt class="col-sm-3">عنوان قرارداد</dt>
     <dd class="col-sm-9">@Model.Title</dd>
 
-    <dt class="col-sm-3">Amount</dt>
+    <dt class="col-sm-3">نوع قرارداد</dt>
+    <dd class="col-sm-9">@Model.ContractType</dd>
+
+    <dt class="col-sm-3">کد پروژه</dt>
+    <dd class="col-sm-9">@Model.ProjectCode</dd>
+
+    <dt class="col-sm-3">کارفرما</dt>
+    <dd class="col-sm-9">@Model.Employer</dd>
+
+    <dt class="col-sm-3">مدیر پروژه</dt>
+    <dd class="col-sm-9">@Model.ProjectManager</dd>
+
+    <dt class="col-sm-3">حامی پروژه</dt>
+    <dd class="col-sm-9">@Model.ProjectSponsor</dd>
+
+    <dt class="col-sm-3">مبلغ قرارداد</dt>
     <dd class="col-sm-9">@Model.Amount.ToString("N0")</dd>
+
+    <dt class="col-sm-3">مبلغ پیش‌پرداخت</dt>
+    <dd class="col-sm-9">@Model.AdvancePaymentAmount?.ToString("N0")</dd>
+
+    <dt class="col-sm-3">شماره نامه ابلاغ</dt>
+    <dd class="col-sm-9">@Model.NotificationLetterNo</dd>
+
+    <dt class="col-sm-3">تاریخ نامه ابلاغ</dt>
+    <dd class="col-sm-9">@Model.NotificationLetterDate</dd>
+
+    <dt class="col-sm-3">تاریخ شروع قرارداد</dt>
+    <dd class="col-sm-9">@Model.ContractStartDate</dd>
+
+    <dt class="col-sm-3">تاریخ پایان قرارداد</dt>
+    <dd class="col-sm-9">@Model.ContractEndDate</dd>
+
+    <dt class="col-sm-3">قرارداد درآمدی مرتبط</dt>
+    <dd class="col-sm-9">@Model.RelatedRevenueContractCode</dd>
 </dl>
 
 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
