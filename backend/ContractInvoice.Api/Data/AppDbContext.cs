@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Contract> Contracts {get; set;}
     public DbSet<ProgressPayment> ProgressPayments { get; set;}
+    public DbSet<Payment> Payments { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Contract>()
@@ -40,5 +41,27 @@ public class AppDbContext : DbContext
                 .HasForeignKey(p => p.ContractId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
+
+        modelBuilder.Entity<Payment>()
+            .HasOne(p => p.ProgressPayment)
+            .WithMany(pp => pp.Payments)
+            .HasForeignKey(p => p.ProgressPaymentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.ReceivedAmount)
+            .HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.PaymentDate)
+            .HasMaxLength(20);
+
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.PaymentReferenceNo)
+            .HasMaxLength(100);
+
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.Description)
+            .HasMaxLength(500);
     }  
 }

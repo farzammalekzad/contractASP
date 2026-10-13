@@ -17,4 +17,5 @@ public class ProgressPayment
     public decimal? ApprovedAmount { get; set; }
     public string? Status { get; set; }
     public Contract Contract { get; set; } = null!;
+    public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }

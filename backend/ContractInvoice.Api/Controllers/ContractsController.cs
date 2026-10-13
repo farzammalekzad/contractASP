@@ -149,8 +149,26 @@ public class ContractsController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
-        return !_contractService.DeleteById(id)
+        try
+        {
+            return !_contractService.DeleteById(id)
             ? NotFound()
             : RedirectToAction(nameof(Index));
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+
+            var contract = _contractService.GetById(id);
+
+            if (contract == null)
+            {
+                return NotFound();
+            }
+            ViewBag.ErrorMessage = ex.Message;
+
+            return View("Delete",contract);
+        }
+        
     }
 }
