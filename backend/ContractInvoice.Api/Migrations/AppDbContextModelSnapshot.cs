@@ -84,6 +84,40 @@ namespace ContractInvoice.Api.Migrations
                     b.ToTable("Contracts");
                 });
 
+            modelBuilder.Entity("ContractInvoice.Api.Model.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PaymentDate")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PaymentReferenceNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ProgressPaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ReceivedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgressPaymentId");
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
                 {
                     b.Property<int>("Id")
@@ -152,6 +186,17 @@ namespace ContractInvoice.Api.Migrations
                     b.ToTable("ProgressPayments");
                 });
 
+            modelBuilder.Entity("ContractInvoice.Api.Model.Payment", b =>
+                {
+                    b.HasOne("ContractInvoice.Api.Model.ProgressPayment", "ProgressPayment")
+                        .WithMany("Payments")
+                        .HasForeignKey("ProgressPaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ProgressPayment");
+                });
+
             modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
                 {
                     b.HasOne("ContractInvoice.Api.Model.Contract", "Contract")
@@ -166,6 +211,11 @@ namespace ContractInvoice.Api.Migrations
             modelBuilder.Entity("ContractInvoice.Api.Model.Contract", b =>
                 {
                     b.Navigation("ProgressPayments");
+                });
+
+            modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
+                {
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

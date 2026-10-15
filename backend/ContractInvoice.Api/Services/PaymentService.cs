@@ -113,4 +113,11 @@ public class PaymentService : IPaymentService
 
         return true;
     }
+
+    public decimal GetTotalPaidByProgressPaymentId(int progressPaymentId)
+    {
+        return _context.Payments
+            .Where(p => p.ProgressPaymentId == progressPaymentId)
+            .Sum(p => p.ReceivedAmount);
+    }
 }

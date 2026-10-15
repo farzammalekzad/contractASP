@@ -1,0 +1,60 @@
+@model ContractInvoice.Api.Model.Payment
+
+@{
+    ViewData["Title"] = "جزئیات پرداخت";
+}
+
+<h2>جزئیات پرداخت</h2>
+
+<dl class="row">
+
+    <dt class="col-sm-3">قرارداد</dt>
+    <dd class="col-sm-9">
+        @Model.ProgressPayment.Contract.ContractCode
+        -
+        @Model.ProgressPayment.Contract.Title
+    </dd>
+
+    <dt class="col-sm-3">شماره صورت وضعیت</dt>
+    <dd class="col-sm-9">
+        @Model.ProgressPayment.PaymentNo
+    </dd>
+
+    <dt class="col-sm-3">عنوان صورت وضعیت</dt>
+    <dd class="col-sm-9">
+        @Model.ProgressPayment.Title
+    </dd>
+
+    <dt class="col-sm-3">تاریخ پرداخت</dt>
+    <dd class="col-sm-9">
+        @Model.PaymentDate
+    </dd>
+
+    <dt class="col-sm-3">مبلغ دریافتی</dt>
+    <dd class="col-sm-9">
+        @Model.ReceivedAmount.ToString("N0")
+    </dd>
+
+    <dt class="col-sm-3">شماره مرجع پرداخت</dt>
+    <dd class="col-sm-9">
+        @Model.PaymentReferenceNo
+    </dd>
+
+    <dt class="col-sm-3">توضیحات</dt>
+    <dd class="col-sm-9">
+        @Model.Description
+    </dd>
+
+</dl>
+
+<a asp-action="Edit"
+   asp-route-id="@Model.Id"
+   class="btn btn-warning">
+    ویرایش
+</a>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    بازگشت
+</a>
+

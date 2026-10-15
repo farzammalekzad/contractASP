@@ -1,4 +1,15 @@
 @model ContractInvoice.Api.Model.ProgressPayment
+@{
+    decimal totalPaid =
+        ViewBag.TotalPaid == null
+            ? 0m
+            : (decimal)ViewBag.TotalPaid;
+
+    decimal? remainingAmount =
+        ViewBag.RemainingAmount == null
+            ? null
+            : (decimal)ViewBag.RemainingAmount;
+}
 @{ ViewData["Title"] = "جزئیات صورت وضعیت"; }
 <h2 class="mb-4">جزئیات صورت وضعیت</h2>
 <dl class="row">
@@ -9,3 +20,34 @@
     <dt class="col-sm-3">مبلغ پیشنهادی</dt><dd class="col-sm-9">@Model.ProposedAmount.ToString("N2")</dd><dt class="col-sm-3">مبلغ تایید شده</dt><dd class="col-sm-9">@Model.ApprovedAmount?.ToString("N2")</dd><dt class="col-sm-3">وضعیت</dt><dd class="col-sm-9">@Model.Status</dd>
 </dl>
 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">ویرایش</a> <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
+
+<hr />
+
+
+<h4>وضعیت پرداخت</h4>
+
+<dl class="row">
+
+    <dt class="col-sm-3">مبلغ تایید شده</dt>
+    <dd class="col-sm-9">
+        @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+    </dd>
+
+    <dt class="col-sm-3">مجموع پرداخت‌ها</dt>
+    <dd class="col-sm-9">
+        @totalPaid.ToString("N0")
+    </dd>
+
+    <dt class="col-sm-3">مانده</dt>
+    <dd class="col-sm-9">
+        @if (remainingAmount.HasValue)
+        {
+            @remainingAmount.Value.ToString("N0")
+        }
+        else
+        {
+            <span>-</span>
+        }
+    </dd>
+
+</dl>

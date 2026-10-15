@@ -1,0 +1,75 @@
+@model IEnumerable<ContractInvoice.Api.Model.Payment>
+
+@{
+    ViewData["Title"] = "پرداخت‌ها";
+}
+
+<h2>پرداخت‌ها</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        ثبت پرداخت جدید
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>قرارداد</th>
+            <th>شماره صورت وضعیت</th>
+            <th>تاریخ پرداخت</th>
+            <th>مبلغ دریافتی</th>
+            <th>شماره مرجع</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ProgressPayment.Contract.ContractCode
+                    -
+                    @item.ProgressPayment.Contract.Title
+                </td>
+
+                <td>
+                    @item.ProgressPayment.PaymentNo
+                </td>
+
+                <td>
+                    @item.PaymentDate
+                </td>
+
+                <td>
+                    @item.ReceivedAmount.ToString("N0")
+                </td>
+
+                <td>
+                    @item.PaymentReferenceNo
+                </td>
+
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info btn-sm">
+                        جزئیات
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        ویرایش
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">
+                        حذف
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

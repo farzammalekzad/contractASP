@@ -1,0 +1,55 @@
+@model ContractInvoice.Api.Model.Payment
+
+@{
+    ViewData["Title"] = "حذف پرداخت";
+}
+
+<h2>حذف پرداخت</h2>
+
+<div class="alert alert-warning">
+    آیا از حذف این پرداخت مطمئن هستید؟
+</div>
+
+<dl class="row">
+
+    <dt class="col-sm-3">قرارداد</dt>
+    <dd class="col-sm-9">
+        @Model.ProgressPayment.Contract.ContractCode
+        -
+        @Model.ProgressPayment.Contract.Title
+    </dd>
+
+    <dt class="col-sm-3">شماره صورت وضعیت</dt>
+    <dd class="col-sm-9">
+        @Model.ProgressPayment.PaymentNo
+    </dd>
+
+    <dt class="col-sm-3">تاریخ پرداخت</dt>
+    <dd class="col-sm-9">
+        @Model.PaymentDate
+    </dd>
+
+    <dt class="col-sm-3">مبلغ دریافتی</dt>
+    <dd class="col-sm-9">
+        @Model.ReceivedAmount.ToString("N0")
+    </dd>
+
+</dl>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden"
+           name="id"
+           value="@Model.Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        حذف
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        انصراف
+    </a>
+
+</form>

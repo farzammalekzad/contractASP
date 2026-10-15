@@ -10,4 +10,5 @@ public interface IPaymentService
     Payment Add(Payment payment);
     Payment Update(int id, Payment updatedPayment);
     bool Delete(int id);
+    decimal GetTotalPaidByProgressPaymentId(int progressPaymentId);
 }

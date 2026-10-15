@@ -8,19 +8,38 @@ public class ProgressPaymentsController : Controller
 {
     private readonly IProgressPaymentService _progressPaymentService;
     private readonly ContractService _contractService;
+    private readonly IPaymentService _paymentService;
 
-    public ProgressPaymentsController(IProgressPaymentService progressPaymentService, ContractService contractService)
+    public ProgressPaymentsController(IProgressPaymentService progressPaymentService, ContractService contractService,
+    IPaymentService paymentService)
     {
         _progressPaymentService = progressPaymentService;
         _contractService = contractService;
+        _paymentService = paymentService;
     }
 
     public IActionResult Index() => View(_progressPaymentService.GetAll());
 
     public IActionResult Details(int id)
     {
-        var payment = _progressPaymentService.GetById(id);
-        return payment is null ? NotFound() : View(payment);
+        var progressPayment =
+            _progressPaymentService.GetById(id);
+
+        if (progressPayment == null)
+        {
+            return NotFound();
+        }
+
+        var totalPaid = _paymentService.GetTotalPaidByProgressPaymentId(id);
+
+        ViewBag.TotalPaid = totalPaid;
+
+        ViewBag.RemainingAmount =
+            progressPayment.ApprovedAmount.HasValue
+                ? progressPayment.ApprovedAmount.Value - totalPaid
+                : (decimal?)null;
+
+        return View(progressPayment);
     }
 
     [HttpGet]
