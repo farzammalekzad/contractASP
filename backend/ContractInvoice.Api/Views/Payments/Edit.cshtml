@@ -4,86 +4,105 @@
     ViewData["Title"] = "ویرایش پرداخت";
 }
 
-<h2>ویرایش پرداخت</h2>
+<div class="page-container compact-form">
 
-<form asp-action="Edit" method="post">
-
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">ویرایش پرداخت </h1>
+            <p class="page-subtitle">
+                اطلاعات پرداخت را ویرایش کنید
+            </p>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="ProgressPaymentId"
-               class="form-label">
-        </label>
+    <form asp-action="Create" method="post">
 
-        <select asp-for="ProgressPaymentId"
-                asp-items="ViewBag.ProgressPayments"
-                class="form-select">
-        </select>
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
 
-        <span asp-validation-for="ProgressPaymentId"
-              class="text-danger">
-        </span>
-    </div>
+        <div class="form-section">
 
-    <div class="mb-3">
-        <label asp-for="PaymentDate"
-               class="form-label">
-        </label>
+            <div class="form-section-title">
+                اطلاعات پرداخت
+            </div>
 
-        <input asp-for="PaymentDate"
-               class="form-control" />
+            <div class="form-grid">
 
-        <span asp-validation-for="PaymentDate"
-              class="text-danger">
-        </span>
-    </div>
+                <div class="form-field form-field-full">
+                    <label asp-for="ProgressPaymentId"
+                           class="form-label"></label>
 
-    <div class="mb-3">
-        <label asp-for="ReceivedAmount"
-               class="form-label">
-        </label>
+                    <select asp-for="ProgressPaymentId"
+                            asp-items="ViewBag.ProgressPayments"
+                            class="form-select">
+                        <option value="">-- انتخاب صورت وضعیت --</option>
+                    </select>
 
-        <input asp-for="ReceivedAmount"
-               class="form-control" />
+                    <span asp-validation-for="ProgressPaymentId"
+                          class="text-danger"></span>
+                </div>
 
-        <span asp-validation-for="ReceivedAmount"
-              class="text-danger">
-        </span>
-    </div>
+                <div class="form-field">
+                    <label asp-for="PaymentDate"
+                           class="form-label"></label>
 
-    <div class="mb-3">
-        <label asp-for="PaymentReferenceNo"
-               class="form-label">
-        </label>
+                    <input asp-for="PaymentDate"
+                           class="form-control"
+                           placeholder="1405/07/20" />
 
-        <input asp-for="PaymentReferenceNo"
-               class="form-control" />
-    </div>
+                    <span asp-validation-for="PaymentDate"
+                          class="text-danger"></span>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Description"
-               class="form-label">
-        </label>
+                <div class="form-field">
+                    <label asp-for="ReceivedAmount"
+                           class="form-label"></label>
 
-        <textarea asp-for="Description"
-                  class="form-control"
-                  rows="3">
-        </textarea>
-    </div>
+                    <input asp-for="ReceivedAmount"
+                           class="form-control" />
 
-    <button type="submit"
-            class="btn btn-success">
-        ذخیره تغییرات
-    </button>
+                    <span asp-validation-for="ReceivedAmount"
+                          class="text-danger"></span>
+                </div>
 
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        بازگشت
-    </a>
+                <div class="form-field">
+                    <label asp-for="PaymentReferenceNo"
+                           class="form-label"></label>
 
-</form>
+                    <input asp-for="PaymentReferenceNo"
+                           class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Description"
+                           class="form-label"></label>
+
+                    <input asp-for="Description"
+                           class="form-control" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn btn-primary-modern">
+                ذخیره تغییرات
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-soft">
+                انصراف
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

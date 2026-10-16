@@ -1,99 +1,241 @@
 @model ContractInvoice.Api.DTOs.CreateContractDto
 
 @{
-    ViewData["Title"] = "New Contract";
+    ViewData["Title"] = "ثبت قرارداد";
 }
 
-<h2 class="mb-4">New Contract</h2>
+<div class="page-container compact-form">
 
-<form asp-action="Create" method="post">
-
-    <div class="mb-3">
-        <label asp-for="ContractCode" class="form-label"></label>
-        <input asp-for="ContractCode" class="form-control" />
-        <span asp-validation-for="ContractCode" class="text-danger"></span>
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">ثبت قرارداد جدید</h1>
+            <p class="page-subtitle">
+                اطلاعات اصلی قرارداد را وارد کنید
+            </p>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+    <form asp-action="Create" method="post">
 
-    <div class="mb-3">
-        <label asp-for="Amount" class="form-label"></label>
-        <input asp-for="Amount" class="form-control" />
-        <span asp-validation-for="Amount" class="text-danger"></span>
-    </div>
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
 
-    <div class="mb-3">
-    <label asp-for="ContractType" class="form-label"></label>
-    <input asp-for="ContractType" class="form-control" />
-    <span asp-validation-for="ContractType" class="text-danger"></span>
-    </div>
 
-    <div class="mb-3">
-        <label asp-for="ProjectCode" class="form-label"></label>
-        <input asp-for="ProjectCode" class="form-control" />
-        <span asp-validation-for="ProjectCode" class="text-danger"></span>
-    </div>
+        <div class="form-section">
 
-    <div class="mb-3">
-        <label asp-for="Employer" class="form-label"></label>
-        <input asp-for="Employer" class="form-control" />
-        <span asp-validation-for="Employer" class="text-danger"></span>
-    </div>
+            <div class="form-section-title">
+                اطلاعات پایه
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="ProjectManager" class="form-label"></label>
-        <input asp-for="ProjectManager" class="form-control" />
-    </div>
+            <div class="form-grid">
 
-    <div class="mb-3">
-        <label asp-for="ProjectSponsor" class="form-label"></label>
-        <input asp-for="ProjectSponsor" class="form-control" />
-    </div>
+                <div class="form-field">
+                    <label asp-for="ContractCode"
+                           class="form-label"></label>
 
-    <div class="mb-3">
-        <label asp-for="AdvancePaymentAmount" class="form-label"></label>
-        <input asp-for="AdvancePaymentAmount" class="form-control" />
-        <span asp-validation-for="AdvancePaymentAmount" class="text-danger"></span>
-    </div>
+                    <input asp-for="ContractCode"
+                           class="form-control" />
 
-    <div class="mb-3">
-        <label asp-for="NotificationLetterNo" class="form-label"></label>
-        <input asp-for="NotificationLetterNo" class="form-control" />
-    </div>
+                    <span asp-validation-for="ContractCode"
+                          class="text-danger"></span>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="NotificationLetterDate" class="form-label"></label>
-        <input asp-for="NotificationLetterDate" class="form-control" />
-    </div>
 
-    <div class="mb-3">
-        <label asp-for="ContractStartDate" class="form-label"></label>
-        <input asp-for="ContractStartDate" class="form-control" />
-    </div>
+                <div class="form-field">
+                    <label asp-for="Title"
+                           class="form-label"></label>
 
-    <div class="mb-3">
-        <label asp-for="ContractEndDate" class="form-label"></label>
-        <input asp-for="ContractEndDate" class="form-control" />
-    </div>
+                    <input asp-for="Title"
+                           class="form-control" />
 
-    <div class="mb-3">
-        <label asp-for="RelatedRevenueContractCode" class="form-label"></label>
-        <input asp-for="RelatedRevenueContractCode" class="form-control" />
-    </div>
+                    <span asp-validation-for="Title"
+                          class="text-danger"></span>
+                </div>
 
-    <button type="submit" class="btn btn-primary">
-        Save
-    </button>
 
-    <a asp-action="Index" class="btn btn-secondary">
-        Cancel
-    </a>
+                <div class="form-field">
+                    <label asp-for="ContractType"
+                           class="form-label"></label>
 
-</form>
+                    <select asp-for="ContractType"
+                            class="form-select">
+
+                        <option value="">
+                            -- انتخاب نوع قرارداد --
+                        </option>
+
+                        <option value="INCOME">
+                            درآمدی
+                        </option>
+
+                        <option value="EXPENSE">
+                            هزینه‌ای
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ContractType"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ProjectCode"
+                           class="form-label"></label>
+
+                    <input asp-for="ProjectCode"
+                           class="form-control" />
+
+                    <span asp-validation-for="ProjectCode"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="Employer"
+                           class="form-label"></label>
+
+                    <input asp-for="Employer"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ProjectManager"
+                           class="form-label"></label>
+
+                    <input asp-for="ProjectManager"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ProjectSponsor"
+                           class="form-label"></label>
+
+                    <input asp-for="ProjectSponsor"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="RelatedRevenueContractCode"
+                           class="form-label"></label>
+
+                    <input asp-for="RelatedRevenueContractCode"
+                           class="form-control" />
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات مالی
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="Amount"
+                           class="form-label"></label>
+
+                    <input asp-for="Amount"
+                           class="form-control" />
+
+                    <span asp-validation-for="Amount"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="AdvancePaymentAmount"
+                           class="form-label"></label>
+
+                    <input asp-for="AdvancePaymentAmount"
+                           class="form-control" />
+
+                    <span asp-validation-for="AdvancePaymentAmount"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات زمانی و ابلاغ
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="NotificationLetterNo"
+                           class="form-label"></label>
+
+                    <input asp-for="NotificationLetterNo"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="NotificationLetterDate"
+                           class="form-label"></label>
+
+                    <input asp-for="NotificationLetterDate"
+                           class="form-control"
+                           placeholder="1405/07/19" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ContractStartDate"
+                           class="form-label"></label>
+
+                    <input asp-for="ContractStartDate"
+                           class="form-control"
+                           placeholder="1405/07/19" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ContractEndDate"
+                           class="form-label"></label>
+
+                    <input asp-for="ContractEndDate"
+                           class="form-control"
+                           placeholder="1406/07/19" />
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn btn-primary-modern">
+                ذخیره قرارداد
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-soft">
+                انصراف
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

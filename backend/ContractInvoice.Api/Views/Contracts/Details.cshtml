@@ -1,57 +1,117 @@
 @model ContractInvoice.Api.Model.Contract
 
 @{
-    ViewData["Title"] = "Contract Details";
+    ViewData["Title"] = "جزئیات قرارداد";
 }
 
-<h2 class="mb-4">Contract Details</h2>
+<div class="page-container">
 
-<dl class="row">
-    <dt class="col-sm-3">Id</dt>
-    <dd class="col-sm-9">@Model.Id</dd>
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">جزئیات قرارداد</h1>
+            <p class="page-subtitle">
+                @Model.ContractCode - @Model.Title
+            </p>
+        </div>
+    </div>
 
-    <dl class="row">
-    <dt class="col-sm-3">کد قرارداد</dt>
-    <dd class="col-sm-9">@Model.ContractCode</dd>
+    <div class="details-grid">
 
-    <dt class="col-sm-3">عنوان قرارداد</dt>
-    <dd class="col-sm-9">@Model.Title</dd>
+        <div class="field-card card-blue">
+            <div class="field-label">کد قرارداد</div>
+            <div class="field-value">@Model.ContractCode</div>
+        </div>
 
-    <dt class="col-sm-3">نوع قرارداد</dt>
-    <dd class="col-sm-9">@Model.ContractType</dd>
+        <div class="field-card card-purple">
+            <div class="field-label">عنوان قرارداد</div>
+            <div class="field-value">@Model.Title</div>
+        </div>
 
-    <dt class="col-sm-3">کد پروژه</dt>
-    <dd class="col-sm-9">@Model.ProjectCode</dd>
+        <div class="field-card card-green">
+            <div class="field-label">نوع قرارداد</div>
+            <div class="field-value">@Model.ContractType</div>
+        </div>
 
-    <dt class="col-sm-3">کارفرما</dt>
-    <dd class="col-sm-9">@Model.Employer</dd>
+        <div class="field-card card-orange">
+            <div class="field-label">کد پروژه</div>
+            <div class="field-value">@Model.ProjectCode</div>
+        </div>
 
-    <dt class="col-sm-3">مدیر پروژه</dt>
-    <dd class="col-sm-9">@Model.ProjectManager</dd>
+        <div class="field-card card-cyan">
+            <div class="field-label">کارفرما</div>
+            <div class="field-value">@Model.Employer</div>
+        </div>
 
-    <dt class="col-sm-3">حامی پروژه</dt>
-    <dd class="col-sm-9">@Model.ProjectSponsor</dd>
+        <div class="field-card card-pink">
+            <div class="field-label">مدیر پروژه</div>
+            <div class="field-value">@(Model.ProjectManager ?? "-")</div>
+        </div>
 
-    <dt class="col-sm-3">مبلغ قرارداد</dt>
-    <dd class="col-sm-9">@Model.Amount.ToString("N0")</dd>
+        <div class="field-card card-blue">
+            <div class="field-label">حامی پروژه</div>
+            <div class="field-value">@(Model.ProjectSponsor ?? "-")</div>
+        </div>
 
-    <dt class="col-sm-3">مبلغ پیش‌پرداخت</dt>
-    <dd class="col-sm-9">@Model.AdvancePaymentAmount?.ToString("N0")</dd>
+        <div class="field-card card-green">
+            <div class="field-label">مبلغ قرارداد</div>
+            <div class="field-value">@Model.Amount.ToString("N0")</div>
+        </div>
 
-    <dt class="col-sm-3">شماره نامه ابلاغ</dt>
-    <dd class="col-sm-9">@Model.NotificationLetterNo</dd>
+        <div class="field-card card-purple">
+            <div class="field-label">مبلغ پیش‌پرداخت</div>
+            <div class="field-value">
+                @(Model.AdvancePaymentAmount?.ToString("N0") ?? "-")
+            </div>
+        </div>
 
-    <dt class="col-sm-3">تاریخ نامه ابلاغ</dt>
-    <dd class="col-sm-9">@Model.NotificationLetterDate</dd>
+        <div class="field-card card-orange">
+            <div class="field-label">شماره نامه ابلاغ</div>
+            <div class="field-value">
+                @(Model.NotificationLetterNo ?? "-")
+            </div>
+        </div>
 
-    <dt class="col-sm-3">تاریخ شروع قرارداد</dt>
-    <dd class="col-sm-9">@Model.ContractStartDate</dd>
+        <div class="field-card card-cyan">
+            <div class="field-label">تاریخ نامه ابلاغ</div>
+            <div class="field-value">
+                @(Model.NotificationLetterDate ?? "-")
+            </div>
+        </div>
 
-    <dt class="col-sm-3">تاریخ پایان قرارداد</dt>
-    <dd class="col-sm-9">@Model.ContractEndDate</dd>
+        <div class="field-card card-pink">
+            <div class="field-label">تاریخ شروع قرارداد</div>
+            <div class="field-value">
+                @(Model.ContractStartDate ?? "-")
+            </div>
+        </div>
 
-    <dt class="col-sm-3">قرارداد درآمدی مرتبط</dt>
-    <dd class="col-sm-9">@Model.RelatedRevenueContractCode</dd>
-</dl>
+        <div class="field-card card-blue">
+            <div class="field-label">تاریخ پایان قرارداد</div>
+            <div class="field-value">
+                @(Model.ContractEndDate ?? "-")
+            </div>
+        </div>
 
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="field-card card-green">
+            <div class="field-label">قرارداد درآمدی مرتبط</div>
+            <div class="field-value">
+                @(Model.RelatedRevenueContractCode ?? "-")
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            ویرایش
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            بازگشت
+        </a>
+    </div>
+
+</div>

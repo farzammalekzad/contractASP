@@ -1,6 +1,83 @@
 @model ContractInvoice.Api.Model.ProgressPayment
-@{ ViewData["Title"] = "حذف صورت وضعیت"; }
-<h2 class="mb-4">حذف صورت وضعیت</h2>
-<div class="alert alert-warning">آیا از حذف این صورت وضعیت مطمئن هستید؟</div>
-<dl class="row"><dt class="col-sm-3">قرارداد</dt><dd class="col-sm-9">@Model.Contract.ContractCode - @Model.Contract.Title</dd><dt class="col-sm-3">شماره</dt><dd class="col-sm-9">@Model.PaymentNo</dd><dt class="col-sm-3">عنوان</dt><dd class="col-sm-9">@Model.Title</dd></dl>
-<form asp-action="Delete" method="post"><input type="hidden" asp-for="Id" /><button type="submit" class="btn btn-danger">حذف</button> <a asp-action="Index" class="btn btn-secondary">انصراف</a></form>
+
+@{
+    ViewData["Title"] = "حذف صورت وضعیت";
+}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">حذف صورت وضعیت</h1>
+            <p class="page-subtitle">
+                بررسی نهایی قبل از حذف صورت وضعیت
+            </p>
+        </div>
+    </div>
+
+    <div class="delete-card">
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
+
+        <div class="delete-warning">
+            آیا از حذف این صورت وضعیت مطمئن هستید؟
+        </div>
+
+        <div class="delete-summary">
+
+            <div class="delete-item">
+                <div class="delete-item-label">قرارداد</div>
+                <div class="delete-item-value">
+                    @Model.Contract.ContractCode
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">شماره صورت وضعیت</div>
+                <div class="delete-item-value">
+                    @Model.PaymentNo
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">عنوان</div>
+                <div class="delete-item-value">
+                    @Model.Title
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">مبلغ تایید شده</div>
+                <div class="delete-item-value">
+                    @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+                </div>
+            </div>
+
+        </div>
+
+        <form asp-action="Delete" method="post">
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <div class="delete-actions">
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    حذف صورت وضعیت
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    انصراف
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

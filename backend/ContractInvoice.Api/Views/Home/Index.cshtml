@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "صفحه اصلی";
+}
+
+<div class="landing-page">
+
+    <div class="hero-section text-center">
+        <h1 class="hero-title">سامانه مدیریت قرارداد</h1>
+        <p class="hero-subtitle">
+            به سامانه خوش آمدید. لطفاً بخش موردنظر خود را انتخاب کنید.
+        </p>
+    </div>
+
+    <div class="row g-4 mt-4">
+
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">📄</div>
+                <h3>قراردادها</h3>
+                <p>
+                    ثبت، مشاهده، ویرایش و مدیریت اطلاعات قراردادها
+                </p>
+                <a asp-controller="Contracts"
+                   asp-action="Index"
+                   class="btn btn-modern">
+                    ورود به بخش قراردادها
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">🧾</div>
+                <h3>صورت وضعیت‌ها</h3>
+                <p>
+                    مدیریت صورت‌وضعیت‌ها، مبالغ پیشنهادی و تایید شده
+                </p>
+                <a asp-controller="ProgressPayments"
+                   asp-action="Index"
+                   class="btn btn-modern">
+                    ورود به بخش صورت وضعیت‌ها
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dashboard-card h-100">
+                <div class="card-icon">💳</div>
+                <h3>پرداخت‌ها</h3>
+                <p>
+                    ثبت و پیگیری پرداخت‌های مربوط به صورت‌وضعیت‌ها
+                </p>
+                <a asp-controller="Payments"
+                   asp-action="Index"
+                   class="btn btn-modern">
+                    ورود به بخش پرداخت‌ها
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

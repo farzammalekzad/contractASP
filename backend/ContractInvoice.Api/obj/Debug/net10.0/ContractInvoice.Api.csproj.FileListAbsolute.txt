@@ -239,3 +239,5 @@ E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInv
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ref\ContractInvoice.Api.dll
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.RazorAssemblyInfo.cache
 E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\ContractInvoice.Api.RazorAssemblyInfo.cs
+E:\ContractProjectMain\backend\ContractInvoice.Api\bin\Debug\net10.0\ContractInvoice.Api.staticwebassets.runtime.json
+E:\ContractProjectMain\backend\ContractInvoice.Api\obj\Debug\net10.0\compressed\w3vrdyda7b-{0}-4rd1a27zvr-4rd1a27zvr.gz

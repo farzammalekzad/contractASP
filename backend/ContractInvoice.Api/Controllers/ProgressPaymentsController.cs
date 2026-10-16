@@ -31,6 +31,9 @@ public class ProgressPaymentsController : Controller
         }
 
         var totalPaid = _paymentService.GetTotalPaidByProgressPaymentId(id);
+        var payments = _paymentService.GetByProgressPaymentId(id);
+
+        ViewBag.Payments = payments;
 
         ViewBag.TotalPaid = totalPaid;
 

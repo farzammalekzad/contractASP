@@ -1,21 +1,137 @@
-@model List<ContractInvoice.Api.Model.ProgressPayment>
+@model IEnumerable<ContractInvoice.Api.Model.ProgressPayment>
+
 @{
-    ViewData["Title"] = "صورت وضعیت ها";
+    ViewData["Title"] = "صورت وضعیت‌ها";
 }
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>صورت وضعیت ها</h2>
-    <a asp-action="Create" class="btn btn-primary">صورت وضعیت جدید</a>
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+            <h1 class="page-title">صورت وضعیت‌ها</h1>
+            <p class="page-subtitle">
+                مدیریت صورت وضعیت‌های قراردادها
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary-modern">
+            + صورت وضعیت جدید
+        </a>
+
+    </div>
+
+    <div class="modern-table-wrapper">
+
+        <table class="table modern-table">
+
+            <thead>
+                <tr>
+                    <th>قرارداد</th>
+                    <th>شماره</th>
+                    <th>عنوان</th>
+                    <th>نوع</th>
+                    <th>مبلغ پیشنهادی</th>
+                    <th>مبلغ تایید شده</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <strong>
+                                @item.Contract.ContractCode
+                            </strong>
+                        </td>
+
+                        <td>
+                            @item.PaymentNo
+                        </td>
+
+                        <td>
+                            @item.Title
+                        </td>
+
+                        <td>
+                            @if (item.PaymentType == "TEMPORARY")
+                            {
+                                <span class="badge badge-soft-primary">
+                                    موقت
+                                </span>
+                            }
+                            else if (item.PaymentType == "FINAL")
+                            {
+                                <span class="badge badge-soft-success">
+                                    قطعی
+                                </span>
+                            }
+                            else if (item.PaymentType == "ADJUSTMENT")
+                            {
+                                <span class="badge badge-soft-warning">
+                                    تعدیل
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @item.ProposedAmount.ToString("N0")
+                        </td>
+
+                        <td>
+                            @(item.ApprovedAmount?.ToString("N0") ?? "-")
+                        </td>
+
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(item.Status))
+                            {
+                                <span class="badge badge-soft-secondary">
+                                    @item.Status
+                                </span>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-primary btn-sm btn-soft">
+                                    جزئیات
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-warning btn-sm btn-soft">
+                                    ویرایش
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-danger btn-sm btn-soft">
+                                    حذف
+                                </a>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
-<table class="table table-striped table-bordered">
-    <thead class="table-dark"><tr><th>قرارداد</th><th>شماره</th><th>عنوان</th><th>نوع</th><th>مبلغ پیشنهادی</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-    <tbody>
-    @foreach (var payment in Model)
-    {
-        <tr>
-            <td>@payment.Contract.ContractCode - @payment.Contract.Title</td><td>@payment.PaymentNo</td><td>@payment.Title</td><td>@payment.PaymentType</td>
-            <td>@payment.ProposedAmount.ToString("N2")</td><td>@payment.Status</td>
-            <td class="text-nowrap"><a asp-action="Details" asp-route-id="@payment.Id" class="btn btn-sm btn-outline-info">جزئیات</a> <a asp-action="Edit" asp-route-id="@payment.Id" class="btn btn-sm btn-outline-primary">ویرایش</a> <a asp-action="Delete" asp-route-id="@payment.Id" class="btn btn-sm btn-outline-danger">حذف</a></td>
-        </tr>
-    }
-    </tbody>
-</table>

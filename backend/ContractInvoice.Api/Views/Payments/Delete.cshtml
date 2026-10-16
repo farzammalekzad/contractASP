@@ -4,52 +4,77 @@
     ViewData["Title"] = "حذف پرداخت";
 }
 
-<h2>حذف پرداخت</h2>
+<div class="page-container">
 
-<div class="alert alert-warning">
-    آیا از حذف این پرداخت مطمئن هستید؟
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">حذف پرداخت</h1>
+            <p class="page-subtitle">
+                بررسی نهایی قبل از حذف پرداخت
+            </p>
+        </div>
+    </div>
+
+    <div class="delete-card">
+
+        <div class="delete-warning">
+            آیا از حذف این پرداخت مطمئن هستید؟
+        </div>
+
+        <div class="delete-summary">
+
+            <div class="delete-item">
+                <div class="delete-item-label">قرارداد</div>
+                <div class="delete-item-value">
+                    @Model.ProgressPayment.Contract.ContractCode
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">صورت وضعیت</div>
+                <div class="delete-item-value">
+                    شماره @Model.ProgressPayment.PaymentNo
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">تاریخ پرداخت</div>
+                <div class="delete-item-value">
+                    @Model.PaymentDate
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">مبلغ</div>
+                <div class="delete-item-value">
+                    @Model.ReceivedAmount.ToString("N0")
+                </div>
+            </div>
+
+        </div>
+
+        <form asp-action="Delete" method="post">
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.Id" />
+
+            <div class="delete-actions">
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    حذف پرداخت
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    انصراف
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
-
-<dl class="row">
-
-    <dt class="col-sm-3">قرارداد</dt>
-    <dd class="col-sm-9">
-        @Model.ProgressPayment.Contract.ContractCode
-        -
-        @Model.ProgressPayment.Contract.Title
-    </dd>
-
-    <dt class="col-sm-3">شماره صورت وضعیت</dt>
-    <dd class="col-sm-9">
-        @Model.ProgressPayment.PaymentNo
-    </dd>
-
-    <dt class="col-sm-3">تاریخ پرداخت</dt>
-    <dd class="col-sm-9">
-        @Model.PaymentDate
-    </dd>
-
-    <dt class="col-sm-3">مبلغ دریافتی</dt>
-    <dd class="col-sm-9">
-        @Model.ReceivedAmount.ToString("N0")
-    </dd>
-
-</dl>
-
-<form asp-action="Delete" method="post">
-
-    <input type="hidden"
-           name="id"
-           value="@Model.Id" />
-
-    <button type="submit"
-            class="btn btn-danger">
-        حذف
-    </button>
-
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        انصراف
-    </a>
-
-</form>

@@ -4,72 +4,98 @@
     ViewData["Title"] = "پرداخت‌ها";
 }
 
-<h2>پرداخت‌ها</h2>
+<div class="page-container">
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        ثبت پرداخت جدید
-    </a>
-</p>
+    <div class="page-header">
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>قرارداد</th>
-            <th>شماره صورت وضعیت</th>
-            <th>تاریخ پرداخت</th>
-            <th>مبلغ دریافتی</th>
-            <th>شماره مرجع</th>
-            <th></th>
-        </tr>
-    </thead>
+        <div>
+            <h1 class="page-title">پرداخت‌ها</h1>
+            <p class="page-subtitle">
+                مشاهده و مدیریت پرداخت‌های صورت وضعیت‌ها
+            </p>
+        </div>
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.ProgressPayment.Contract.ContractCode
-                    -
-                    @item.ProgressPayment.Contract.Title
-                </td>
+        <a asp-action="Create"
+           class="btn btn-primary-modern">
+            + ثبت پرداخت جدید
+        </a>
 
-                <td>
-                    @item.ProgressPayment.PaymentNo
-                </td>
+    </div>
 
-                <td>
-                    @item.PaymentDate
-                </td>
+    <div class="modern-table-wrapper">
 
-                <td>
-                    @item.ReceivedAmount.ToString("N0")
-                </td>
+        <table class="table modern-table">
 
-                <td>
-                    @item.PaymentReferenceNo
-                </td>
+            <thead>
+                <tr>
+                    <th>قرارداد</th>
+                    <th>صورت وضعیت</th>
+                    <th>تاریخ پرداخت</th>
+                    <th>مبلغ</th>
+                    <th>شماره مرجع</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
 
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@item.Id"
-                       class="btn btn-info btn-sm">
-                        جزئیات
-                    </a>
+            <tbody>
 
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id"
-                       class="btn btn-warning btn-sm">
-                        ویرایش
-                    </a>
+                @foreach (var item in Model)
+                {
+                    <tr>
 
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id"
-                       class="btn btn-danger btn-sm">
-                        حذف
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <td>
+                            <strong>
+                                @item.ProgressPayment.Contract.ContractCode
+                            </strong>
+                        </td>
+
+                        <td>
+                            صورت وضعیت @item.ProgressPayment.PaymentNo
+                        </td>
+
+                        <td>
+                            @item.PaymentDate
+                        </td>
+
+                        <td>
+                            @item.ReceivedAmount.ToString("N0")
+                        </td>
+
+                        <td>
+                            @(item.PaymentReferenceNo ?? "-")
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-primary btn-sm btn-soft">
+                                    جزئیات
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-warning btn-sm btn-soft">
+                                    ویرایش
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-danger btn-sm btn-soft">
+                                    حذف
+                                </a>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

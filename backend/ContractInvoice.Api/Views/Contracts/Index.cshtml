@@ -1,46 +1,116 @@
-@model List<ContractInvoice.Api.Model.Contract>
+@model IEnumerable<ContractInvoice.Api.Model.Contract>
 
 @{
-    ViewData["Title"] = "Contracts";
+    ViewData["Title"] = "قراردادها";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Contracts</h2>
+<div class="page-container">
 
-    <a asp-controller="Contracts"
-       asp-action="Create"
-       class="btn btn-primary">
-        New Contract
-    </a>
+    <div class="page-header">
+
+        <div>
+            <h1 class="page-title">قراردادها</h1>
+            <p class="page-subtitle">
+                مدیریت و مشاهده قراردادهای ثبت شده
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary-modern">
+            + قرارداد جدید
+        </a>
+
+    </div>
+
+    <div class="modern-table-wrapper">
+
+        <table class="table modern-table">
+
+            <thead>
+                <tr>
+                    <th>کد قرارداد</th>
+                    <th>عنوان</th>
+                    <th>نوع</th>
+                    <th>کارفرما</th>
+                    <th>مبلغ قرارداد</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <strong>@item.ContractCode</strong>
+                        </td>
+
+                        <td>
+                            @item.Title
+                        </td>
+
+                        <td>
+                            @if (item.ContractType == "INCOME")
+                            {
+                                <span class="badge badge-soft-success">
+                                    درآمدی
+                                </span>
+                            }
+                            else if (item.ContractType == "EXPENSE")
+                            {
+                                <span class="badge badge-soft-danger">
+                                    هزینه‌ای
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-secondary">
+                                    @item.ContractType
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @item.Employer
+                        </td>
+
+                        <td>
+                            @item.Amount.ToString("N0")
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-primary btn-sm btn-soft">
+                                    جزئیات
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-warning btn-sm btn-soft">
+                                    ویرایش
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-danger btn-sm btn-soft">
+                                    حذف
+                                </a>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
-
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Id</th>
-            <th>Contract Code</th>
-            <th>Title</th>
-            <th>Project Manager</th>
-            <th>Amount</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var contract in Model)
-        {
-            <tr>
-                <td>@contract.Id</td>
-                <td>@contract.ContractCode</td>
-                <td>@contract.Title</td>
-                <td>@contract.ProjectManager</td>
-                <td>@contract.Amount.ToString("N0")</td>
-                <td class="text-nowrap">
-                    <a asp-action="Details" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-primary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@contract.Id" class="btn btn-sm btn-outline-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

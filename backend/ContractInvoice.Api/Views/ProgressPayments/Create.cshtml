@@ -1,8 +1,238 @@
 @model ContractInvoice.Api.DTOs.CreateProgressPaymentDto
-@{ ViewData["Title"] = "صورت وضعیت جدید"; }
-<h2 class="mb-4">صورت وضعیت جدید</h2>
-<form asp-action="Create" method="post">
-    <partial name="_Form" model="Model" />
-    <button type="submit" class="btn btn-primary">ذخیره</button> <a asp-action="Index" class="btn btn-secondary">انصراف</a>
-</form>
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+
+@{
+    ViewData["Title"] = "ثبت صورت وضعیت";
+}
+
+<div class="page-container compact-form">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">ثبت صورت وضعیت جدید</h1>
+            <p class="page-subtitle">
+                اطلاعات صورت وضعیت را وارد کنید
+            </p>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات پایه
+            </div>
+
+            <div class="form-grid form-grid-3">
+
+                <div class="form-field">
+                    <label asp-for="ContractId" class="form-label"></label>
+
+                    <select asp-for="ContractId"
+                            asp-items="ViewBag.Contracts"
+                            class="form-select">
+                        <option value="">-- انتخاب قرارداد --</option>
+                    </select>
+
+                    <span asp-validation-for="ContractId"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="PaymentNo" class="form-label"></label>
+
+                    <input asp-for="PaymentNo"
+                           class="form-control" />
+
+                    <span asp-validation-for="PaymentNo"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="PaymentType" class="form-label"></label>
+
+                    <select asp-for="PaymentType"
+                            class="form-select">
+
+                        <option value="">-- انتخاب نوع --</option>
+                        <option value="TEMPORARY">موقت</option>
+                        <option value="FINAL">قطعی</option>
+                        <option value="ADJUSTMENT">تعدیل</option>
+
+                    </select>
+
+                    <span asp-validation-for="PaymentType"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field form-field-full">
+                    <label asp-for="Title" class="form-label"></label>
+
+                    <input asp-for="Title"
+                           class="form-control" />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                بازه صورت وضعیت
+            </div>
+
+            <div class="form-grid form-grid-3">
+
+                <div class="form-field">
+                    <label asp-for="PeriodStartDate"
+                           class="form-label"></label>
+
+                    <input asp-for="PeriodStartDate"
+                           class="form-control"
+                           placeholder="1405/07/01" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="PeriodEndDate"
+                           class="form-label"></label>
+
+                    <input asp-for="PeriodEndDate"
+                           class="form-control"
+                           placeholder="1405/07/30" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="Status"
+                           class="form-label"></label>
+
+                    <input asp-for="Status"
+                           class="form-control" />
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                مکاتبات
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="RequestLetterNo"
+                           class="form-label"></label>
+
+                    <input asp-for="RequestLetterNo"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="RequestLetterDate"
+                           class="form-label"></label>
+
+                    <input asp-for="RequestLetterDate"
+                           class="form-control"
+                           placeholder="1405/07/15" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ApprovalLetterNo"
+                           class="form-label"></label>
+
+                    <input asp-for="ApprovalLetterNo"
+                           class="form-control" />
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ApprovalDate"
+                           class="form-label"></label>
+
+                    <input asp-for="ApprovalDate"
+                           class="form-control"
+                           placeholder="1405/07/20" />
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات مالی
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="ProposedAmount"
+                           class="form-label"></label>
+
+                    <input asp-for="ProposedAmount"
+                           class="form-control" />
+
+                    <span asp-validation-for="ProposedAmount"
+                          class="text-danger"></span>
+                </div>
+
+
+                <div class="form-field">
+                    <label asp-for="ApprovedAmount"
+                           class="form-label"></label>
+
+                    <input asp-for="ApprovedAmount"
+                           class="form-control" />
+
+                    <span asp-validation-for="ApprovedAmount"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn btn-primary-modern">
+                ذخیره صورت وضعیت
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-soft">
+                انصراف
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

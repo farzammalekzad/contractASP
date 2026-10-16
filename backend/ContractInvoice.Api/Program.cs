@@ -32,9 +32,10 @@ app.MapGet("/api/health", () =>
 .WithName("HealthCheck");
 
 app.UseRouting();
+app.UseStaticFiles();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Contracts}/{action=Index}/{id?}"
+    pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 app.MapControllers();
 

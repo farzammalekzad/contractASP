@@ -4,57 +4,102 @@
     ViewData["Title"] = "جزئیات پرداخت";
 }
 
-<h2>جزئیات پرداخت</h2>
+<div class="page-container">
 
-<dl class="row">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">جزئیات پرداخت</h1>
 
-    <dt class="col-sm-3">قرارداد</dt>
-    <dd class="col-sm-9">
-        @Model.ProgressPayment.Contract.ContractCode
-        -
-        @Model.ProgressPayment.Contract.Title
-    </dd>
+            <p class="page-subtitle">
+                @Model.ProgressPayment.Contract.ContractCode
+                -
+                صورت وضعیت شماره @Model.ProgressPayment.PaymentNo
+            </p>
+        </div>
+    </div>
 
-    <dt class="col-sm-3">شماره صورت وضعیت</dt>
-    <dd class="col-sm-9">
-        @Model.ProgressPayment.PaymentNo
-    </dd>
 
-    <dt class="col-sm-3">عنوان صورت وضعیت</dt>
-    <dd class="col-sm-9">
-        @Model.ProgressPayment.Title
-    </dd>
+    <div class="details-grid">
 
-    <dt class="col-sm-3">تاریخ پرداخت</dt>
-    <dd class="col-sm-9">
-        @Model.PaymentDate
-    </dd>
+        <div class="field-card card-blue">
+            <div class="field-label">کد قرارداد</div>
+            <div class="field-value">
+                @Model.ProgressPayment.Contract.ContractCode
+            </div>
+        </div>
 
-    <dt class="col-sm-3">مبلغ دریافتی</dt>
-    <dd class="col-sm-9">
-        @Model.ReceivedAmount.ToString("N0")
-    </dd>
+        <div class="field-card card-purple">
+            <div class="field-label">عنوان قرارداد</div>
+            <div class="field-value">
+                @Model.ProgressPayment.Contract.Title
+            </div>
+        </div>
 
-    <dt class="col-sm-3">شماره مرجع پرداخت</dt>
-    <dd class="col-sm-9">
-        @Model.PaymentReferenceNo
-    </dd>
+        <div class="field-card card-green">
+            <div class="field-label">شماره صورت وضعیت</div>
+            <div class="field-value">
+                @Model.ProgressPayment.PaymentNo
+            </div>
+        </div>
 
-    <dt class="col-sm-3">توضیحات</dt>
-    <dd class="col-sm-9">
-        @Model.Description
-    </dd>
+        <div class="field-card card-orange">
+            <div class="field-label">عنوان صورت وضعیت</div>
+            <div class="field-value">
+                @Model.ProgressPayment.Title
+            </div>
+        </div>
 
-</dl>
+        <div class="field-card card-cyan">
+            <div class="field-label">تاریخ پرداخت</div>
+            <div class="field-value">
+                @Model.PaymentDate
+            </div>
+        </div>
 
-<a asp-action="Edit"
-   asp-route-id="@Model.Id"
-   class="btn btn-warning">
-    ویرایش
-</a>
+        <div class="field-card card-pink">
+            <div class="field-label">مبلغ دریافتی</div>
+            <div class="field-value">
+                @Model.ReceivedAmount.ToString("N0")
+            </div>
+        </div>
 
-<a asp-action="Index"
-   class="btn btn-secondary">
-    بازگشت
-</a>
+        <div class="field-card card-blue">
+            <div class="field-label">شماره مرجع پرداخت</div>
+            <div class="field-value">
+                @(Model.PaymentReferenceNo ?? "-")
+            </div>
+        </div>
 
+        <div class="field-card card-gray">
+            <div class="field-label">توضیحات</div>
+            <div class="field-value">
+                @(Model.Description ?? "-")
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="mt-4 d-flex gap-2 flex-wrap">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            ویرایش پرداخت
+        </a>
+
+        <a asp-controller="ProgressPayments"
+           asp-action="Details"
+           asp-route-id="@Model.ProgressPaymentId"
+           class="btn btn-outline-primary">
+            مشاهده صورت وضعیت
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            بازگشت
+        </a>
+
+    </div>
+
+</div>

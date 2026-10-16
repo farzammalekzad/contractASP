@@ -1,5 +1,8 @@
 @model ContractInvoice.Api.Model.ProgressPayment
+
 @{
+    ViewData["Title"] = "جزئیات صورت وضعیت";
+
     decimal totalPaid =
         ViewBag.TotalPaid == null
             ? 0m
@@ -9,45 +12,271 @@
         ViewBag.RemainingAmount == null
             ? null
             : (decimal)ViewBag.RemainingAmount;
+
+    var payments =
+        ViewBag.Payments as IEnumerable<ContractInvoice.Api.Model.Payment>;
 }
-@{ ViewData["Title"] = "جزئیات صورت وضعیت"; }
-<h2 class="mb-4">جزئیات صورت وضعیت</h2>
-<dl class="row">
-    <dt class="col-sm-3">قرارداد</dt><dd class="col-sm-9">@Model.Contract.ContractCode - @Model.Contract.Title</dd>
-    <dt class="col-sm-3">شماره صورت وضعیت</dt><dd class="col-sm-9">@Model.PaymentNo</dd><dt class="col-sm-3">عنوان</dt><dd class="col-sm-9">@Model.Title</dd>
-    <dt class="col-sm-3">نوع</dt><dd class="col-sm-9">@Model.PaymentType</dd><dt class="col-sm-3">دوره</dt><dd class="col-sm-9">@Model.PeriodStartDate تا @Model.PeriodEndDate</dd>
-    <dt class="col-sm-3">نامه درخواست</dt><dd class="col-sm-9">@Model.RequestLetterNo - @Model.RequestLetterDate</dd><dt class="col-sm-3">نامه تایید</dt><dd class="col-sm-9">@Model.ApprovalLetterNo - @Model.ApprovalDate</dd>
-    <dt class="col-sm-3">مبلغ پیشنهادی</dt><dd class="col-sm-9">@Model.ProposedAmount.ToString("N2")</dd><dt class="col-sm-3">مبلغ تایید شده</dt><dd class="col-sm-9">@Model.ApprovedAmount?.ToString("N2")</dd><dt class="col-sm-3">وضعیت</dt><dd class="col-sm-9">@Model.Status</dd>
-</dl>
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">ویرایش</a> <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
 
-<hr />
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">جزئیات صورت وضعیت</h1>
+
+            <p class="page-subtitle">
+                @Model.Contract.ContractCode
+                -
+                صورت وضعیت شماره @Model.PaymentNo
+            </p>
+        </div>
+    </div>
 
 
-<h4>وضعیت پرداخت</h4>
+    <div class="details-grid">
 
-<dl class="row">
+        <div class="field-card card-blue">
+            <div class="field-label">قرارداد</div>
+            <div class="field-value">
+                @Model.Contract.ContractCode
+            </div>
+        </div>
 
-    <dt class="col-sm-3">مبلغ تایید شده</dt>
-    <dd class="col-sm-9">
-        @(Model.ApprovedAmount?.ToString("N0") ?? "-")
-    </dd>
+        <div class="field-card card-purple">
+            <div class="field-label">شماره صورت وضعیت</div>
+            <div class="field-value">
+                @Model.PaymentNo
+            </div>
+        </div>
 
-    <dt class="col-sm-3">مجموع پرداخت‌ها</dt>
-    <dd class="col-sm-9">
-        @totalPaid.ToString("N0")
-    </dd>
+        <div class="field-card card-green">
+            <div class="field-label">عنوان صورت وضعیت</div>
+            <div class="field-value">
+                @Model.Title
+            </div>
+        </div>
 
-    <dt class="col-sm-3">مانده</dt>
-    <dd class="col-sm-9">
-        @if (remainingAmount.HasValue)
-        {
-            @remainingAmount.Value.ToString("N0")
-        }
-        else
-        {
-            <span>-</span>
-        }
-    </dd>
+        <div class="field-card card-orange">
+            <div class="field-label">نوع صورت وضعیت</div>
+            <div class="field-value">
+                @Model.PaymentType
+            </div>
+        </div>
 
-</dl>
+        <div class="field-card card-cyan">
+            <div class="field-label">تاریخ شروع دوره</div>
+            <div class="field-value">
+                @(Model.PeriodStartDate ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-pink">
+            <div class="field-label">تاریخ پایان دوره</div>
+            <div class="field-value">
+                @(Model.PeriodEndDate ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-blue">
+            <div class="field-label">شماره نامه درخواست</div>
+            <div class="field-value">
+                @(Model.RequestLetterNo ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-purple">
+            <div class="field-label">تاریخ نامه درخواست</div>
+            <div class="field-value">
+                @(Model.RequestLetterDate ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-green">
+            <div class="field-label">شماره نامه تایید</div>
+            <div class="field-value">
+                @(Model.ApprovalLetterNo ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-orange">
+            <div class="field-label">تاریخ تایید</div>
+            <div class="field-value">
+                @(Model.ApprovalDate ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-cyan">
+            <div class="field-label">مبلغ پیشنهادی</div>
+            <div class="field-value">
+                @Model.ProposedAmount.ToString("N0")
+            </div>
+        </div>
+
+        <div class="field-card card-pink">
+            <div class="field-label">مبلغ تایید شده</div>
+            <div class="field-value">
+                @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+            </div>
+        </div>
+
+        <div class="field-card card-gray">
+            <div class="field-label">وضعیت</div>
+            <div class="field-value">
+                @(Model.Status ?? "-")
+            </div>
+        </div>
+
+    </div>
+
+
+    <hr class="my-4" />
+
+    <h4 class="mb-3">وضعیت مالی</h4>
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <div class="summary-label">
+                    مبلغ تایید شده
+                </div>
+
+                <div class="summary-value">
+                    @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <div class="summary-label">
+                    مجموع پرداخت‌ها
+                </div>
+
+                <div class="summary-value">
+                    @totalPaid.ToString("N0")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <div class="summary-label">
+                    مانده
+                </div>
+
+                <div class="summary-value">
+                    @if (remainingAmount.HasValue)
+                    {
+                        @remainingAmount.Value.ToString("N0")
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h4 class="mb-0">
+            پرداخت‌های این صورت وضعیت
+        </h4>
+
+        <a asp-controller="Payments"
+           asp-action="Create"
+           asp-route-progressPaymentId="@Model.Id"
+           class="btn btn-primary-modern">
+            + ثبت پرداخت جدید
+        </a>
+
+    </div>
+
+
+    @if (payments != null && payments.Any())
+    {
+        <div class="modern-table-wrapper">
+
+            <table class="table modern-table">
+
+                <thead>
+                    <tr>
+                        <th>تاریخ پرداخت</th>
+                        <th>مبلغ</th>
+                        <th>شماره مرجع</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var payment in payments)
+                    {
+                        <tr>
+
+                            <td>
+                                @payment.PaymentDate
+                            </td>
+
+                            <td>
+                                @payment.ReceivedAmount.ToString("N0")
+                            </td>
+
+                            <td>
+                                @payment.PaymentReferenceNo
+                            </td>
+
+                            <td>
+
+                                <a asp-controller="Payments"
+                                   asp-action="Details"
+                                   asp-route-id="@payment.Id"
+                                   class="btn btn-outline-primary btn-sm btn-soft">
+                                    جزئیات
+                                </a>
+
+                                <a asp-controller="Payments"
+                                   asp-action="Edit"
+                                   asp-route-id="@payment.Id"
+                                   class="btn btn-outline-warning btn-sm btn-soft">
+                                    ویرایش
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary">
+            هنوز پرداختی برای این صورت وضعیت ثبت نشده است.
+        </div>
+    }
+
+
+    <div class="mt-4">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            ویرایش صورت وضعیت
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            بازگشت
+        </a>
+
+    </div>
+
+</div>

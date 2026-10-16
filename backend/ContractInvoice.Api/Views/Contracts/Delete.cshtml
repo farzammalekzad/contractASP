@@ -1,35 +1,87 @@
 @model ContractInvoice.Api.Model.Contract
 
 @{
-    ViewData["Title"] = "Delete Contract";
+    ViewData["Title"] = "حذف قرارداد";
 }
 
-<h2 class="mb-4">Delete Contract</h2>
+<div class="page-container">
 
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">حذف قرارداد</h1>
+            <p class="page-subtitle">
+                بررسی نهایی قبل از حذف قرارداد
+            </p>
+        </div>
     </div>
-}
 
-<p>آیا از حذف این قرارداد مطمئن هستید؟</p>
+    <div class="delete-card">
 
-<dl class="row">
-    <dt class="col-sm-3">Id</dt>
-    <dd class="col-sm-9">@Model.Id</dd>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        }
 
-    <dt class="col-sm-3">Contract Code</dt>
-    <dd class="col-sm-9">@Model.ContractCode</dd>
+        <div class="delete-warning">
+            آیا از حذف این قرارداد مطمئن هستید؟
+            این عملیات قابل بازگشت نیست.
+        </div>
 
-    <dt class="col-sm-3">Title</dt>
-    <dd class="col-sm-9">@Model.Title</dd>
+        <div class="delete-summary">
 
-    <dt class="col-sm-3">Amount</dt>
-    <dd class="col-sm-9">@Model.Amount.ToString("N0")</dd>
-</dl>
+            <div class="delete-item">
+                <div class="delete-item-label">کد قرارداد</div>
+                <div class="delete-item-value">
+                    @Model.ContractCode
+                </div>
+            </div>
 
-<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="delete-item">
+                <div class="delete-item-label">عنوان قرارداد</div>
+                <div class="delete-item-value">
+                    @Model.Title
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">کارفرما</div>
+                <div class="delete-item-value">
+                    @Model.Employer
+                </div>
+            </div>
+
+            <div class="delete-item">
+                <div class="delete-item-label">مبلغ قرارداد</div>
+                <div class="delete-item-value">
+                    @Model.Amount.ToString("N0")
+                </div>
+            </div>
+
+        </div>
+
+        <form asp-action="Delete" method="post">
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <div class="delete-actions">
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    حذف قرارداد
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    انصراف
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
