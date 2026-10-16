@@ -116,11 +116,12 @@
                                     ویرایش
                                 </a>
 
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-outline-danger btn-sm btn-soft">
+                                <button type="button"
+                                        class="btn btn-outline-danger btn-sm btn-soft"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteProgressPaymentModal-@item.Id">
                                     حذف
-                                </a>
+                                </button>
 
                             </div>
                         </td>
@@ -131,6 +132,104 @@
             </tbody>
 
         </table>
+        @foreach (var item in Model)
+        {
+            <div class="modal fade"
+                id="deleteProgressPaymentModal-@item.Id"
+                tabindex="-1"
+                aria-hidden="true">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title">
+                                حذف صورت وضعیت
+                            </h5>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="delete-warning">
+                                 آیا از حذف این صورت وضعیت مطمئن هستید؟
+                            </div>
+
+                            <div class="delete-modal-grid">
+
+                                <div class="delete-modal-card delete-card-blue">
+                                    <div class="delete-modal-card-label">
+                                        قرارداد
+                                    </div>
+
+                                    <div class="delete-modal-card-value">
+                                        @item.Contract.ContractCode
+                                    </div>
+                                </div>
+
+                                <div class="delete-modal-card delete-card-purple">
+                                    <div class="delete-modal-card-label">
+                                        شماره صورت وضعیت
+                                    </div>
+
+                                    <div class="delete-modal-card-value">
+                                        @item.PaymentNo
+                                    </div>
+                                </div>
+
+                                <div class="delete-modal-card delete-card-green">
+                                    <div class="delete-modal-card-label">
+                                        عنوان
+                                    </div>
+
+                                    <div class="delete-modal-card-value">
+                                        @item.Title
+                                    </div>
+                                </div>
+
+                                <div class="delete-modal-card delete-card-orange">
+                                    <div class="delete-modal-card-label">
+                                        مبلغ تایید شده
+                                    </div>
+
+                                    <div class="delete-modal-card-value">
+                                        @(item.ApprovedAmount?.ToString("N0") ?? "-")
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer border-0">
+
+                            <form asp-action="Delete"
+                                asp-route-id="@item.Id"
+                                method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="btn btn-danger">
+                                    بله، حذف شود
+                                </button>
+
+                            </form>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">
+                                انصراف
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
 
     </div>
 
