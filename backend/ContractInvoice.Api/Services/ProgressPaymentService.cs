@@ -71,6 +71,16 @@ public class ProgressPaymentService : IProgressPaymentService
             return false;
         }
 
+        var hasPayments = _context.Payments
+        .Any(p => p.ProgressPaymentId == id);
+
+        if (hasPayments)
+        {
+            throw new InvalidOperationException(
+                "این صورت وضعیت دارای پرداخت ثبت شده است و قابل حذف نیست."
+            );
+        }
+
         _context.ProgressPayments.Remove(progressPayment);
         _context.SaveChanges();
         return true;

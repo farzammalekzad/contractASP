@@ -116,9 +116,31 @@ public class ProgressPaymentsController : Controller
         return payment is null ? NotFound() : View(payment);
     }
 
-    [HttpPost, ActionName(nameof(Delete))]
+    [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id) => !_progressPaymentService.Delete(id) ? NotFound() : RedirectToAction(nameof(Index));
+    public IActionResult DeleteConfirmed(int id)
+    {
+        try
+        {
+            var deleted = _progressPaymentService.Delete(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            TempData["SuccessMessage"] =
+                "صورت وضعیت با موفقیت حذف شد.";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+
+            return RedirectToAction(nameof(Index));
+        }
+    }
 
     private void PopulateContracts(int? selectedContractId) => ViewBag.Contracts = new SelectList(
         _contractService.GetAll().OrderBy(c => c.ContractCode).Select(c => new { c.Id, Name = $"{c.ContractCode} - {c.Title}" }),

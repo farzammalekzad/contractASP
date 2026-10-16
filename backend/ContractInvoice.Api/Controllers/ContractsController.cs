@@ -145,30 +145,24 @@ public class ContractsController : Controller
         return contract is null ? NotFound() : View(contract);
     }
 
-    [HttpPost, ActionName(nameof(Delete))]
+    [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
         try
         {
-            return !_contractService.DeleteById(id)
-            ? NotFound()
-            : RedirectToAction(nameof(Index));
+            _contractService.DeleteById(id);
+
+            TempData["SuccessMessage"] =
+                "قرارداد با موفقیت حذف شد.";
+
+            return RedirectToAction(nameof(Index));
         }
         catch (InvalidOperationException ex)
         {
-            ModelState.AddModelError(string.Empty, ex.Message);
+            TempData["ErrorMessage"] = ex.Message;
 
-            var contract = _contractService.GetById(id);
-
-            if (contract == null)
-            {
-                return NotFound();
-            }
-            ViewBag.ErrorMessage = ex.Message;
-
-            return View("Delete",contract);
+            return RedirectToAction(nameof(Index));
         }
-        
     }
 }
