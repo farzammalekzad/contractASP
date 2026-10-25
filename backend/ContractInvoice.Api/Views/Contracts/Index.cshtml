@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "قراردادها";
+
+    string ShowMoney(decimal? value)
+        => value.HasValue
+            ? value.Value.ToString("N0")
+            : "—";
 }
 
 @if (TempData["ErrorMessage"] != null)
@@ -25,7 +30,7 @@
         <div>
             <h1 class="page-title">قراردادها</h1>
             <p class="page-subtitle">
-                مدیریت و مشاهده قراردادهای ثبت شده
+                مدیریت و مشاهده قراردادهای ثبت‌شده
             </p>
         </div>
 
@@ -38,198 +43,264 @@
 
     <div class="modern-table-wrapper">
 
-        <table class="table modern-table">
+        <div class="table-responsive">
 
-            <thead>
-                <tr>
-                    <th>کد قرارداد</th>
-                    <th>عنوان</th>
-                    <th>نوع</th>
-                    <th>کارفرما</th>
-                    <th>مبلغ قرارداد</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
+            <table class="table modern-table">
 
-            <tbody>
-
-                @foreach (var item in Model)
-                {
+                <thead>
                     <tr>
-
-                        <td>
-                            <strong>@item.ContractCode</strong>
-                        </td>
-
-                        <td>
-                            @item.Title
-                        </td>
-
-                        <td>
-                            @if (item.ContractType == "INCOME")
-                            {
-                                <span class="badge badge-soft-success">
-                                    درآمدی
-                                </span>
-                            }
-                            else if (item.ContractType == "EXPENSE")
-                            {
-                                <span class="badge badge-soft-danger">
-                                    هزینه‌ای
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-soft-secondary">
-                                    @item.ContractType
-                                </span>
-                            }
-                        </td>
-
-                        <td>
-                            @item.Employer
-                        </td>
-
-                        <td>
-                            @item.Amount.ToString("N0")
-                        </td>
-
-                        <td>
-                            <div class="d-flex gap-2 flex-wrap">
-
-                                <a asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-outline-primary btn-sm btn-soft">
-                                    جزئیات
-                                </a>
-
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-outline-warning btn-sm btn-soft">
-                                    ویرایش
-                                </a>
-
-                                <button type="button"
-                                class="btn btn-outline-danger btn-sm btn-soft"
-                                data-bs-toggle="modal"
-                                data-bs-target="#deleteContractModal-@item.Id">
-                                حذف
-                                </button>
-
-                            </div>
-                        </td>
-
+                        <th>شماره قرارداد</th>
+                        <th>موضوع قرارداد</th>
+                        <th>نوع قرارداد</th>
+                        <th>وضعیت</th>
+                        <th>فعال</th>
+                        <th>کارفرما</th>
+                        <th>مبلغ قرارداد</th>
+                        <th>عملیات</th>
                     </tr>
-                    
-                }
+                </thead>
 
-            </tbody>
+                <tbody>
 
-        </table>
-        
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                قراردادی ثبت نشده است.
+                            </td>
+                        </tr>
+                    }
 
-        @foreach (var item in Model)
-        {
-            <div class="modal fade"
-                id="deleteContractModal-@item.Id"
-                tabindex="-1"
-                aria-hidden="true">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                            <td>
+                                <strong>@item.ContractNo</strong>
+                            </td>
 
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title">
-                                حذف قرارداد
-                            </h5>
+                            <td>
+                                @item.Topic
+                            </td>
 
-                        
+                            <td>
+                                @if (item.Type == "درآمدی")
+                                {
+                                    <span class="badge badge-soft-success">
+                                        درآمدی
+                                    </span>
+                                }
+                                else if (item.Type == "هزینه‌ای")
+                                {
+                                    <span class="badge badge-soft-danger">
+                                        هزینه‌ای
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-soft-secondary">
+                                        @item.Type
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (item.Status == "جاری")
+                                {
+                                    <span class="badge badge-soft-success">
+                                        جاری
+                                    </span>
+                                }
+                                else if (item.Status == "خاتمه یافته")
+                                {
+                                    <span class="badge badge-soft-secondary">
+                                        خاتمه یافته
+                                    </span>
+                                }
+                                else if (item.Status == "فسخ شده")
+                                {
+                                    <span class="badge badge-soft-danger">
+                                        فسخ شده
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-soft-secondary">
+                                        @item.Status
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (item.Active)
+                                {
+                                    <span class="badge badge-soft-success">
+                                        فعال
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-soft-secondary">
+                                        غیرفعال
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(item.PrincipalName)
+                                    ? "—"
+                                    : item.PrincipalName)
+                            </td>
+
+                            <td>
+                                @ShowMoney(item.Price)
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-2 flex-wrap">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-outline-primary btn-sm btn-soft">
+                                        جزئیات
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-outline-warning btn-sm btn-soft">
+                                        ویرایش
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-sm btn-soft"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteContractModal-@item.Id">
+                                        حذف
+                                    </button>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    @* Delete confirmation modals *@
+
+    @foreach (var item in Model)
+    {
+        <div class="modal fade"
+             id="deleteContractModal-@item.Id"
+             tabindex="-1"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-header border-0">
+
+                        <h5 class="modal-title">
+                            حذف قرارداد
+                        </h5>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="delete-warning">
+                            آیا از حذف این قرارداد مطمئن هستید؟
                         </div>
 
-                        <div class="modal-body">
+                        <div class="delete-modal-grid">
 
-                            <div class="delete-warning">
-                                آیا از حذف این قرارداد مطمئن هستید؟
-                            </div>
+                            <div class="delete-modal-card delete-card-blue">
 
-                            <div class="delete-modal-grid">
-
-                                <div class="delete-modal-card delete-card-blue">
-                                    <div class="delete-modal-card-label">
-                                        کد قرارداد
-                                    </div>
-
-                                    <div class="delete-modal-card-value">
-                                        @item.ContractCode
-                                    </div>
+                                <div class="delete-modal-card-label">
+                                    شماره قرارداد
                                 </div>
 
-
-                                <div class="delete-modal-card delete-card-purple">
-                                    <div class="delete-modal-card-label">
-                                        عنوان قرارداد
-                                    </div>
-
-                                    <div class="delete-modal-card-value">
-                                        @item.Title
-                                    </div>
-                                </div>
-
-
-                                <div class="delete-modal-card delete-card-green">
-                                    <div class="delete-modal-card-label">
-                                        کارفرما
-                                    </div>
-
-                                    <div class="delete-modal-card-value">
-                                        @item.Employer
-                                    </div>
-                                </div>
-
-
-                                <div class="delete-modal-card delete-card-orange">
-                                    <div class="delete-modal-card-label">
-                                        مبلغ قرارداد
-                                    </div>
-
-                                    <div class="delete-modal-card-value">
-                                        @item.Amount.ToString("N0")
-                                    </div>
+                                <div class="delete-modal-card-value">
+                                    @item.ContractNo
                                 </div>
 
                             </div>
 
-                        </div>
+                            <div class="delete-modal-card delete-card-purple">
 
-                        <div class="modal-footer border-0">
+                                <div class="delete-modal-card-label">
+                                    موضوع قرارداد
+                                </div>
 
-                            <form asp-action="Delete"
-                                asp-route-id="@item.Id"
-                                method="post">
+                                <div class="delete-modal-card-value">
+                                    @item.Topic
+                                </div>
 
-                                @Html.AntiForgeryToken()
+                            </div>
 
-                                <button type="submit"
-                                        class="btn btn-danger">
-                                    بله، حذف شود
-                                </button>
+                            <div class="delete-modal-card delete-card-green">
 
-                            </form>
+                                <div class="delete-modal-card-label">
+                                    کارفرما
+                                </div>
 
-                            <button type="button"
-                                    class="btn btn-outline-secondary"
-                                    data-bs-dismiss="modal">
-                                انصراف
-                            </button>
+                                <div class="delete-modal-card-value">
+                                    @item.PrincipalName
+                                </div>
+
+                            </div>
+
+                            <div class="delete-modal-card delete-card-orange">
+
+                                <div class="delete-modal-card-label">
+                                    مبلغ قرارداد
+                                </div>
+
+                                <div class="delete-modal-card-value">
+                                    @ShowMoney(item.Price)
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
+
+                    <div class="modal-footer border-0">
+
+                        <form asp-action="Delete"
+                              asp-route-id="@item.Id"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                بله، حذف شود
+                            </button>
+
+                        </form>
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+                            انصراف
+                        </button>
+
+                    </div>
+
                 </div>
 
             </div>
-        }
 
-    </div>
+        </div>
+    }
 
 </div>

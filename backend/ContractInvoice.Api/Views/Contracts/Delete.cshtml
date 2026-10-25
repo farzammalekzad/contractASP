@@ -34,28 +34,28 @@
             <div class="delete-item">
                 <div class="delete-item-label">کد قرارداد</div>
                 <div class="delete-item-value">
-                    @Model.ContractCode
+                    @Model.ContractNo
                 </div>
             </div>
 
             <div class="delete-item">
                 <div class="delete-item-label">عنوان قرارداد</div>
                 <div class="delete-item-value">
-                    @Model.Title
+                    @Model.Topic
                 </div>
             </div>
 
             <div class="delete-item">
                 <div class="delete-item-label">کارفرما</div>
                 <div class="delete-item-value">
-                    @Model.Employer
+                    @Model.PrincipalName
                 </div>
             </div>
 
             <div class="delete-item">
                 <div class="delete-item-label">مبلغ قرارداد</div>
                 <div class="delete-item-value">
-                    @Model.Amount.ToString("N0")
+                    @(Model.Price?.ToString("N0") ?? "—")
                 </div>
             </div>
 

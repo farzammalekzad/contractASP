@@ -19,22 +19,35 @@ public class ContractService
 
     public Contract Add(Contract contract)
     {
-        var exist = _context.Contracts.Any(c => c.ContractCode == contract.ContractCode);
-        if (exist)
+        // 1. Validate contract information
+        ValidateContract(contract);
+
+        // 2. Check duplicate contract number
+        var exists = _context.Contracts
+            .Any(c => c.ContractNo == contract.ContractNo);
+
+        if (exists)
         {
-            throw new ArgumentException("Contract Code already exists.");
+            throw new ArgumentException(
+                "شماره قرارداد قبلاً ثبت شده است.");
         }
 
+        // 3. Set Active based on Status
+        contract.Active = contract.Status == "جاری";
+
+        // 4. Save contract
         _context.Contracts.Add(contract);
+
         try
         {
             _context.SaveChanges();
         }
         catch (DbUpdateException)
         {
-            throw new ArgumentException("Unable to save the contract. Please try again.");
+            throw new ArgumentException(
+                "خطا در ذخیره قرارداد. لطفاً اطلاعات را بررسی کنید.");
         }
-        
+
         return contract;
     }
 
@@ -43,33 +56,83 @@ public class ContractService
         return _context.Contracts.Find(id);
     }
 
-    public Contract? Update(int id, Contract updatedContract)
+   public Contract? Update(int id, Contract updatedContract)
     {
+        // Find existing contract
         var existingContract = _context.Contracts.Find(id);
-        if(existingContract == null)
+
+        if (existingContract == null)
         {
             return null;
         }
-        var duplicateExists = _context.Contracts.Any(c => c.ContractCode == updatedContract.ContractCode && c.Id != id);
-        if (duplicateExists)
+
+        // Contract number cannot be changed
+        if (existingContract.ContractNo != updatedContract.ContractNo)
         {
-            throw new ArgumentException("Contract code already exists.");
+            throw new ArgumentException(
+                "شماره قرارداد پس از ثبت قابل تغییر نیست.");
         }
-        
-        existingContract.ContractCode = updatedContract.ContractCode;
-        existingContract.Title = updatedContract.Title;
-        existingContract.ContractType = updatedContract.ContractType;
+
+        // Validate contract information
+        ValidateContract(updatedContract);
+
+        // Prevent changing a referenced revenue contract's type
+        if (existingContract.Type == "درآمدی" &&
+            updatedContract.Type != "درآمدی")
+        {
+            bool hasRelatedContracts = _context.Contracts.Any(c =>
+                c.ContractNoRelation == existingContract.ContractNo &&
+                c.Id != id);
+
+            if (hasRelatedContracts)
+            {
+                throw new ArgumentException(
+                    "نوع این قرارداد قابل تغییر نیست؛ زیرا قراردادهای هزینه‌ای به آن مرتبط هستند.");
+            }
+        }
+
+        // Update contract information
+        existingContract.Topic = updatedContract.Topic;
         existingContract.ProjectCode = updatedContract.ProjectCode;
-        existingContract.Employer = updatedContract.Employer;
-        existingContract.ProjectManager = updatedContract.ProjectManager;
-        existingContract.ProjectSponsor = updatedContract.ProjectSponsor;
-        existingContract.Amount = updatedContract.Amount;
-        existingContract.AdvancePaymentAmount = updatedContract.AdvancePaymentAmount;
-        existingContract.NotificationLetterNo = updatedContract.NotificationLetterNo;
-        existingContract.NotificationLetterDate = updatedContract.NotificationLetterDate;
-        existingContract.ContractStartDate = updatedContract.ContractStartDate;
-        existingContract.ContractEndDate = updatedContract.ContractEndDate;
-        existingContract.RelatedRevenueContractCode = updatedContract.RelatedRevenueContractCode;
+        existingContract.Price = updatedContract.Price;
+
+        existingContract.StartDate = updatedContract.StartDate;
+        existingContract.EndDate = updatedContract.EndDate;
+
+        existingContract.ProjectManagerPersonelCode =
+            updatedContract.ProjectManagerPersonelCode;
+
+        existingContract.ContractYear = updatedContract.ContractYear;
+        existingContract.Status = updatedContract.Status;
+
+        existingContract.SponsorPersonelCode =
+            updatedContract.SponsorPersonelCode;
+
+        existingContract.PrincipalName = updatedContract.PrincipalName;
+
+        existingContract.EblaghLetterNo =
+            updatedContract.EblaghLetterNo;
+
+        existingContract.EblaghLetterDate =
+            updatedContract.EblaghLetterDate;
+
+        existingContract.Type = updatedContract.Type;
+
+        existingContract.ContractNoRelation =
+            updatedContract.ContractNoRelation;
+
+        existingContract.OutSourcePrice =
+            updatedContract.OutSourcePrice;
+
+        existingContract.LogSavePersonalCode =
+            updatedContract.LogSavePersonalCode;
+
+        existingContract.AdvancePaymentAmount =
+            updatedContract.AdvancePaymentAmount;
+
+        // Automatically update Active based on Status
+        existingContract.Active =
+            updatedContract.Status == "جاری";
 
         try
         {
@@ -77,7 +140,8 @@ public class ContractService
         }
         catch (DbUpdateException)
         {
-            throw new ArgumentException("Unable to update the contract. Please try again.");
+            throw new ArgumentException(
+                "خطا در ویرایش قرارداد. لطفاً اطلاعات را بررسی کنید.");
         }
 
         return existingContract;
@@ -86,23 +150,78 @@ public class ContractService
     public bool DeleteById(int id)
     {
         var contract = _context.Contracts.Find(id);
-        
-        if(contract == null)
+
+        if (contract == null)
         {
             return false;
         }
-        
-        var hasProgressPayments = _context.ProgressPayments.Any(p => p.ContractId == id);
+
+        // Check if the contract has progress payments
+        var hasProgressPayments = _context.ProgressPayments
+            .Any(p => p.ContractId == id);
 
         if (hasProgressPayments)
         {
-            throw new InvalidOperationException("این قرارداد دارای صورت وضعیت است و قابل حذف نیست");
+            throw new InvalidOperationException(
+                "این قرارداد دارای صورت وضعیت است و قابل حذف نیست.");
         }
 
+        // Check if other contracts reference this contract
+        var hasRelatedContracts = _context.Contracts
+            .Any(c =>
+                c.ContractNoRelation == contract.ContractNo &&
+                c.Id != id);
+
+        if (hasRelatedContracts)
+        {
+            throw new InvalidOperationException(
+                "این قرارداد به قراردادهای دیگری مرتبط است و قابل حذف نیست.");
+        }
+
+        // Delete contract
         _context.Contracts.Remove(contract);
         _context.SaveChanges();
 
         return true;
+    }
 
+    private void ValidateContract(Contract contract)
+    {
+        if (string.IsNullOrWhiteSpace(contract.ContractNo))
+            throw new ArgumentException("شماره قرارداد الزامی است.");
+
+        if (string.IsNullOrWhiteSpace(contract.Topic))
+            throw new ArgumentException("موضوع قرارداد الزامی است.");
+
+        string[] allowedTypes =
+        {
+            "درآمدی", "هزینه‌ای", "داخلی"
+        };
+
+        if (!allowedTypes.Contains(contract.Type))
+            throw new ArgumentException("نوع قرارداد نامعتبر است.");
+
+        string[] allowedStatuses =
+        {
+            "جاری", "خاتمه یافته", "فسخ شده"
+        };
+
+        if (!allowedStatuses.Contains(contract.Status))
+            throw new ArgumentException("وضعیت قرارداد نامعتبر است.");
+
+        if (!string.IsNullOrWhiteSpace(contract.ContractNoRelation))
+        {
+            if (contract.Type != "هزینه‌ای")
+                throw new ArgumentException(
+                    "فقط قرارداد هزینه‌ای می‌تواند قرارداد درآمدی مرتبط داشته باشد.");
+
+            bool exists = _context.Contracts.Any(c =>
+                c.ContractNo == contract.ContractNoRelation &&
+                c.Type == "درآمدی");
+
+            if (!exists)
+                throw new ArgumentException(
+                    "قرارداد درآمدی مرتبط یافت نشد.");
+        }
     }
 };

@@ -143,7 +143,7 @@ public class ProgressPaymentsController : Controller
     }
 
     private void PopulateContracts(int? selectedContractId) => ViewBag.Contracts = new SelectList(
-        _contractService.GetAll().OrderBy(c => c.ContractCode).Select(c => new { c.Id, Name = $"{c.ContractCode} - {c.Title}" }),
+        _contractService.GetAll().OrderBy(c => c.ContractNo).Select(c => new { c.Id, Name = $"{c.ContractNo} - {c.Topic}" }),
         "Id", "Name", selectedContractId);
 
     private static ProgressPayment ToEntity(CreateProgressPaymentDto dto) => new()

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContractInvoice.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261015181211_AddPayments")]
-    partial class AddPayments
+    [Migration("20261025191908_InitialContractInvoiceSchema")]
+    partial class InitialContractInvoiceSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,57 +31,77 @@ namespace ContractInvoice.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<decimal?>("AdvancePaymentAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ContractCode")
+                    b.Property<string>("ContractNo")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("ContractEndDate")
+                    b.Property<string>("ContractNoRelation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContractStartDate")
+                    b.Property<string>("ContractYear")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContractType")
+                    b.Property<string>("EblaghLetterDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EblaghLetterNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogSavePersonalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("OutSourcePrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PrincipalName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Employer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationLetterDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationLetterNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectManager")
+                    b.Property<string>("ProjectManagerPersonelCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectSponsor")
+                    b.Property<string>("SponsorPersonelCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RelatedRevenueContractCode")
+                    b.Property<string>("StartDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Status")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Topic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractCode")
+                    b.HasIndex("ContractNo")
                         .IsUnique();
 
                     b.ToTable("Contracts");

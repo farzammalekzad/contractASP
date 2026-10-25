@@ -11,7 +11,7 @@
             <h1 class="page-title">جزئیات پرداخت</h1>
 
             <p class="page-subtitle">
-                @Model.ProgressPayment.Contract.ContractCode
+                @Model.ProgressPayment.Contract.ContractNo
                 -
                 صورت وضعیت شماره @Model.ProgressPayment.PaymentNo
             </p>
@@ -24,14 +24,14 @@
         <div class="field-card card-blue">
             <div class="field-label">کد قرارداد</div>
             <div class="field-value">
-                @Model.ProgressPayment.Contract.ContractCode
+                @Model.ProgressPayment.Contract.ContractNo
             </div>
         </div>
 
         <div class="field-card card-purple">
             <div class="field-label">عنوان قرارداد</div>
             <div class="field-value">
-                @Model.ProgressPayment.Contract.Title
+                @Model.ProgressPayment.Contract.Topic
             </div>
         </div>
 
