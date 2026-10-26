@@ -20,10 +20,13 @@ public class ContractsController : Controller
 
     // CREATE - GET
     [HttpGet]
+    [HttpGet]
     public IActionResult Create()
     {
+        LoadRelatedContracts();
         return View(new CreateContractDto());
     }
+    
 
     // CREATE - POST
     [HttpPost]
@@ -107,7 +110,7 @@ public class ContractsController : Controller
             AdvancePaymentAmount =
                 contract.AdvancePaymentAmount
         };
-
+        LoadRelatedContracts(dto.ContractNoRelation);
         return View(dto);
     }
 
@@ -120,6 +123,7 @@ public class ContractsController : Controller
 
         if (!ModelState.IsValid)
         {
+            LoadRelatedContracts(dto.ContractNoRelation);
             return View(dto);
         }
 
@@ -144,7 +148,8 @@ public class ContractsController : Controller
         {
             ModelState.AddModelError(
                 string.Empty, ex.Message);
-
+            
+            LoadRelatedContracts(dto.ContractNoRelation);
             return View(dto);
         }
     }
@@ -183,6 +188,23 @@ public class ContractsController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    private void LoadRelatedContracts(string? selectedContractNo = null)
+    {
+        ViewBag.RelatedContracts = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _contractService.GetAll()
+                .Where(c => c.Type == "درآمدی" || c.Type == "داخلی")
+                .OrderBy(c => c.ContractNo)
+                .Select(c => new
+                {
+                    c.ContractNo,
+                    DisplayText = c.ContractNo + " - " + c.Topic
+                }),
+            "ContractNo",
+            "DisplayText",
+            selectedContractNo
+        );
     }
 
     // SHARED MAPPING METHOD

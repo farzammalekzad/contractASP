@@ -125,17 +125,23 @@
                           class="text-danger"></span>
                 </div>
 
-                <div class="form-field">
-                    <label asp-for="ContractNoRelation"
-                           class="form-label">
-                        شماره قرارداد درآمدی مرتبط
+                <div class="form-field" id="relatedContractField">
+                    <label asp-for="ContractNoRelation" class="form-label">
+                        قرارداد مرتبط
                     </label>
-                    <input asp-for="ContractNoRelation"
-                           class="form-control" />
+
+                    <select asp-for="ContractNoRelation"
+                            asp-items="ViewBag.RelatedContracts"
+                            class="form-select"
+                            id="ContractNoRelation">
+                        <option value="">-- انتخاب قرارداد مرتبط --</option>
+                    </select>
+
                     <span asp-validation-for="ContractNoRelation"
-                          class="text-danger"></span>
+                        class="text-danger"></span>
+
                     <small class="text-muted">
-                        برای قراردادهای هزینه‌ای در صورت وجود ارتباط تکمیل شود.
+                        فقط قراردادهای درآمدی و داخلی قابل انتخاب هستند.
                     </small>
                 </div>
 
@@ -273,4 +279,30 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const typeSelect = document.getElementById("Type");
+            const relatedField = document.getElementById("relatedContractField");
+            const relatedSelect = document.getElementById("ContractNoRelation");
+
+            function toggleRelatedContract() {
+                const type = typeSelect.value;
+                const shouldShow =
+                    type === "هزینه‌ای";
+
+                relatedField.style.display = shouldShow ? "" : "none";
+
+                if (!shouldShow) {
+                    relatedSelect.value = "";
+                }
+            }
+
+            typeSelect.addEventListener("change", toggleRelatedContract);
+            toggleRelatedContract();
+        });
+    </script>
 }
+
+
+    

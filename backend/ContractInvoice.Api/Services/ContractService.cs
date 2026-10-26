@@ -212,16 +212,21 @@ public class ContractService
         if (!string.IsNullOrWhiteSpace(contract.ContractNoRelation))
         {
             if (contract.Type != "هزینه‌ای")
+            {
                 throw new ArgumentException(
-                    "فقط قرارداد هزینه‌ای می‌تواند قرارداد درآمدی مرتبط داشته باشد.");
+                    "فقط قرارداد هزینه‌ای می‌تواند قرارداد مرتبط داشته باشد.");
+            }
 
             bool exists = _context.Contracts.Any(c =>
                 c.ContractNo == contract.ContractNoRelation &&
-                c.Type == "درآمدی");
+                (c.Type == "درآمدی" || c.Type == "داخلی") &&
+                c.ContractNo != contract.ContractNo);
 
             if (!exists)
+            {
                 throw new ArgumentException(
-                    "قرارداد درآمدی مرتبط یافت نشد.");
+                    "قرارداد مرتبط یافت نشد یا نوع آن مجاز نیست.");
+            }
         }
     }
 };
