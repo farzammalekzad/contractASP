@@ -53,7 +53,9 @@ public class ContractService
 
     public Contract? GetById(int id)
     {
-        return _context.Contracts.Find(id);
+        return _context.Contracts
+            .Include(c => c.Attachments)
+            .FirstOrDefault(c => c.Id == id);
     }
 
    public Contract? Update(int id, Contract updatedContract)

@@ -28,4 +28,6 @@ public class Contract
   public decimal? OutSourcePrice {get; set;}
   public string? LogSavePersonalCode {get; set;}
   public ICollection<ProgressPayment> ProgressPayments { get; set; } = new List<ProgressPayment>();
+  public ICollection<ContractAttachment> Attachments { get; set; }
+    = new List<ContractAttachment>();
 }

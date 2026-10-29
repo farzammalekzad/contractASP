@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<ProgressPayment> ProgressPayments { get; set;}
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Principal> Principals { get; set; }
+    public DbSet<ContractAttachment> ContractAttachments { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Contract>(entity =>
@@ -87,5 +88,27 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Payment>()
             .Property(p => p.Description)
             .HasMaxLength(500);
+        modelBuilder.Entity<ContractAttachment>(entity =>
+        {
+            entity.Property(a => a.FileName)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity.Property(a => a.StoredFileName)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity.Property(a => a.DocumentType)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity.Property(a => a.ContentType)
+                .HasMaxLength(100);
+
+            entity.HasOne(a => a.Contract)
+                .WithMany(c => c.Attachments)
+                .HasForeignKey(a => a.ContractId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }  
 }

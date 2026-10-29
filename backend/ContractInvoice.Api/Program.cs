@@ -8,6 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<PrincipalService>();
+builder.Services.AddScoped<ContractAttachmentStorageService>();
 builder.Services.AddScoped<ContractService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProgressPaymentService, ProgressPaymentService>();
