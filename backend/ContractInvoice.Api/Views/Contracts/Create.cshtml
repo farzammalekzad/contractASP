@@ -95,12 +95,18 @@
                 </div>
 
                 <div class="form-field">
-                    <label asp-for="PrincipalName" class="form-label">
-                        نام کارفرما
+                    <label asp-for="PrincipalId" class="form-label">
+                        کارفرما
                     </label>
-                    <input asp-for="PrincipalName" class="form-control" />
-                    <span asp-validation-for="PrincipalName"
-                          class="text-danger"></span>
+
+                    <select asp-for="PrincipalId"
+                            asp-items="ViewBag.Principals"
+                            class="form-select">
+                        <option value="">-- انتخاب کارفرما --</option>
+                    </select>
+
+                    <span asp-validation-for="PrincipalId"
+                        class="text-danger"></span>
                 </div>
 
                 <div class="form-field">

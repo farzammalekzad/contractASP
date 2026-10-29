@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<Contract> Contracts {get; set;}
     public DbSet<ProgressPayment> ProgressPayments { get; set;}
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<Principal> Principals { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Contract>(entity =>
@@ -36,6 +37,12 @@ public class AppDbContext : DbContext
             
             entity.Property(c => c.AdvancePaymentAmount)
                 .HasPrecision(18,2);
+            
+            entity.HasOne(c => c.Principal)
+                .WithMany(p => p.Contracts)
+                .HasForeignKey(c => c.PrincipalId)
+                .OnDelete(DeleteBehavior.Restrict);
+              
         });
        
         modelBuilder.Entity<ProgressPayment>(entity =>

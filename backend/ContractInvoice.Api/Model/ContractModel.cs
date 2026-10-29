@@ -18,6 +18,8 @@ public class Contract
   public string? Status {get; set;}
   public string? SponsorPersonelCode {get; set;}
   public string PrincipalName {get; set;} = string.Empty;
+  public int PrincipalId { get; set; }
+  public Principal Principal { get; set; } = null!;
   public string? EblaghLetterNo {get; set;}
   public string? EblaghLetterDate {get; set;}
   [MaxLength(20)]

@@ -108,6 +108,7 @@ public class ContractService
         existingContract.SponsorPersonelCode =
             updatedContract.SponsorPersonelCode;
 
+        existingContract.PrincipalId = updatedContract.PrincipalId;
         existingContract.PrincipalName = updatedContract.PrincipalName;
 
         existingContract.EblaghLetterNo =
@@ -189,6 +190,20 @@ public class ContractService
     {
         if (string.IsNullOrWhiteSpace(contract.ContractNo))
             throw new ArgumentException("شماره قرارداد الزامی است.");
+            if (contract.PrincipalId <= 0)
+                throw new ArgumentException("انتخاب کارفرما الزامی است.");
+
+            bool principalExists = _context.Principals.Any(p =>
+                p.Id == contract.PrincipalId && p.Active);
+
+            if (!principalExists)
+                throw new ArgumentException(
+                    "کارفرمای انتخاب‌شده معتبر نیست یا غیرفعال شده است.");
+                    
+            contract.PrincipalName = _context.Principals
+            .Where(p => p.Id == contract.PrincipalId)
+            .Select(p => p.Name)
+            .Single();
 
         if (string.IsNullOrWhiteSpace(contract.Topic))
             throw new ArgumentException("موضوع قرارداد الزامی است.");
@@ -228,5 +243,12 @@ public class ContractService
                     "قرارداد مرتبط یافت نشد یا نوع آن مجاز نیست.");
             }
         }
+    }
+
+    public List<Contract> GetAllWithPrincipal()
+    {
+        return _context.Contracts
+            .Include(c => c.Principal)
+            .ToList();
     }
 };

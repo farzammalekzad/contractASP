@@ -32,6 +32,8 @@ public class ContractFieldsDto
 
     public string? SponsorPersonelCode { get; set; }
 
+    public int? PrincipalId { get; set; }
+
     public string? PrincipalName { get; set; }
 
     public string? EblaghLetterNo { get; set; }

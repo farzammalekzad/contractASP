@@ -6,24 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 public class ContractsController : Controller
 {
     private readonly ContractService _contractService;
+    private readonly PrincipalService _principalService;
 
-    public ContractsController(ContractService contractService)
+    public ContractsController(
+        ContractService contractService,
+        PrincipalService principalService)
     {
         _contractService = contractService;
+        _principalService = principalService;
     }
 
     // INDEX
     public IActionResult Index()
     {
-        return View(_contractService.GetAll());
+        return View(_contractService.GetAllWithPrincipal());
     }
 
     // CREATE - GET
-    [HttpGet]
+    
     [HttpGet]
     public IActionResult Create()
     {
         LoadRelatedContracts();
+        LoadPrincipals();
         return View(new CreateContractDto());
     }
     
@@ -35,6 +40,8 @@ public class ContractsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
 
@@ -53,7 +60,8 @@ public class ContractsController : Controller
         {
             ModelState.AddModelError(
                 string.Empty, ex.Message);
-
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
     }
@@ -99,6 +107,7 @@ public class ContractsController : Controller
             SponsorPersonelCode =
                 contract.SponsorPersonelCode,
             PrincipalName = contract.PrincipalName,
+            PrincipalId = contract.PrincipalId,
             EblaghLetterNo = contract.EblaghLetterNo,
             EblaghLetterDate = contract.EblaghLetterDate,
             Type = contract.Type,
@@ -111,6 +120,7 @@ public class ContractsController : Controller
                 contract.AdvancePaymentAmount
         };
         LoadRelatedContracts(dto.ContractNoRelation);
+        LoadPrincipals(dto.PrincipalId);
         return View(dto);
     }
 
@@ -124,6 +134,7 @@ public class ContractsController : Controller
         if (!ModelState.IsValid)
         {
             LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
 
@@ -150,6 +161,7 @@ public class ContractsController : Controller
                 string.Empty, ex.Message);
             
             LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
     }
@@ -207,6 +219,18 @@ public class ContractsController : Controller
         );
     }
 
+    private void LoadPrincipals(int? selectedPrincipalId = null)
+    {
+        ViewBag.Principals = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _principalService.GetAll()
+                .Where(p => p.Active)
+                .OrderBy(p => p.Name),
+            "Id",
+            "Name",
+            selectedPrincipalId
+        );
+    }
+
     // SHARED MAPPING METHOD
     private static Contract MapToContract(
         ContractFieldsDto dto)
@@ -225,6 +249,7 @@ public class ContractsController : Controller
             Status = dto.Status,
             SponsorPersonelCode =
                 dto.SponsorPersonelCode,
+            PrincipalId = dto.PrincipalId ?? 0,
             PrincipalName = dto.PrincipalName,
             EblaghLetterNo = dto.EblaghLetterNo,
             EblaghLetterDate = dto.EblaghLetterDate,

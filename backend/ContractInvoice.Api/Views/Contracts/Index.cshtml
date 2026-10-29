@@ -147,9 +147,7 @@
                             </td>
 
                             <td>
-                                @(string.IsNullOrWhiteSpace(item.PrincipalName)
-                                    ? "—"
-                                    : item.PrincipalName)
+                                @(item.Principal?.Name ?? "—")
                             </td>
 
                             <td>
@@ -252,7 +250,7 @@
                                 </div>
 
                                 <div class="delete-modal-card-value">
-                                    @item.PrincipalName
+                                    @(item.Principal?.Name ?? "—")
                                 </div>
 
                             </div>
