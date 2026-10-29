@@ -155,5 +155,92 @@
         </a>
 
     </div>
+    <div class="form-section" style="margin-top: 30px;">
+        <h3 class="section-title">پیوست‌های قرارداد</h3>
+
+        <form asp-controller="ContractAttachments"
+            asp-action="Upload"
+            method="post"
+            enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="contractId" value="@Model.Id" />
+
+            <div class="form-field">
+                <label class="form-label" for="documentType">نوع مدرک</label>
+                <select id="documentType"
+                        name="documentType"
+                        class="form-select"
+                        required>
+                    <option value="">-- انتخاب نوع مدرک --</option>
+                    <option value="قرارداد اصلی">قرارداد اصلی</option>
+                    <option value="الحاقیه">الحاقیه</option>
+                    <option value="تمدید">تمدید</option>
+                    <option value="ضمانت‌نامه">ضمانت‌نامه</option>
+                    <option value="سایر مدارک">سایر مدارک</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="file">انتخاب فایل</label>
+                <input type="file"
+                    id="file"
+                    name="file"
+                    class="form-control"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                    required />
+                <small>حداکثر حجم هر فایل: ۲۰ مگابایت</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    بارگذاری پیوست
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="form-section">
+        <h3 class="section-title">فهرست پیوست‌های قرارداد</h3>
+
+        @if (Model.Attachments != null && Model.Attachments.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>نام فایل</th>
+                        <th>نوع مدرک</th>
+                        <th>حجم فایل</th>
+                        <th>تاریخ بارگذاری</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        <tr>
+                            <td>@attachment.FileName</td>
+                            <td>@attachment.DocumentType</td>
+                            <td>@((attachment.FileSize / 1024.0 / 1024.0).ToString("F2")) مگابایت</td>
+                            <td>@attachment.UploadedAt.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                            <td>
+                                <a asp-controller="ContractAttachments"
+                                asp-action="Download"
+                                asp-route-id="@attachment.Id"
+                                class="btn btn-primary">
+                                    دانلود
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>هنوز پیوستی برای این قرارداد ثبت نشده است.</p>
+        }
+    </div>
+
 
 </div>
