@@ -10,7 +10,7 @@
         <div>
             <h1 class="page-title">ثبت قرارداد جدید</h1>
             <p class="page-subtitle">
-                اطلاعات اصلی قرارداد را وارد کنید
+                اطلاعات قرارداد را وارد کنید
             </p>
         </div>
     </div>
@@ -18,156 +18,198 @@
     <form asp-action="Create" method="post">
 
         <div asp-validation-summary="ModelOnly"
-             class="alert alert-danger">
-        </div>
+             class="alert alert-danger"></div>
 
-
+        <!-- اطلاعات پایه -->
         <div class="form-section">
 
             <div class="form-section-title">
-                اطلاعات پایه
+                اطلاعات پایه قرارداد
             </div>
 
             <div class="form-grid">
 
                 <div class="form-field">
-                    <label asp-for="ContractCode"
-                           class="form-label"></label>
-
-                    <input asp-for="ContractCode"
-                           class="form-control" />
-
-                    <span asp-validation-for="ContractCode"
+                    <label asp-for="ContractNo" class="form-label">
+                        شماره قرارداد
+                    </label>
+                    <input asp-for="ContractNo" class="form-control" />
+                    <span asp-validation-for="ContractNo"
                           class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="Title"
-                           class="form-label"></label>
-
-                    <input asp-for="Title"
-                           class="form-control" />
-
-                    <span asp-validation-for="Title"
+                    <label asp-for="Topic" class="form-label">
+                        موضوع قرارداد
+                    </label>
+                    <input asp-for="Topic" class="form-control" />
+                    <span asp-validation-for="Topic"
                           class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="ContractType"
-                           class="form-label"></label>
-
-                    <select asp-for="ContractType"
-                            class="form-select">
-
-                        <option value="">
-                            -- انتخاب نوع قرارداد --
-                        </option>
-
-                        <option value="INCOME">
-                            درآمدی
-                        </option>
-
-                        <option value="EXPENSE">
-                            هزینه‌ای
-                        </option>
-
-                    </select>
-
-                    <span asp-validation-for="ContractType"
-                          class="text-danger"></span>
-                </div>
-
-
-                <div class="form-field">
-                    <label asp-for="ProjectCode"
-                           class="form-label"></label>
-
-                    <input asp-for="ProjectCode"
-                           class="form-control" />
-
+                    <label asp-for="ProjectCode" class="form-label">
+                        کد پروژه
+                    </label>
+                    <input asp-for="ProjectCode" class="form-control" />
                     <span asp-validation-for="ProjectCode"
                           class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="Employer"
-                           class="form-label"></label>
-
-                    <input asp-for="Employer"
-                           class="form-control" />
+                    <label asp-for="ContractYear" class="form-label">
+                        سال قرارداد
+                    </label>
+                    <input asp-for="ContractYear"
+                           class="form-control"
+                           placeholder="1405" />
+                    <span asp-validation-for="ContractYear"
+                          class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="ProjectManager"
-                           class="form-label"></label>
-
-                    <input asp-for="ProjectManager"
-                           class="form-control" />
+                    <label asp-for="Type" class="form-label">
+                        نوع قرارداد
+                    </label>
+                    <select asp-for="Type" class="form-select">
+                        <option value="">-- انتخاب نوع قرارداد --</option>
+                        <option value="درآمدی">درآمدی</option>
+                        <option value="هزینه‌ای">هزینه‌ای</option>
+                        <option value="داخلی">داخلی</option>
+                    </select>
+                    <span asp-validation-for="Type"
+                          class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="ProjectSponsor"
-                           class="form-label"></label>
-
-                    <input asp-for="ProjectSponsor"
-                           class="form-control" />
+                    <label asp-for="Status" class="form-label">
+                        وضعیت قرارداد
+                    </label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="جاری">جاری</option>
+                        <option value="خاتمه یافته">خاتمه یافته</option>
+                        <option value="فسخ شده">فسخ شده</option>
+                    </select>
+                    <span asp-validation-for="Status"
+                          class="text-danger"></span>
                 </div>
 
+                <div class="form-field">
+                    <label asp-for="PrincipalId" class="form-label">
+                        کارفرما
+                    </label>
+
+                    <select asp-for="PrincipalId"
+                            asp-items="ViewBag.Principals"
+                            class="form-select">
+                        <option value="">-- انتخاب کارفرما --</option>
+                    </select>
+
+                    <span asp-validation-for="PrincipalId"
+                        class="text-danger"></span>
+                </div>
 
                 <div class="form-field">
-                    <label asp-for="RelatedRevenueContractCode"
-                           class="form-label"></label>
-
-                    <input asp-for="RelatedRevenueContractCode"
+                    <label asp-for="ProjectManagerPersonelCode"
+                           class="form-label">
+                        کد پرسنلی مدیر پروژه
+                    </label>
+                    <input asp-for="ProjectManagerPersonelCode"
                            class="form-control" />
+                    <span asp-validation-for="ProjectManagerPersonelCode"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="SponsorPersonelCode"
+                           class="form-label">
+                        کد پرسنلی حامی پروژه
+                    </label>
+                    <input asp-for="SponsorPersonelCode"
+                           class="form-control" />
+                    <span asp-validation-for="SponsorPersonelCode"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field" id="relatedContractField">
+                    <label asp-for="ContractNoRelation" class="form-label">
+                        قرارداد مرتبط
+                    </label>
+
+                    <select asp-for="ContractNoRelation"
+                            asp-items="ViewBag.RelatedContracts"
+                            class="form-select"
+                            id="ContractNoRelation">
+                        <option value="">-- انتخاب قرارداد مرتبط --</option>
+                    </select>
+
+                    <span asp-validation-for="ContractNoRelation"
+                        class="text-danger"></span>
+
+                    <small class="text-muted">
+                        فقط قراردادهای درآمدی و داخلی قابل انتخاب هستند.
+                    </small>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="LogSavePersonalCode"
+                           class="form-label">
+                        کد پرسنلی ثبت‌کننده
+                    </label>
+                    <input asp-for="LogSavePersonalCode"
+                           class="form-control" />
+                    <span asp-validation-for="LogSavePersonalCode"
+                          class="text-danger"></span>
                 </div>
 
             </div>
-
         </div>
 
-
+        <!-- اطلاعات مالی -->
         <div class="form-section">
 
             <div class="form-section-title">
-                اطلاعات مالی
+                اطلاعات مالی قرارداد
             </div>
 
             <div class="form-grid">
 
                 <div class="form-field">
-                    <label asp-for="Amount"
-                           class="form-label"></label>
-
-                    <input asp-for="Amount"
+                    <label asp-for="Price" class="form-label">
+                        مبلغ قرارداد
+                    </label>
+                    <input asp-for="Price"
                            class="form-control" />
-
-                    <span asp-validation-for="Amount"
+                    <span asp-validation-for="Price"
                           class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
                     <label asp-for="AdvancePaymentAmount"
-                           class="form-label"></label>
-
+                           class="form-label">
+                        مبلغ پیش‌پرداخت
+                    </label>
                     <input asp-for="AdvancePaymentAmount"
                            class="form-control" />
-
                     <span asp-validation-for="AdvancePaymentAmount"
                           class="text-danger"></span>
                 </div>
 
-            </div>
+                <div class="form-field">
+                    <label asp-for="OutSourcePrice"
+                           class="form-label">
+                        مبلغ برون‌سپاری
+                    </label>
+                    <input asp-for="OutSourcePrice"
+                           class="form-control" />
+                    <span asp-validation-for="OutSourcePrice"
+                          class="text-danger"></span>
+                </div>
 
+            </div>
         </div>
 
-
+        <!-- اطلاعات زمانی و ابلاغ -->
         <div class="form-section">
 
             <div class="form-section-title">
@@ -177,48 +219,52 @@
             <div class="form-grid">
 
                 <div class="form-field">
-                    <label asp-for="NotificationLetterNo"
-                           class="form-label"></label>
+                    <label asp-for="StartDate" class="form-label">
+                        تاریخ شروع قرارداد
+                    </label>
+                    <input asp-for="StartDate"
+                           class="form-control"
+                           placeholder="1405/01/01" />
+                    <span asp-validation-for="StartDate"
+                          class="text-danger"></span>
+                </div>
 
-                    <input asp-for="NotificationLetterNo"
+                <div class="form-field">
+                    <label asp-for="EndDate" class="form-label">
+                        تاریخ پایان قرارداد
+                    </label>
+                    <input asp-for="EndDate"
+                           class="form-control"
+                           placeholder="1406/01/01" />
+                    <span asp-validation-for="EndDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="EblaghLetterNo" class="form-label">
+                        شماره نامه ابلاغ
+                    </label>
+                    <input asp-for="EblaghLetterNo"
                            class="form-control" />
+                    <span asp-validation-for="EblaghLetterNo"
+                          class="text-danger"></span>
                 </div>
 
-
                 <div class="form-field">
-                    <label asp-for="NotificationLetterDate"
-                           class="form-label"></label>
-
-                    <input asp-for="NotificationLetterDate"
+                    <label asp-for="EblaghLetterDate" class="form-label">
+                        تاریخ نامه ابلاغ
+                    </label>
+                    <input asp-for="EblaghLetterDate"
                            class="form-control"
-                           placeholder="1405/07/19" />
-                </div>
-
-
-                <div class="form-field">
-                    <label asp-for="ContractStartDate"
-                           class="form-label"></label>
-
-                    <input asp-for="ContractStartDate"
-                           class="form-control"
-                           placeholder="1405/07/19" />
-                </div>
-
-
-                <div class="form-field">
-                    <label asp-for="ContractEndDate"
-                           class="form-label"></label>
-
-                    <input asp-for="ContractEndDate"
-                           class="form-control"
-                           placeholder="1406/07/19" />
+                           placeholder="1405/01/01" />
+                    <span asp-validation-for="EblaghLetterDate"
+                          class="text-danger"></span>
                 </div>
 
             </div>
-
         </div>
 
-
+        <!-- عملیات فرم -->
         <div class="form-actions">
 
             <button type="submit"
@@ -239,4 +285,30 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const typeSelect = document.getElementById("Type");
+            const relatedField = document.getElementById("relatedContractField");
+            const relatedSelect = document.getElementById("ContractNoRelation");
+
+            function toggleRelatedContract() {
+                const type = typeSelect.value;
+                const shouldShow =
+                    type === "هزینه‌ای";
+
+                relatedField.style.display = shouldShow ? "" : "none";
+
+                if (!shouldShow) {
+                    relatedSelect.value = "";
+                }
+            }
+
+            typeSelect.addEventListener("change", toggleRelatedContract);
+            toggleRelatedContract();
+        });
+    </script>
 }
+
+
+    

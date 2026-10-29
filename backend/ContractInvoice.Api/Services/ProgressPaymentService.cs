@@ -15,7 +15,7 @@ public class ProgressPaymentService : IProgressPaymentService
 
     public List<ProgressPayment> GetAll() => _context.ProgressPayments
         .Include(p => p.Contract)
-        .OrderBy(p => p.Contract.ContractCode)
+        .OrderBy(p => p.Contract.ContractNo)
         .ThenBy(p => p.PaymentNo)
         .ToList();
 

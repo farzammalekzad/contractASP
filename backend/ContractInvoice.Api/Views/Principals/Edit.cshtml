@@ -1,0 +1,113 @@
+@model ContractInvoice.Api.Model.Principal
+
+@{
+    ViewData["Title"] = "ویرایش کارفرما";
+}
+
+<div class="page-container compact-form">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">ویرایش کارفرما</h1>
+            <p class="page-subtitle">
+                اطلاعات کارفرما را ویرایش کنید
+            </p>
+        </div>
+    </div>
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger"></div>
+
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات پایه کارفرما
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="Name" class="form-label">
+                        نام کارفرما
+                    </label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="PrincipalCode" class="form-label">
+                        کد کارفرما
+                    </label>
+                    <input asp-for="PrincipalCode" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="NationalId" class="form-label">
+                        شناسه ملی
+                    </label>
+                    <input asp-for="NationalId" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="EconomicCode" class="form-label">
+                        کد اقتصادی
+                    </label>
+                    <input asp-for="EconomicCode" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Phone" class="form-label">
+                        شماره تماس
+                    </label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Address" class="form-label">
+                        نشانی
+                    </label>
+                    <textarea asp-for="Address"
+                              class="form-control"
+                              rows="3"></textarea>
+                </div>
+
+                <div class="form-field">
+                    <div class="form-check">
+                        <input asp-for="Active"
+                               class="form-check-input" />
+                        <label asp-for="Active"
+                               class="form-check-label">
+                            کارفرمای فعال
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn btn-primary-modern">
+                ذخیره تغییرات
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-soft">
+                انصراف
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,7 +1,7 @@
 using ContractInvoice.Api.Model;
-using Microsoft.AspNetCore.Mvc;
 using ContractInvoice.Api.Services;
 using ContractInvoice.Api.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ContractInvoice.Api.Controller;
 
@@ -10,42 +10,25 @@ namespace ContractInvoice.Api.Controller;
 public class ContractController : ControllerBase
 {
     private readonly ContractService _contractService;
+
     public ContractController(ContractService contractService)
     {
         _contractService = contractService;
     }
-   
-    [HttpPost]
-    public IActionResult Post(CreateContractDto contract)
-    {
-        var newContract = new Contract
-        {
-          ContractCode = contract.ContractCode,
-          Title = contract.Title,
-          Amount = contract.Amount  
-        };
-        try
-        {
-           return Ok(_contractService.Add(newContract)); 
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        
-    }
 
+    // GET: api/Contract
     [HttpGet]
     public IActionResult Get()
     {
         return Ok(_contractService.GetAll());
     }
 
+    // GET: api/Contract/5
     [HttpGet("{id}")]
-    
     public IActionResult GetById(int id)
     {
         var contract = _contractService.GetById(id);
+
         if (contract == null)
         {
             return NotFound();
@@ -54,46 +37,126 @@ public class ContractController : ControllerBase
         return Ok(contract);
     }
 
-    [HttpPut("{id}")]
-
-    public IActionResult Update(int id, UpdateContractDto updatedContract)
+    // POST: api/Contract
+    [HttpPost]
+    public IActionResult Post([FromBody] CreateContractDto dto)
     {
-        var contractToUpdate = new Contract
+        if (!ModelState.IsValid)
         {
-            ContractCode = updatedContract.ContractCode,
-            Title = updatedContract.Title,
-            Amount = updatedContract.Amount
-        };
-        Contract? contract;
+            return BadRequest(ModelState);
+        }
+
         try
         {
-            contract = _contractService.Update(id, contractToUpdate);
+            var newContract = MapToContract(dto);
+
+            var result = _contractService.Add(newContract);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = result.Id },
+                result);
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
-        
-        if(contract == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(contract);
-
     }
 
-    [HttpDelete("{id}")]
-
-    public IActionResult Delete(int id)
+    // PUT: api/Contract/5
+    [HttpPut("{id}")]
+    public IActionResult Update(
+        int id,
+        [FromBody] UpdateContractDto dto)
     {
-        var deleted = _contractService.DeleteById(id);
-
-        if (!deleted)
+        if (!ModelState.IsValid)
         {
-            return NotFound();
+            return BadRequest(ModelState);
         }
 
-        return NoContent();
+        try
+        {
+            var updatedContract = MapToContract(dto);
+
+            var result = _contractService.Update(
+                id, updatedContract);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    // DELETE: api/Contract/5
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        try
+        {
+            var deleted = _contractService.DeleteById(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+    // DTO TO ENTITY MAPPING
+    private static Contract MapToContract(
+        ContractFieldsDto dto)
+    {
+        return new Contract
+        {
+            ContractNo = dto.ContractNo,
+            Topic = dto.Topic,
+            ProjectCode = dto.ProjectCode,
+            Price = dto.Price,
+
+            StartDate = dto.StartDate,
+            EndDate = dto.EndDate,
+
+            ProjectManagerPersonelCode =
+                dto.ProjectManagerPersonelCode,
+
+            ContractYear = dto.ContractYear,
+            Status = dto.Status,
+
+            SponsorPersonelCode =
+                dto.SponsorPersonelCode,
+
+            PrincipalName = dto.PrincipalName,
+
+            EblaghLetterNo = dto.EblaghLetterNo,
+            EblaghLetterDate = dto.EblaghLetterDate,
+
+            Type = dto.Type,
+
+            ContractNoRelation =
+                dto.ContractNoRelation,
+
+            OutSourcePrice = dto.OutSourcePrice,
+
+            LogSavePersonalCode =
+                dto.LogSavePersonalCode,
+
+            AdvancePaymentAmount =
+                dto.AdvancePaymentAmount,
+
+            Active = dto.Status == "جاری"
+        };
     }
 }

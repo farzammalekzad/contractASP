@@ -11,16 +11,40 @@ public class AppDbContext : DbContext
     public DbSet<Contract> Contracts {get; set;}
     public DbSet<ProgressPayment> ProgressPayments { get; set;}
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<Principal> Principals { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Contract>()
-        .Property(c => c.ContractCode)
-        .HasMaxLength(50);
-        
-        modelBuilder.Entity<Contract>()
-            .HasIndex(c => c.ContractCode)
-            .IsUnique();
+        modelBuilder.Entity<Contract>(entity =>
+        {
+            entity.Property(c => c.ContractNo)
+                .HasMaxLength(50)
+                .IsRequired();
 
+            entity.HasIndex(c => c.ContractNo)
+                .IsUnique();
+
+            entity.Property(c => c.Price)
+                .HasPrecision(18, 2);
+
+            entity.Property(c => c.OutSourcePrice)
+                .HasPrecision(18, 2);
+
+            entity.Property(c => c.Type)
+                .HasMaxLength(20);
+
+            entity.Property(c => c.Status)
+                .HasMaxLength(30);
+            
+            entity.Property(c => c.AdvancePaymentAmount)
+                .HasPrecision(18,2);
+            
+            entity.HasOne(c => c.Principal)
+                .WithMany(p => p.Contracts)
+                .HasForeignKey(c => c.PrincipalId)
+                .OnDelete(DeleteBehavior.Restrict);
+              
+        });
+       
         modelBuilder.Entity<ProgressPayment>(entity =>
         {
             entity.Property(p => p.Title).HasMaxLength(250);

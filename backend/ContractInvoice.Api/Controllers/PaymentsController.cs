@@ -183,7 +183,7 @@ public class PaymentsController : Controller
             {
                 pp.Id,
                 DisplayText =
-                    $"{pp.Contract.ContractCode} - صورت وضعیت {pp.PaymentNo} - {pp.Title}"
+                    $"{pp.Contract.ContractNo} - صورت وضعیت {pp.PaymentNo} - {pp.Title}"
             }),
             "Id",
             "DisplayText",

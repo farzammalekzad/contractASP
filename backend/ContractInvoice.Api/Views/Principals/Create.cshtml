@@ -1,0 +1,124 @@
+
+@model ContractInvoice.Api.Model.Principal
+
+@{
+    ViewData["Title"] = "ثبت کارفرما";
+}
+
+<div class="page-container compact-form">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">ثبت کارفرمای جدید</h1>
+            <p class="page-subtitle">
+                اطلاعات کارفرما را وارد کنید
+            </p>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger"></div>
+
+        <!-- اطلاعات پایه کارفرما -->
+        <div class="form-section">
+
+            <div class="form-section-title">
+                اطلاعات پایه کارفرما
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label asp-for="Name" class="form-label">
+                        نام کارفرما
+                    </label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="PrincipalCode" class="form-label">
+                        کد کارفرما
+                    </label>
+                    <input asp-for="PrincipalCode" class="form-control" />
+                    <span asp-validation-for="PrincipalCode"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="NationalId" class="form-label">
+                        شناسه ملی
+                    </label>
+                    <input asp-for="NationalId" class="form-control" />
+                    <span asp-validation-for="NationalId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="EconomicCode" class="form-label">
+                        کد اقتصادی
+                    </label>
+                    <input asp-for="EconomicCode" class="form-control" />
+                    <span asp-validation-for="EconomicCode"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Phone" class="form-label">
+                        شماره تماس
+                    </label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Address" class="form-label">
+                        نشانی
+                    </label>
+                    <textarea asp-for="Address"
+                              class="form-control"
+                              rows="3"></textarea>
+                    <span asp-validation-for="Address"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <div class="form-check">
+                        <input asp-for="Active"
+                               class="form-check-input" />
+                        <label asp-for="Active"
+                               class="form-check-label">
+                            کارفرمای فعال
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- عملیات فرم -->
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn btn-primary-modern">
+                ذخیره کارفرما
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-soft">
+                انصراف
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

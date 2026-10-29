@@ -6,163 +6,263 @@ using Microsoft.AspNetCore.Mvc;
 public class ContractsController : Controller
 {
     private readonly ContractService _contractService;
+    private readonly PrincipalService _principalService;
 
-    public ContractsController(ContractService contractService)
+    public ContractsController(
+        ContractService contractService,
+        PrincipalService principalService)
     {
         _contractService = contractService;
+        _principalService = principalService;
     }
 
+    // INDEX
     public IActionResult Index()
     {
-        return View(_contractService.GetAll());
+        return View(_contractService.GetAllWithPrincipal());
     }
 
+    // CREATE - GET
+    
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        LoadRelatedContracts();
+        LoadPrincipals();
+        return View(new CreateContractDto());
     }
+    
 
+    // CREATE - POST
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(CreateContractDto dto)
     {
         if (!ModelState.IsValid)
         {
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
 
         try
         {
-            _contractService.Add(new Contract
-            {
-                ContractCode = dto.ContractCode,
-                Title = dto.Title,
-                ContractType = dto.ContractType,
-                ProjectCode = dto.ProjectCode,
-                Employer = dto.Employer,
-                ProjectManager = dto.ProjectManager,
-                ProjectSponsor = dto.ProjectSponsor,
-                Amount = dto.Amount,
-                AdvancePaymentAmount = dto.AdvancePaymentAmount,
-                NotificationLetterNo = dto.NotificationLetterNo,
-                NotificationLetterDate = dto.NotificationLetterDate,
-                ContractStartDate = dto.ContractStartDate,
-                ContractEndDate = dto.ContractEndDate,
-                RelatedRevenueContractCode = dto.RelatedRevenueContractCode
-            });
+            var contract = MapToContract(dto);
+
+            _contractService.Add(contract);
+
+            TempData["SuccessMessage"] =
+                "قرارداد با موفقیت ثبت شد.";
+
+            return RedirectToAction(nameof(Index));
         }
         catch (ArgumentException ex)
         {
-            ModelState.AddModelError(nameof(dto.ContractCode), ex.Message);
+            ModelState.AddModelError(
+                string.Empty, ex.Message);
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
-
-        return RedirectToAction(nameof(Index));
     }
 
+    // DETAILS
     public IActionResult Details(int id)
     {
         var contract = _contractService.GetById(id);
-        return contract is null ? NotFound() : View(contract);
-    }
 
-    [HttpGet]
-    public IActionResult Edit(int id)
-    {
-        var contract = _contractService.GetById(id);
-        if (contract is null)
+        if (contract == null)
         {
             return NotFound();
         }
 
-        return View(new UpdateContractDto
-        {
-            ContractCode = contract.ContractCode,
-            Title = contract.Title,
-            ContractType = contract.ContractType,
-            ProjectCode = contract.ProjectCode,
-            Employer = contract.Employer,
-            ProjectManager = contract.ProjectManager,
-            ProjectSponsor = contract.ProjectSponsor,
-            Amount = contract.Amount,
-            AdvancePaymentAmount = contract.AdvancePaymentAmount,
-            NotificationLetterNo = contract.NotificationLetterNo,
-            NotificationLetterDate = contract.NotificationLetterDate,
-            ContractStartDate = contract.ContractStartDate,
-            ContractEndDate = contract.ContractEndDate,
-            RelatedRevenueContractCode = contract.RelatedRevenueContractCode
-        });
+        return View(contract);
     }
 
+    // EDIT - GET
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var contract = _contractService.GetById(id);
+
+        if (contract == null)
+        {
+            return NotFound();
+        }
+
+        ViewBag.ContractId = id;
+
+        var dto = new UpdateContractDto
+        {
+            ContractNo = contract.ContractNo,
+            Topic = contract.Topic,
+            ProjectCode = contract.ProjectCode,
+            Price = contract.Price,
+            StartDate = contract.StartDate,
+            EndDate = contract.EndDate,
+            ProjectManagerPersonelCode =
+                contract.ProjectManagerPersonelCode,
+            ContractYear = contract.ContractYear,
+            Status = contract.Status,
+            SponsorPersonelCode =
+                contract.SponsorPersonelCode,
+            PrincipalName = contract.PrincipalName,
+            PrincipalId = contract.PrincipalId,
+            EblaghLetterNo = contract.EblaghLetterNo,
+            EblaghLetterDate = contract.EblaghLetterDate,
+            Type = contract.Type,
+            ContractNoRelation =
+                contract.ContractNoRelation,
+            OutSourcePrice = contract.OutSourcePrice,
+            LogSavePersonalCode =
+                contract.LogSavePersonalCode,
+            AdvancePaymentAmount =
+                contract.AdvancePaymentAmount
+        };
+        LoadRelatedContracts(dto.ContractNoRelation);
+        LoadPrincipals(dto.PrincipalId);
+        return View(dto);
+    }
+
+    // EDIT - POST
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, UpdateContractDto dto)
     {
+        ViewBag.ContractId = id;
+
         if (!ModelState.IsValid)
         {
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
 
         try
         {
-            var updatedContract = _contractService.Update(id, new Contract
-            {
-                ContractCode = dto.ContractCode,
-                Title = dto.Title,
-                ContractType = dto.ContractType,
-                ProjectCode = dto.ProjectCode,
-                Employer = dto.Employer,
-                ProjectManager = dto.ProjectManager,
-                ProjectSponsor = dto.ProjectSponsor,
-                Amount = dto.Amount,
-                AdvancePaymentAmount = dto.AdvancePaymentAmount,
-                NotificationLetterNo = dto.NotificationLetterNo,
-                NotificationLetterDate = dto.NotificationLetterDate,
-                ContractStartDate = dto.ContractStartDate,
-                ContractEndDate = dto.ContractEndDate,
-                RelatedRevenueContractCode = dto.RelatedRevenueContractCode
-            });
+            var updatedContract = MapToContract(dto);
 
-            if (updatedContract is null)
+            var result = _contractService.Update(
+                id, updatedContract);
+
+            if (result == null)
             {
                 return NotFound();
             }
+
+            TempData["SuccessMessage"] =
+                "قرارداد با موفقیت ویرایش شد.";
+
+            return RedirectToAction(nameof(Index));
         }
         catch (ArgumentException ex)
         {
-            ModelState.AddModelError(nameof(dto.ContractCode), ex.Message);
+            ModelState.AddModelError(
+                string.Empty, ex.Message);
+            
+            LoadRelatedContracts(dto.ContractNoRelation);
+            LoadPrincipals(dto.PrincipalId);
             return View(dto);
         }
-
-        return RedirectToAction(nameof(Index));
     }
 
+    // DELETE - GET
     [HttpGet]
     public IActionResult Delete(int id)
     {
         var contract = _contractService.GetById(id);
-        return contract is null ? NotFound() : View(contract);
+
+        return contract == null
+            ? NotFound()
+            : View(contract);
     }
 
+    // DELETE - POST
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
         try
         {
-            _contractService.DeleteById(id);
+            var deleted = _contractService.DeleteById(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
 
             TempData["SuccessMessage"] =
                 "قرارداد با موفقیت حذف شد.";
-
-            return RedirectToAction(nameof(Index));
         }
         catch (InvalidOperationException ex)
         {
             TempData["ErrorMessage"] = ex.Message;
-
-            return RedirectToAction(nameof(Index));
         }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    private void LoadRelatedContracts(string? selectedContractNo = null)
+    {
+        ViewBag.RelatedContracts = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _contractService.GetAll()
+                .Where(c => c.Type == "درآمدی" || c.Type == "داخلی")
+                .OrderBy(c => c.ContractNo)
+                .Select(c => new
+                {
+                    c.ContractNo,
+                    DisplayText = c.ContractNo + " - " + c.Topic
+                }),
+            "ContractNo",
+            "DisplayText",
+            selectedContractNo
+        );
+    }
+
+    private void LoadPrincipals(int? selectedPrincipalId = null)
+    {
+        ViewBag.Principals = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _principalService.GetAll()
+                .Where(p => p.Active)
+                .OrderBy(p => p.Name),
+            "Id",
+            "Name",
+            selectedPrincipalId
+        );
+    }
+
+    // SHARED MAPPING METHOD
+    private static Contract MapToContract(
+        ContractFieldsDto dto)
+    {
+        return new Contract
+        {
+            ContractNo = dto.ContractNo,
+            Topic = dto.Topic,
+            ProjectCode = dto.ProjectCode,
+            Price = dto.Price,
+            StartDate = dto.StartDate,
+            EndDate = dto.EndDate,
+            ProjectManagerPersonelCode =
+                dto.ProjectManagerPersonelCode,
+            ContractYear = dto.ContractYear,
+            Status = dto.Status,
+            SponsorPersonelCode =
+                dto.SponsorPersonelCode,
+            PrincipalId = dto.PrincipalId ?? 0,
+            PrincipalName = dto.PrincipalName,
+            EblaghLetterNo = dto.EblaghLetterNo,
+            EblaghLetterDate = dto.EblaghLetterDate,
+            Type = dto.Type,
+            ContractNoRelation =
+                dto.ContractNoRelation,
+            OutSourcePrice = dto.OutSourcePrice,
+            LogSavePersonalCode =
+                dto.LogSavePersonalCode,
+            AdvancePaymentAmount =
+                dto.AdvancePaymentAmount,
+
+            Active = dto.Status == "جاری"
+        };
     }
 }

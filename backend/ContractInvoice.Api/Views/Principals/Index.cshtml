@@ -1,0 +1,102 @@
+
+@model List<ContractInvoice.Api.Model.Principal>
+
+@{
+    ViewData["Title"] = "فهرست کارفرمایان";
+}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">فهرست کارفرمایان</h1>
+            <p class="page-subtitle">
+                مشاهده و مدیریت اطلاعات کارفرمایان
+            </p>
+        </div>
+
+        <div>
+            <a asp-action="Create"
+               class="btn btn-primary-modern">
+               + ثبت کارفرمای جدید
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="form-section">
+
+        <div class="form-section-title">
+            اطلاعات کارفرمایان
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>نام کارفرما</th>
+                        <th>کد کارفرما</th>
+                        <th>شناسه ملی</th>
+                        <th>کد اقتصادی</th>
+                        <th>تلفن</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var principal in Model)
+                        {
+                            <tr>
+                                <td>@principal.Name</td>
+                                <td>@principal.PrincipalCode</td>
+                                <td>@principal.NationalId</td>
+                                <td>@principal.EconomicCode</td>
+                                <td>@principal.Phone</td>
+                                <td>
+                                    @if (principal.Active)
+                                    {
+                                        <span class="badge bg-success">
+                                            فعال
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            غیرفعال
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@principal.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        ویرایش
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                هنوز کارفرمایی ثبت نشده است.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

@@ -28,58 +28,83 @@ namespace ContractInvoice.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<decimal?>("AdvancePaymentAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ContractCode")
+                    b.Property<string>("ContractNo")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("ContractEndDate")
+                    b.Property<string>("ContractNoRelation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContractStartDate")
+                    b.Property<string>("ContractYear")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContractType")
+                    b.Property<string>("EblaghLetterDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EblaghLetterNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogSavePersonalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("OutSourcePrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PrincipalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PrincipalName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Employer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationLetterDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationLetterNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectManager")
+                    b.Property<string>("ProjectManagerPersonelCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectSponsor")
+                    b.Property<string>("SponsorPersonelCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RelatedRevenueContractCode")
+                    b.Property<string>("StartDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Status")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Topic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractCode")
+                    b.HasIndex("ContractNo")
                         .IsUnique();
+
+                    b.HasIndex("PrincipalId");
 
                     b.ToTable("Contracts");
                 });
@@ -116,6 +141,47 @@ namespace ContractInvoice.Api.Migrations
                     b.HasIndex("ProgressPaymentId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("ContractInvoice.Api.Model.Principal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("EconomicCode")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NationalId")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PrincipalCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Principals");
                 });
 
             modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
@@ -186,6 +252,17 @@ namespace ContractInvoice.Api.Migrations
                     b.ToTable("ProgressPayments");
                 });
 
+            modelBuilder.Entity("ContractInvoice.Api.Model.Contract", b =>
+                {
+                    b.HasOne("ContractInvoice.Api.Model.Principal", "Principal")
+                        .WithMany("Contracts")
+                        .HasForeignKey("PrincipalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Principal");
+                });
+
             modelBuilder.Entity("ContractInvoice.Api.Model.Payment", b =>
                 {
                     b.HasOne("ContractInvoice.Api.Model.ProgressPayment", "ProgressPayment")
@@ -211,6 +288,11 @@ namespace ContractInvoice.Api.Migrations
             modelBuilder.Entity("ContractInvoice.Api.Model.Contract", b =>
                 {
                     b.Navigation("ProgressPayments");
+                });
+
+            modelBuilder.Entity("ContractInvoice.Api.Model.Principal", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 
             modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
