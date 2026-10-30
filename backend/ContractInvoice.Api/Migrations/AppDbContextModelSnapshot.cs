@@ -238,46 +238,61 @@ namespace ContractInvoice.Api.Migrations
 
                     b.Property<string>("ApprovalDate")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("PrincipalApprovedLetterDate");
 
                     b.Property<string>("ApprovalLetterNo")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("PrincipalApprovedLetterNo");
 
                     b.Property<decimal?>("ApprovedAmount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("ApprovedPrice");
 
                     b.Property<int>("ContractId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Header_ContractNo")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("Header_ContractNo");
+
                     b.Property<int>("PaymentNo")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("No");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("Type");
 
                     b.Property<string>("PeriodEndDate")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("InvoiceEndDte");
 
                     b.Property<string>("PeriodStartDate")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("InvoiceStartDte");
 
                     b.Property<decimal>("ProposedAmount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("RequestPrice");
 
                     b.Property<string>("RequestLetterDate")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("OceRequestLetterDate");
 
                     b.Property<string>("RequestLetterNo")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("OceRequestLetterNo");
 
                     b.Property<string>("Status")
                         .HasMaxLength(50)
@@ -293,7 +308,7 @@ namespace ContractInvoice.Api.Migrations
                     b.HasIndex("ContractId", "PaymentNo")
                         .IsUnique();
 
-                    b.ToTable("ProgressPayments");
+                    b.ToTable("invoice", (string)null);
                 });
 
             modelBuilder.Entity("ContractInvoice.Api.Model.Contract", b =>

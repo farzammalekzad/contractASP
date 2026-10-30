@@ -18,7 +18,7 @@ public class CreateProgressPaymentDto
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "نوع صورت وضعیت الزامی است.")]
-    [RegularExpression("^(TEMPORARY|FINAL|ADJUSTMENT)$", ErrorMessage = "نوع صورت وضعیت نامعتبر است.")]
+    [RegularExpression("^(موقت|قطعی|تعدیل)$", ErrorMessage = "نوع صورت وضعیت نامعتبر است.")]
     [MaxLength(30)]
     [Display(Name = "نوع صورت وضعیت")]
     public string PaymentType { get; set; } = string.Empty;

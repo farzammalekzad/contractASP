@@ -5,7 +5,7 @@ namespace ContractInvoice.Api.Services;
 
 public class ProgressPaymentService : IProgressPaymentService
 {
-    private static readonly string[] ValidPaymentTypes = ["TEMPORARY", "FINAL", "ADJUSTMENT"];
+    private static readonly string[] ValidPaymentTypes = ["موقت", "قطعی", "تعدیل"];
     private readonly AppDbContext _context;
 
     public ProgressPaymentService(AppDbContext context)

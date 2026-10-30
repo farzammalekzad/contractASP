@@ -64,7 +64,23 @@ public class ProgressPaymentsController : Controller
 
         try
         {
-            _progressPaymentService.Add(ToEntity(dto));
+            var contract = _contractService.GetById(dto.ContractId);
+
+            if (contract == null)
+            {
+                ModelState.AddModelError(
+                    nameof(dto.ContractId),
+                    "قرارداد انتخاب‌شده یافت نشد.");
+
+                PopulateContracts(dto.ContractId);
+                return View(dto);
+            }
+
+            var progressPayment = ToEntity(dto);
+
+            progressPayment.Header_ContractNo = contract.ContractNo;
+
+            _progressPaymentService.Add(progressPayment);
         }
         catch (ArgumentException ex)
         {
@@ -97,7 +113,23 @@ public class ProgressPaymentsController : Controller
 
         try
         {
-            if (_progressPaymentService.Update(id, ToEntity(dto)) is null) return NotFound();
+            var contract = _contractService.GetById(dto.ContractId);
+
+            if (contract == null)
+            {
+                ModelState.AddModelError(
+                    nameof(dto.ContractId),
+                    "قرارداد انتخاب‌شده یافت نشد.");
+
+                PopulateContracts(dto.ContractId);
+                return View(dto);
+            }
+
+            var progressPayment = ToEntity(dto);
+            progressPayment.Header_ContractNo = contract.ContractNo;
+
+            if (_progressPaymentService.Update(id, progressPayment) is null)
+                return NotFound();
         }
         catch (ArgumentException ex)
         {
