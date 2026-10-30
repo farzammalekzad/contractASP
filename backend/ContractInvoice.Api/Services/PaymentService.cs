@@ -12,6 +12,21 @@ public class PaymentService : IPaymentService
         _context = context;
     }
 
+    private void ValidateAmounts(Payment payment)
+    {
+        if (payment.GoodPerformance < 0 ||
+            payment.InsuranceDeposit < 0 ||
+            payment.ObligationsDeposit < 0 ||
+            payment.VatReceivable < 0 ||
+            payment.RadiationAllowance < 0 ||
+            payment.ForeignMission < 0)
+        {
+            throw new InvalidOperationException(
+                "مبالغ فیلدهای پرداخت نمی‌توانند منفی باشند."
+            );
+        }
+    }
+
     public List<Payment> GetAll()
     {
         return _context.Payments
@@ -56,6 +71,7 @@ public class PaymentService : IPaymentService
             );
         }
 
+        ValidateAmounts(payment);
         _context.Payments.Add(payment);
         _context.SaveChanges();
 
@@ -88,10 +104,17 @@ public class PaymentService : IPaymentService
             );
         }
 
+        ValidateAmounts(updatedPayment);
+
         existingPayment.ProgressPaymentId = updatedPayment.ProgressPaymentId;
         existingPayment.PaymentDate = updatedPayment.PaymentDate;
         existingPayment.ReceivedAmount = updatedPayment.ReceivedAmount;
-        existingPayment.PaymentReferenceNo = updatedPayment.PaymentReferenceNo;
+        existingPayment.GoodPerformance = updatedPayment.GoodPerformance;
+        existingPayment.InsuranceDeposit = updatedPayment.InsuranceDeposit;
+        existingPayment.ObligationsDeposit = updatedPayment.ObligationsDeposit;
+        existingPayment.VatReceivable = updatedPayment.VatReceivable;
+        existingPayment.RadiationAllowance = updatedPayment.RadiationAllowance;
+        existingPayment.ForeignMission = updatedPayment.ForeignMission;
         existingPayment.Description = updatedPayment.Description;
 
         _context.SaveChanges();

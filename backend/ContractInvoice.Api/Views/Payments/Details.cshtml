@@ -64,11 +64,47 @@
         </div>
 
         <div class="field-card card-blue">
-            <div class="field-label">شماره مرجع پرداخت</div>
+            <div class="field-label">حسن انجام کار</div>
             <div class="field-value">
-                @(Model.PaymentReferenceNo ?? "-")
+                @Model.GoodPerformance.ToString("N0")
             </div>
         </div>
+
+        <div class="field-card card-purple">
+            <div class="field-label">سپرده بیمه</div>
+            <div class="field-value">
+                @Model.InsuranceDeposit.ToString("N0")
+            </div>
+        </div>
+
+        <div class="field-card card-green">
+            <div class="field-label">سپرده حسن اجرای تعهدات</div>
+            <div class="field-value">
+                @Model.ObligationsDeposit.ToString("N0")
+            </div>
+        </div>
+
+        <div class="field-card card-orange">
+            <div class="field-label">طلب مالیات بر ارزش افزوده</div>
+            <div class="field-value">
+                @Model.VatReceivable.ToString("N0")
+            </div>
+        </div>
+
+        <div class="field-card card-cyan">
+            <div class="field-label">حق اشعه</div>
+            <div class="field-value">
+                @Model.RadiationAllowance.ToString("N0")
+            </div>
+        </div>
+
+        <div class="field-card card-pink">
+            <div class="field-label">ماموریت خارج از کشور</div>
+            <div class="field-value">
+                @Model.ForeignMission.ToString("N0")
+            </div>
+        </div>
+
 
         <div class="field-card card-gray">
             <div class="field-label">توضیحات</div>

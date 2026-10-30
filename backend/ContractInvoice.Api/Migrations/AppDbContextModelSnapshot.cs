@@ -165,19 +165,33 @@ namespace ContractInvoice.Api.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal>("ForeignMission")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("GoodPerformance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("InsuranceDeposit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ObligationsDeposit")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("PaymentDate")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PaymentReferenceNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("ProgressPaymentId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("RadiationAllowance")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("ReceivedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("VatReceivable")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

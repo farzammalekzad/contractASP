@@ -80,13 +80,19 @@ public class AppDbContext : DbContext
             .Property(p => p.ReceivedAmount)
             .HasColumnType("decimal(18,2)");
 
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.Property(p => p.GoodPerformance).HasPrecision(18, 2);
+            entity.Property(p => p.InsuranceDeposit).HasPrecision(18, 2);
+            entity.Property(p => p.ObligationsDeposit).HasPrecision(18, 2);
+            entity.Property(p => p.VatReceivable).HasPrecision(18, 2);
+            entity.Property(p => p.RadiationAllowance).HasPrecision(18, 2);
+            entity.Property(p => p.ForeignMission).HasPrecision(18, 2);
+        });
+
         modelBuilder.Entity<Payment>()
             .Property(p => p.PaymentDate)
             .HasMaxLength(20);
-
-        modelBuilder.Entity<Payment>()
-            .Property(p => p.PaymentReferenceNo)
-            .HasMaxLength(100);
 
         modelBuilder.Entity<Payment>()
             .Property(p => p.Description)

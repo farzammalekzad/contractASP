@@ -66,7 +66,12 @@ public class PaymentsController : Controller
             ProgressPaymentId = dto.ProgressPaymentId,
             PaymentDate = dto.PaymentDate,
             ReceivedAmount = dto.ReceivedAmount,
-            PaymentReferenceNo = dto.PaymentReferenceNo,
+            GoodPerformance = dto.GoodPerformance,
+            InsuranceDeposit = dto.InsuranceDeposit,
+            ObligationsDeposit = dto.ObligationsDeposit,
+            VatReceivable = dto.VatReceivable,
+            RadiationAllowance = dto.RadiationAllowance,
+            ForeignMission = dto.ForeignMission,
             Description = dto.Description
         };
 
@@ -100,7 +105,12 @@ public class PaymentsController : Controller
             ProgressPaymentId = payment.ProgressPaymentId,
             PaymentDate = payment.PaymentDate,
             ReceivedAmount = payment.ReceivedAmount,
-            PaymentReferenceNo = payment.PaymentReferenceNo,
+            GoodPerformance = payment.GoodPerformance,
+            InsuranceDeposit = payment.InsuranceDeposit,
+            ObligationsDeposit = payment.ObligationsDeposit,
+            VatReceivable = payment.VatReceivable,
+            RadiationAllowance = payment.RadiationAllowance,
+            ForeignMission = payment.ForeignMission,
             Description = payment.Description
         };
 
@@ -124,7 +134,12 @@ public class PaymentsController : Controller
             ProgressPaymentId = dto.ProgressPaymentId,
             PaymentDate = dto.PaymentDate,
             ReceivedAmount = dto.ReceivedAmount,
-            PaymentReferenceNo = dto.PaymentReferenceNo,
+            GoodPerformance = dto.GoodPerformance,
+            InsuranceDeposit = dto.InsuranceDeposit,
+            ObligationsDeposit = dto.ObligationsDeposit,
+            VatReceivable = dto.VatReceivable,
+            RadiationAllowance = dto.RadiationAllowance,
+            ForeignMission = dto.ForeignMission,
             Description = dto.Description
         };
 

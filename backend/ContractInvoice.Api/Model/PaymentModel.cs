@@ -14,8 +14,23 @@ public class Payment
 
     [Range(typeof(decimal), "0", "79228162514264337593543950335")] 
     public decimal ReceivedAmount {get; set;}
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal GoodPerformance { get; set; } = 0;
 
-    public string? PaymentReferenceNo {get; set;}
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal InsuranceDeposit { get; set; } = 0;
+
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal ObligationsDeposit { get; set; } = 0;
+
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal VatReceivable { get; set; } = 0;
+
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal RadiationAllowance { get; set; } = 0;
+
+    [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+    public decimal ForeignMission { get; set; } = 0;
 
     public string? Description {get; set;}
 
