@@ -4,6 +4,7 @@ public class ProgressPayment
 {
     public int Id { get; set; }
     public int ContractId { get; set; }
+    public string? Header_ContractNo { get; set; }
     public int PaymentNo { get; set; }
     public string Title { get; set; } = string.Empty;
     public string PaymentType { get; set; } = string.Empty;

@@ -48,17 +48,20 @@ public class AppDbContext : DbContext
        
         modelBuilder.Entity<ProgressPayment>(entity =>
         {
+            entity.ToTable("invoice");
             entity.Property(p => p.Title).HasMaxLength(250);
-            entity.Property(p => p.PaymentType).HasMaxLength(30);
-            entity.Property(p => p.PeriodStartDate).HasMaxLength(20);
-            entity.Property(p => p.PeriodEndDate).HasMaxLength(20);
-            entity.Property(p => p.RequestLetterNo).HasMaxLength(100);
-            entity.Property(p => p.RequestLetterDate).HasMaxLength(20);
-            entity.Property(p => p.ApprovalLetterNo).HasMaxLength(100);
-            entity.Property(p => p.ApprovalDate).HasMaxLength(20);
+            entity.Property(p => p.PaymentNo).HasColumnName("No");
+            entity.Property(p => p.PaymentType).HasMaxLength(30).HasColumnName("Type");
+            entity.Property(p => p.PeriodStartDate).HasMaxLength(20).HasColumnName("InvoiceStartDte");
+            entity.Property(p => p.PeriodEndDate).HasMaxLength(20).HasColumnName("InvoiceEndDte");
+            entity.Property(p => p.RequestLetterNo).HasMaxLength(100).HasColumnName("OceRequestLetterNo");
+            entity.Property(p => p.RequestLetterDate).HasMaxLength(20).HasColumnName("OceRequestLetterDate");
+            entity.Property(p => p.ApprovalLetterNo).HasMaxLength(100).HasColumnName("PrincipalApprovedLetterNo");
+            entity.Property(p => p.ApprovalDate).HasMaxLength(20).HasColumnName("PrincipalApprovedLetterDate");
             entity.Property(p => p.Status).HasMaxLength(50);
-            entity.Property(p => p.ProposedAmount).HasPrecision(18, 2);
-            entity.Property(p => p.ApprovedAmount).HasPrecision(18, 2);
+            entity.Property(p => p.ProposedAmount).HasPrecision(18, 2).HasColumnName("RequestPrice");
+            entity.Property(p => p.ApprovedAmount).HasPrecision(18, 2).HasColumnName("ApprovedPrice");
+            entity.Property(p => p.Header_ContractNo).HasMaxLength(30).HasColumnName("Header_ContractNo");
 
             entity.HasIndex(p => new { p.ContractId, p.PaymentNo }).IsUnique();
             entity.HasOne(p => p.Contract)
