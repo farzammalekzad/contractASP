@@ -5,7 +5,7 @@ namespace ContractInvoice.Api.Services;
 
 public class ProgressPaymentService : IProgressPaymentService
 {
-    private static readonly string[] ValidPaymentTypes = ["موقت", "قطعی", "تعدیل"];
+    private static readonly string[] ValidPaymentTypes = ["موقت", "قطعی", "تعدیل", "پیش پرداخت"];
     private readonly AppDbContext _context;
 
     public ProgressPaymentService(AppDbContext context)
@@ -31,7 +31,11 @@ public class ProgressPaymentService : IProgressPaymentService
 
     public ProgressPayment Add(ProgressPayment progressPayment)
     {
+        if (progressPayment.PaymentType == "پیش پرداخت")
+            progressPayment.PaymentNo = 0;
+
         Validate(progressPayment, null);
+
         _context.ProgressPayments.Add(progressPayment);
         Save("Unable to save the progress payment. Please try again.");
         return progressPayment;
@@ -44,6 +48,8 @@ public class ProgressPaymentService : IProgressPaymentService
         {
             return null;
         }
+        if (progressPayment.PaymentType == "پیش پرداخت")
+            progressPayment.PaymentNo = 0;
 
         Validate(progressPayment, id);
         existing.ContractId = progressPayment.ContractId;
@@ -90,8 +96,16 @@ public class ProgressPaymentService : IProgressPaymentService
     {
         if (!_context.Contracts.Any(c => c.Id == progressPayment.ContractId))
             throw new ArgumentException("Contract not found.");
-        if (progressPayment.PaymentNo <= 0)
-            throw new ArgumentException("Payment number must be greater than zero.");
+        if (progressPayment.PaymentType == "پیش پرداخت")
+        {
+            if (progressPayment.PaymentNo != 0)
+                throw new ArgumentException("Advance payment number must be zero.");
+        }
+        else
+        {
+            if (progressPayment.PaymentNo <= 0)
+                throw new ArgumentException("Payment number must be greater than zero.");
+        }
         if (string.IsNullOrWhiteSpace(progressPayment.Title))
             throw new ArgumentException("Title is required.");
         if (!ValidPaymentTypes.Contains(progressPayment.PaymentType))

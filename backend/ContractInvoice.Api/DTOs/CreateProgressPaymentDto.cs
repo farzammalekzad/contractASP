@@ -8,7 +8,7 @@ public class CreateProgressPaymentDto
     [Display(Name = "قرارداد")]
     public int ContractId { get; set; }
 
-    [Range(1, int.MaxValue, ErrorMessage = "شماره صورت وضعیت باید بزرگتر از صفر باشد.")]
+    [Range(0, int.MaxValue, ErrorMessage = "شماره صورت وضعیت باید بزرگتر از صفر باشد.")]
     [Display(Name = "شماره صورت وضعیت")]
     public int PaymentNo { get; set; }
 
@@ -18,7 +18,7 @@ public class CreateProgressPaymentDto
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "نوع صورت وضعیت الزامی است.")]
-    [RegularExpression("^(موقت|قطعی|تعدیل)$", ErrorMessage = "نوع صورت وضعیت نامعتبر است.")]
+    [RegularExpression("^(موقت|قطعی|تعدیل|پیش پرداخت)$", ErrorMessage = "نوع صورت وضعیت نامعتبر است.")]
     [MaxLength(30)]
     [Display(Name = "نوع صورت وضعیت")]
     public string PaymentType { get; set; } = string.Empty;

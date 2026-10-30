@@ -48,10 +48,11 @@
                     <label asp-for="PaymentNo" class="form-label"></label>
 
                     <input asp-for="PaymentNo"
-                           class="form-control" />
+                        id="PaymentNo"
+                        class="form-control" />
 
                     <span asp-validation-for="PaymentNo"
-                          class="text-danger"></span>
+                        class="text-danger"></span>
                 </div>
 
 
@@ -59,12 +60,14 @@
                     <label asp-for="PaymentType" class="form-label"></label>
 
                     <select asp-for="PaymentType"
+                            id="PaymentType"
                             class="form-select">
 
                         <option value="">-- انتخاب نوع --</option>
                         <option value="موقت">موقت</option>
                         <option value="قطعی">قطعی</option>
                         <option value="تعدیل">تعدیل</option>
+                        <option value="پیش پرداخت">پیش پرداخت</option>
 
                     </select>
 
@@ -102,6 +105,7 @@
 
                     <input asp-for="PeriodStartDate"
                            class="form-control"
+                           data-jdp
                            placeholder="1405/07/01" />
                 </div>
 
@@ -112,6 +116,7 @@
 
                     <input asp-for="PeriodEndDate"
                            class="form-control"
+                           data-jdp
                            placeholder="1405/07/30" />
                 </div>
 
@@ -152,6 +157,7 @@
 
                     <input asp-for="RequestLetterDate"
                            class="form-control"
+                           data-jdp
                            placeholder="1405/07/15" />
                 </div>
 
@@ -171,6 +177,7 @@
 
                     <input asp-for="ApprovalDate"
                            class="form-control"
+                           data-jdp
                            placeholder="1405/07/20" />
                 </div>
 
@@ -235,4 +242,30 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const paymentType = document.getElementById("PaymentType");
+            const paymentNo = document.getElementById("PaymentNo");
+
+            function updatePaymentNo() {
+
+                if (paymentType.value === "پیش پرداخت") {
+                    paymentNo.value = 0;
+                    paymentNo.readOnly = true;
+                } else {
+                    paymentNo.readOnly = false;
+
+                    if (paymentNo.value === "0") {
+                        paymentNo.value = "";
+                    }
+                }
+            }
+
+            paymentType.addEventListener("change", updatePaymentNo);
+
+            updatePaymentNo();
+        });
+    </script>
 }
