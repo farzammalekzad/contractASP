@@ -1,80 +1,12 @@
-@model ContractInvoice.Api.Model.Payment
-
-@{
-    ViewData["Title"] = "حذف پرداخت";
-}
-
-<div class="page-container">
-
-    <div class="page-header">
-        <div>
-            <h1 class="page-title">حذف پرداخت</h1>
-            <p class="page-subtitle">
-                بررسی نهایی قبل از حذف پرداخت
-            </p>
-        </div>
-    </div>
-
-    <div class="delete-card">
-
-        <div class="delete-warning">
-            آیا از حذف این پرداخت مطمئن هستید؟
-        </div>
-
-        <div class="delete-summary">
-
-            <div class="delete-item">
-                <div class="delete-item-label">قرارداد</div>
-                <div class="delete-item-value">
-                    @Model.ProgressPayment.Contract.ContractNo
-                </div>
-            </div>
-
-            <div class="delete-item">
-                <div class="delete-item-label">صورت وضعیت</div>
-                <div class="delete-item-value">
-                    شماره @Model.ProgressPayment.PaymentNo
-                </div>
-            </div>
-
-            <div class="delete-item">
-                <div class="delete-item-label">تاریخ پرداخت</div>
-                <div class="delete-item-value">
-                    @Model.PaymentDate
-                </div>
-            </div>
-
-            <div class="delete-item">
-                <div class="delete-item-label">مبلغ</div>
-                <div class="delete-item-value">
-                    @Model.ReceivedAmount.ToString("N0")
-                </div>
-            </div>
-
-        </div>
-
-        <form asp-action="Delete" method="post">
-
-            <input type="hidden"
-                   name="id"
-                   value="@Model.Id" />
-
-            <div class="delete-actions">
-
-                <button type="submit"
-                        class="btn btn-danger">
-                    حذف پرداخت
-                </button>
-
-                <a asp-action="Index"
-                   class="btn btn-outline-secondary">
-                    انصراف
-                </a>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
+﻿@model ContractInvoice.Api.ViewModels.PaymentDocumentDeleteModel
+@{ ViewData["Title"] = "حذف سند پرداخت"; }
+<div class="page-container" dir="rtl"><h1 class="page-title">تأیید حذف سند پرداخت</h1><div asp-validation-summary="All" class="alert alert-danger"></div>
+@if (!ViewData.ModelState.IsValid) { <p class="alert alert-info">حذف انجام نشد. اگر نسخه سند تغییر کرده است، با پیوند زیر نسخه جدید را بارگذاری و دوباره تأیید کنید.</p> }
+<p class="alert alert-warning">با حذف سند، همه تخصیص‌های زیر حذف می‌شوند. اطلاعات را بررسی کنید.</p>
+<partial name="_Document" model="Model.Document" />
+<form asp-action="Delete" asp-route-id="@Model.Document.Document.Id" method="post">
+<input type="hidden" name="Input.RowVersion" value="@Convert.ToBase64String(Model.Input.RowVersion)" />
+<div class="form-check mb-3"><input asp-for="Input.Confirmed" class="form-check-input" required /><label asp-for="Input.Confirmed" class="form-check-label">سند و همه تخصیص‌ها را بررسی کردم و حذف را تأیید می‌کنم.</label></div>
+<button class="btn btn-danger" type="submit">حذف سند و تخصیص‌ها</button> <a asp-action="Details" asp-route-id="@Model.Document.Document.Id" class="btn btn-secondary">انصراف</a>
+<a asp-action="Delete" asp-route-id="@Model.Document.Document.Id" class="btn btn-outline-primary">بارگذاری نسخه جدید برای بررسی دوباره</a>
+<p class="form-text">اگر سند تغییر کرده است، نسخه جدید را بارگذاری و دوباره بررسی کنید؛ درخواست قبلی خودکار تکرار نمی‌شود.</p></form></div>

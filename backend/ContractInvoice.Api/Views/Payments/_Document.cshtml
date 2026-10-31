@@ -1,0 +1,9 @@
+﻿@model ContractInvoice.Api.ViewModels.PaymentDocumentDisplayModel
+<div class="card mb-3"><div class="card-body"><h2 class="h5">سند @Model.Document.PaymentReferenceNo</h2><dl class="row"><dt class="col-sm-3">تاریخ شمسی</dt><dd class="col-sm-9">@Model.Document.PaymentDate</dd><dt class="col-sm-3">مبلغ سند (ریال)</dt><dd class="col-sm-9">@Model.Document.TotalAmount.ToString("N2")</dd><dt class="col-sm-3">تخصیص‌یافته</dt><dd class="col-sm-9">@Model.TotalAllocated.ToString("N2")</dd><dt class="col-sm-3">تخصیص‌نیافته</dt><dd class="col-sm-9">@Model.UnallocatedAmount.ToString("N2")</dd><dt class="col-sm-3">توضیحات</dt><dd class="col-sm-9">@(Model.Document.Description ?? "—")</dd></dl></div></div>
+<p>تعداد تخصیص‌ها: @Model.Document.Allocations.Count — همه مبالغ به ریال</p>
+@foreach (var group in Model.Document.Allocations.GroupBy(a => a.ProgressPayment.ContractId)) {
+<h3 class="h5 mt-4">قرارداد @group.First().ProgressPayment.Contract.ContractNo — @group.First().ProgressPayment.Contract.Topic</h3>
+<div class="table-responsive"><table class="table table-bordered"><thead><tr><th>صورت وضعیت / نوع</th><th>روش</th><th>مبلغ تخصیص</th><th>حسن انجام کار</th><th>سپرده بیمه</th><th>سپرده حسن اجرای تعهدات</th><th>طلب مالیات بر ارزش افزوده</th><th>حق اشعه</th><th>مأموریت خارج از کشور</th></tr></thead><tbody>
+@foreach (var a in group) { <tr><td><a asp-controller="ProgressPayments" asp-action="Details" asp-route-id="@a.ProgressPaymentId">@a.ProgressPayment.PaymentNo — @a.ProgressPayment.Title</a><br />@a.ProgressPayment.PaymentType</td><td>@(a.AllocationType == AllocationType.Full ? "کامل" : "جزئی")</td><td>@a.AllocatedAmount.ToString("N2")</td><td>@a.GoodPerformance.ToString("N2")</td><td>@a.InsuranceDeposit.ToString("N2")</td><td>@a.ObligationsDeposit.ToString("N2")</td><td>@a.VatReceivable.ToString("N2")</td><td>@a.RadiationAllowance.ToString("N2")</td><td>@a.ForeignMission.ToString("N2")</td></tr> }
+</tbody></table></div>
+}

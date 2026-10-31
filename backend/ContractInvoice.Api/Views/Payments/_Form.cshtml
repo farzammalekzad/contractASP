@@ -1,0 +1,40 @@
+﻿@model ContractInvoice.Api.ViewModels.PaymentDocumentFormModel
+@using ContractInvoice.Api.ViewModels
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using System.Globalization
+@using System.Text.Json
+@{ var edit = Model.Input as UpdatePaymentDocumentDto;
+var rowOptions = ViewData["RowOptions"] as List<EligibleProgressPaymentModel> ?? new();
+var options = rowOptions.Concat(Model.EligibleProgressPayments).DistinctBy(p => p.Id).Select(p => new { p.Id, p.ContractId, p.ContractNo, p.Topic, p.PaymentNo, p.Title, p.PaymentType, approvedAmount = p.ApprovedAmount.ToString("0.00", CultureInfo.InvariantCulture), totalAllocated = p.TotalAllocated.ToString("0.00", CultureInfo.InvariantCulture), remainingAmount = p.RemainingAmount.ToString("0.00", CultureInfo.InvariantCulture) });
+}
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
+@foreach (var warning in Model.BalanceWarnings) { <p class="alert alert-warning">@warning</p> }
+@if (Model.RefreshedPreviews.Count > 0) { <p class="alert alert-warning">مانده‌ها تغییر کرده‌اند. مبالغ تازه نمایش داده شده‌اند؛ بررسی و تأیید دوباره لازم است.</p> }
+<div id="payment-message" class="alert alert-info" role="status" hidden></div>
+@if (edit != null) {
+<input type="hidden" name="Input.RowVersion" value="@Convert.ToBase64String(edit.RowVersion)" />
+<a asp-action="Edit" asp-route-id="@ViewContext.RouteData.Values["id"]" class="btn btn-outline-secondary mb-3">بارگذاری نسخه جدید (کنار گذاشتن تغییرات فرم)</a>
+}
+<div class="row g-3 mb-4">
+<div class="col-md-4"><label asp-for="Input.PaymentReferenceNo" class="form-label">شماره مرجع</label><input asp-for="Input.PaymentReferenceNo" class="form-control" maxlength="100" required /></div>
+<div class="col-md-4"><label asp-for="Input.PaymentDate" class="form-label">تاریخ پرداخت (شمسی)</label><input asp-for="Input.PaymentDate" class="form-control" data-jdp maxlength="20" placeholder="1405/08/09" required /></div>
+<div class="col-md-4"><label asp-for="Input.TotalAmount" class="form-label">مبلغ سند (ریال)</label><input asp-for="Input.TotalAmount" type="text" inputmode="decimal" dir="ltr" class="form-control" required /></div>
+<div class="col-12"><label asp-for="Input.Description" class="form-label">توضیحات (اختیاری)</label><textarea asp-for="Input.Description" class="form-control" maxlength="500"></textarea></div></div>
+<fieldset class="border rounded p-3 mb-3"><legend class="float-none w-auto h5">انتخاب قراردادها</legend><label for="contract-search">جستجوی قرارداد</label><input id="contract-search" class="form-control mb-2" type="search" />
+@foreach (var c in Model.Contracts) { <label class="contract-option d-block"><input type="checkbox" name="Input.SelectedContractIds" value="@c.Id" checked="@Model.Input.SelectedContractIds.Contains(c.Id)" /> @c.ContractNo — @c.Topic</label> }
+<p class="form-text">تغییر فیلتر قرارداد، تخصیص‌های واردشده را حذف نمی‌کند.</p></fieldset>
+<label for="eligible-picker" class="form-label">صورت وضعیت واجد شرایط</label><div class="d-flex gap-2 mb-3"><select id="eligible-picker" class="form-select"><option value="">انتخاب کنید</option></select><button type="button" id="add-allocation" class="btn btn-primary text-nowrap">افزودن ردیف</button></div>
+<p id="eligible-info" class="small"></p>
+<h2 class="h5">تخصیص‌ها</h2><p>مبلغ کامل ذخیره‌شده ثابت می‌ماند؛ برای محاسبه دوباره از «انتخاب مجدد کامل» استفاده کنید. همه مبالغ به ریال هستند.</p>
+<div id="allocation-rows">
+@for (var i = 0; i < Model.Input.Allocations.Count; i++) {
+var vd = new ViewDataDictionary(ViewData) { ["Index"] = i.ToString() };
+@await Html.PartialAsync("_Allocation", Model.Input.Allocations[i], vd)
+}
+</div>
+<template id="allocation-template">@await Html.PartialAsync("_Allocation", new PaymentAllocationDto { AllocationType = AllocationType.Full, ReselectFull = true }, new ViewDataDictionary(ViewData) { ["Index"] = "__index__" })</template>
+<div class="card p-3 mb-3" aria-live="polite"><h2 class="h6">جمع‌بندی سرور (ریال)</h2><div id="document-totals">در حال محاسبه…</div></div>
+<div class="form-check mb-3"><input asp-for="Input.FullAmountsConfirmed" class="form-check-input" /><label asp-for="Input.FullAmountsConfirmed" class="form-check-label">مبالغ پیش‌نمایش کامل را بررسی و تأیید می‌کنم.</label></div>
+<button type="submit" class="btn btn-success">ذخیره سند</button> <a asp-action="Index" class="btn btn-secondary">انصراف</a>
+<noscript><p class="alert alert-warning">برای انتخاب تخصیص‌ها و دریافت پیش‌نمایش، جاوااسکریپت مرورگر را فعال کنید.</p></noscript>
+<script id="payment-options" type="application/json">@Html.Raw(JsonSerializer.Serialize(options, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }))</script>
