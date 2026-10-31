@@ -1,4 +1,4 @@
-using ContractInvoice.Api.Model;
+﻿using ContractInvoice.Api.Model;
 using ContractInvoice.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<PrincipalService>();
 builder.Services.AddScoped<ContractAttachmentStorageService>();
 builder.Services.AddScoped<ContractService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddDataProtection();
+builder.Services.AddScoped<IPaymentDocumentService, PaymentDocumentService>();
 builder.Services.AddScoped<IProgressPaymentService, ProgressPaymentService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

@@ -1,22 +1,5 @@
-@model ContractInvoice.Api.Model.ProgressPayment
-
-@{
-    ViewData["Title"] = "جزئیات صورت وضعیت";
-
-    decimal totalPaid =
-        ViewBag.TotalPaid == null
-            ? 0m
-            : (decimal)ViewBag.TotalPaid;
-
-    decimal? remainingAmount =
-        ViewBag.RemainingAmount == null
-            ? null
-            : (decimal)ViewBag.RemainingAmount;
-
-    var payments =
-        ViewBag.Payments as IEnumerable<ContractInvoice.Api.Model.Payment>;
-}
-
+﻿@model ContractInvoice.Api.ViewModels.ProgressPaymentHistoryModel
+@{ ViewData["Title"] = "جزئیات صورت وضعیت"; var totalPaid = Model.TotalAllocated; var remainingAmount = Model.RemainingAmount; var payments = Model.Allocations; }
 <div class="page-container">
 
     <div class="page-header">
@@ -24,9 +7,9 @@
             <h1 class="page-title">جزئیات صورت وضعیت</h1>
 
             <p class="page-subtitle">
-                @Model.Contract.ContractNo
+                @Model.ProgressPayment.Contract.ContractNo
                 -
-                صورت وضعیت شماره @Model.PaymentNo
+                صورت وضعیت شماره @Model.ProgressPayment.PaymentNo
             </p>
         </div>
     </div>
@@ -37,91 +20,91 @@
         <div class="field-card card-blue">
             <div class="field-label">قرارداد</div>
             <div class="field-value">
-                @Model.Contract.ContractNo
+                @Model.ProgressPayment.Contract.ContractNo
             </div>
         </div>
 
         <div class="field-card card-purple">
             <div class="field-label">شماره صورت وضعیت</div>
             <div class="field-value">
-                @Model.PaymentNo
+                @Model.ProgressPayment.PaymentNo
             </div>
         </div>
 
         <div class="field-card card-green">
             <div class="field-label">عنوان صورت وضعیت</div>
             <div class="field-value">
-                @Model.Title
+                @Model.ProgressPayment.Title
             </div>
         </div>
 
         <div class="field-card card-orange">
             <div class="field-label">نوع صورت وضعیت</div>
             <div class="field-value">
-                @Model.PaymentType
+                @Model.ProgressPayment.PaymentType
             </div>
         </div>
 
         <div class="field-card card-cyan">
             <div class="field-label">تاریخ شروع دوره</div>
             <div class="field-value">
-                @(Model.PeriodStartDate ?? "-")
+                @(Model.ProgressPayment.PeriodStartDate ?? "-")
             </div>
         </div>
 
         <div class="field-card card-pink">
             <div class="field-label">تاریخ پایان دوره</div>
             <div class="field-value">
-                @(Model.PeriodEndDate ?? "-")
+                @(Model.ProgressPayment.PeriodEndDate ?? "-")
             </div>
         </div>
 
         <div class="field-card card-blue">
             <div class="field-label">شماره نامه درخواست</div>
             <div class="field-value">
-                @(Model.RequestLetterNo ?? "-")
+                @(Model.ProgressPayment.RequestLetterNo ?? "-")
             </div>
         </div>
 
         <div class="field-card card-purple">
             <div class="field-label">تاریخ نامه درخواست</div>
             <div class="field-value">
-                @(Model.RequestLetterDate ?? "-")
+                @(Model.ProgressPayment.RequestLetterDate ?? "-")
             </div>
         </div>
 
         <div class="field-card card-green">
             <div class="field-label">شماره نامه تایید</div>
             <div class="field-value">
-                @(Model.ApprovalLetterNo ?? "-")
+                @(Model.ProgressPayment.ApprovalLetterNo ?? "-")
             </div>
         </div>
 
         <div class="field-card card-orange">
             <div class="field-label">تاریخ تایید</div>
             <div class="field-value">
-                @(Model.ApprovalDate ?? "-")
+                @(Model.ProgressPayment.ApprovalDate ?? "-")
             </div>
         </div>
 
         <div class="field-card card-cyan">
             <div class="field-label">مبلغ پیشنهادی</div>
             <div class="field-value">
-                @Model.ProposedAmount.ToString("N0")
+                @Model.ProgressPayment.ProposedAmount.ToString("N2")
             </div>
         </div>
 
         <div class="field-card card-pink">
             <div class="field-label">مبلغ تایید شده</div>
             <div class="field-value">
-                @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+                @(Model.ProgressPayment.ApprovedAmount?.ToString("N2") ?? "-")
             </div>
         </div>
 
         <div class="field-card card-gray">
             <div class="field-label">وضعیت</div>
             <div class="field-value">
-                @(Model.Status ?? "-")
+                @(Model.ProgressPayment.Status ?? "-")
             </div>
         </div>
 
@@ -141,7 +124,7 @@
                 </div>
 
                 <div class="summary-value">
-                    @(Model.ApprovedAmount?.ToString("N0") ?? "-")
+                    @(Model.ProgressPayment.ApprovedAmount?.ToString("N2") ?? "-")
                 </div>
             </div>
         </div>
@@ -153,7 +136,7 @@
                 </div>
 
                 <div class="summary-value">
-                    @totalPaid.ToString("N0")
+                    @totalPaid.ToString("N2")
                 </div>
             </div>
         </div>
@@ -167,7 +150,7 @@
                 <div class="summary-value">
                     @if (remainingAmount.HasValue)
                     {
-                        @remainingAmount.Value.ToString("N0")
+                        @remainingAmount.Value.ToString("N2")
                     }
                     else
                     {
@@ -188,8 +171,8 @@
 
         <a asp-controller="Payments"
            asp-action="Create"
-           asp-route-progressPaymentId="@Model.Id"
-           class="btn btn-primary-modern disabled" aria-disabled="true" tabindex="-1">
+           asp-route-progressPaymentId="@Model.ProgressPayment.Id"
+           class="btn btn-primary-modern">
             + ثبت پرداخت جدید
         </a>
 
@@ -204,7 +187,7 @@
 
                 <thead>
                     <tr>
-                        <th>تاریخ پرداخت</th>
+                        <th>مرجع سند / تاریخ پرداخت</th>
                         <th>مبلغ</th>
                         <th>عملیات</th>
                     </tr>
@@ -217,25 +200,25 @@
                         <tr>
 
                             <td>
-                                @payment.PaymentDate
+                                @payment.PaymentDocument.PaymentReferenceNo<br />@payment.PaymentDocument.PaymentDate
                             </td>
 
                             <td>
-                                @payment.ReceivedAmount.ToString("N0")
+                                @payment.AllocatedAmount.ToString("N2")
                             </td>
 
                             <td>
 
                                 <a asp-controller="Payments"
                                    asp-action="Details"
-                                   asp-route-id="@payment.Id"
+                                   asp-route-id="@payment.PaymentDocumentId"
                                    class="btn btn-outline-primary btn-sm btn-soft">
                                     جزئیات
                                 </a>
 
                                 <a asp-controller="Payments"
                                    asp-action="Edit"
-                                   asp-route-id="@payment.Id"
+                                   asp-route-id="@payment.PaymentDocumentId"
                                    class="btn btn-outline-warning btn-sm btn-soft">
                                     ویرایش
                                 </a>
@@ -262,7 +245,7 @@
     <div class="mt-4">
 
         <a asp-action="Edit"
-           asp-route-id="@Model.Id"
+           asp-route-id="@Model.ProgressPayment.Id"
            class="btn btn-warning">
             ویرایش صورت وضعیت
         </a>

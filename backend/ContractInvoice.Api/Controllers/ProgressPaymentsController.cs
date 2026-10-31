@@ -1,4 +1,4 @@
-using ContractInvoice.Api.DTOs;
+﻿using ContractInvoice.Api.DTOs;
 using ContractInvoice.Api.Model;
 using ContractInvoice.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +8,10 @@ public class ProgressPaymentsController : Controller
 {
     private readonly IProgressPaymentService _progressPaymentService;
     private readonly ContractService _contractService;
-    private readonly IPaymentService _paymentService;
+    private readonly IPaymentDocumentService _paymentService;
 
     public ProgressPaymentsController(IProgressPaymentService progressPaymentService, ContractService contractService,
-    IPaymentService paymentService)
+    IPaymentDocumentService paymentService)
     {
         _progressPaymentService = progressPaymentService;
         _contractService = contractService;
@@ -30,19 +30,10 @@ public class ProgressPaymentsController : Controller
             return NotFound();
         }
 
-        var totalPaid = _paymentService.GetTotalPaidByProgressPaymentId(id);
-        var payments = _paymentService.GetByProgressPaymentId(id);
-
-        ViewBag.Payments = payments;
-
-        ViewBag.TotalPaid = totalPaid;
-
-        ViewBag.RemainingAmount =
-            progressPayment.ApprovedAmount.HasValue
-                ? progressPayment.ApprovedAmount.Value - totalPaid
-                : (decimal?)null;
-
-        return View(progressPayment);
+        var history = _paymentService.GetProgressPaymentHistory(id);
+        if (!history.Succeeded)
+            return StatusCode(history.ErrorCode == "NotFound" ? 404 : 503, new { history.ErrorCode, history.Message });
+        return View(history.Value);
     }
 
     [HttpGet]

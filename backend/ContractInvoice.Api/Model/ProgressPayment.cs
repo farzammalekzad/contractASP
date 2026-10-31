@@ -19,4 +19,5 @@ public class ProgressPayment
     public string? Status { get; set; }
     public Contract Contract { get; set; } = null!;
     public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public ICollection<PaymentAllocation> Allocations { get; set; } = new List<PaymentAllocation>();
 }

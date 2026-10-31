@@ -153,7 +153,91 @@ namespace ContractInvoice.Api.Migrations
                     b.ToTable("ContractAttachments");
                 });
 
-            modelBuilder.Entity("ContractInvoice.Api.Model.Payment", b =>
+            modelBuilder.Entity("ContractInvoice.Api.Model.PaymentAllocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AllocatedAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("AllocationType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ForeignMission")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("GoodPerformance")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("InsuranceDeposit")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("ObligationsDeposit")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<int>("PaymentDocumentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProgressPaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RadiationAllowance")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("VatReceivable")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgressPaymentId");
+
+                    b.HasIndex("PaymentDocumentId", "ProgressPaymentId")
+                        .IsUnique();
+
+                    b.ToTable("PaymentAllocations", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PaymentAllocations_AllocatedAmount", "[AllocatedAmount] > 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_AllocationType", "[AllocationType] IN (1, 2)");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_ForeignMission", "[ForeignMission] >= 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_GoodPerformance", "[GoodPerformance] >= 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_InsuranceDeposit", "[InsuranceDeposit] >= 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_ObligationsDeposit", "[ObligationsDeposit] >= 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_RadiationAllowance", "[RadiationAllowance] >= 0");
+
+                            t.HasCheckConstraint("CK_PaymentAllocations_VatReceivable", "[VatReceivable] >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("ContractInvoice.Api.Model.PaymentDocument", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,40 +249,35 @@ namespace ContractInvoice.Api.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal>("ForeignMission")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("GoodPerformance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("InsuranceDeposit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ObligationsDeposit")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("PaymentDate")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("ProgressPaymentId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentReferenceNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("RadiationAllowance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.Property<decimal>("ReceivedAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("VatReceivable")
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProgressPaymentId");
+                    b.HasIndex("PaymentReferenceNo")
+                        .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("PaymentDocuments", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PaymentDocuments_TotalAmount", "[TotalAmount] > 0");
+                        });
                 });
 
             modelBuilder.Entity("ContractInvoice.Api.Model.Principal", b =>
@@ -347,13 +426,21 @@ namespace ContractInvoice.Api.Migrations
                     b.Navigation("Contract");
                 });
 
-            modelBuilder.Entity("ContractInvoice.Api.Model.Payment", b =>
+            modelBuilder.Entity("ContractInvoice.Api.Model.PaymentAllocation", b =>
                 {
+                    b.HasOne("ContractInvoice.Api.Model.PaymentDocument", "PaymentDocument")
+                        .WithMany("Allocations")
+                        .HasForeignKey("PaymentDocumentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ContractInvoice.Api.Model.ProgressPayment", "ProgressPayment")
-                        .WithMany("Payments")
+                        .WithMany("Allocations")
                         .HasForeignKey("ProgressPaymentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("PaymentDocument");
 
                     b.Navigation("ProgressPayment");
                 });
@@ -376,6 +463,11 @@ namespace ContractInvoice.Api.Migrations
                     b.Navigation("ProgressPayments");
                 });
 
+            modelBuilder.Entity("ContractInvoice.Api.Model.PaymentDocument", b =>
+                {
+                    b.Navigation("Allocations");
+                });
+
             modelBuilder.Entity("ContractInvoice.Api.Model.Principal", b =>
                 {
                     b.Navigation("Contracts");
@@ -383,7 +475,7 @@ namespace ContractInvoice.Api.Migrations
 
             modelBuilder.Entity("ContractInvoice.Api.Model.ProgressPayment", b =>
                 {
-                    b.Navigation("Payments");
+                    b.Navigation("Allocations");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,20 @@
+﻿@model ContractInvoice.Api.DTOs.PaymentAllocationDto
+@{ var index = ViewData["Index"]?.ToString() ?? "__index__"; var prefix = $"Input.Allocations[{index}]"; }
+<section class="card mb-3 allocation-row" data-progress-id="@Model.ProgressPaymentId">
+<div class="card-body">
+<h3 class="h6 row-title">صورت وضعیت @Model.ProgressPaymentId</h3><p class="row-info small"></p>
+@Html.Hidden(prefix + ".Id", Model.Id)
+@Html.Hidden(prefix + ".ProgressPaymentId", Model.ProgressPaymentId)
+@Html.Hidden(prefix + ".ReviewToken", Model.ReviewToken, new { @class = "review-token" })
+@Html.Hidden(prefix + ".ReselectFull", Model.ReselectFull.ToString().ToLowerInvariant(), new { @class = "reselect" })
+<div class="row g-3"><div class="col-md-4"><label class="form-label" for="mode-@index">روش تخصیص</label>
+<select name="@(prefix).AllocationType" id="mode-@index" class="form-select allocation-mode"><option value="1" selected="@(Model.AllocationType == AllocationType.Full)">کامل</option><option value="2" selected="@(Model.AllocationType == AllocationType.Partial)">جزئی</option></select></div>
+<div class="col-md-4"><label class="form-label" for="amount-@index">مبلغ تخصیص (ریال)</label>
+@Html.TextBox(prefix + ".AllocatedAmount", Model.AllocatedAmount.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control allocation-amount", id = "amount-" + index, inputmode = "decimal", dir = "ltr" })
+</div><div class="col-md-4 d-flex align-items-end gap-2"><button type="button" class="btn btn-outline-primary preview-full">انتخاب مجدد کامل / دریافت پیش‌نمایش</button><button type="button" class="btn btn-outline-danger remove-row">حذف ردیف</button></div></div>
+<p class="row-status small mt-2" role="status"></p>
+<details class="mt-3"><summary>شش فیلد مالی مستقل (ریال)</summary><p class="small text-muted">این فیلدها در مبلغ تخصیص و مانده اثری ندارند.</p><div class="row g-3">
+@foreach (var field in new[] { ("GoodPerformance", "حسن انجام کار", Model.GoodPerformance), ("InsuranceDeposit", "سپرده بیمه", Model.InsuranceDeposit), ("ObligationsDeposit", "سپرده حسن اجرای تعهدات", Model.ObligationsDeposit), ("VatReceivable", "طلب مالیات بر ارزش افزوده", Model.VatReceivable), ("RadiationAllowance", "حق اشعه", Model.RadiationAllowance), ("ForeignMission", "مأموریت خارج از کشور", Model.ForeignMission) }) {
+<div class="col-md-4"><label for="@(field.Item1)-@index" class="form-label">@field.Item2</label>@Html.TextBox(prefix + "." + field.Item1, field.Item3.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", id = field.Item1 + "-" + index, inputmode = "decimal", dir = "ltr" })</div>
+}
+</div></details></div></section>
