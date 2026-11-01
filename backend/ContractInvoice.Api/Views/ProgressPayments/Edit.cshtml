@@ -4,6 +4,16 @@
     ViewData["Title"] = "ویرایش صورت وضعیت";
 }
 
+@{
+    var approvalStatus = !Model.ApprovedAmount.HasValue || Model.ApprovedAmount.Value == 0
+        ? "تأییدنشده"
+        : Model.ApprovedAmount.Value > Model.ProposedAmount
+            ? "مبلغ تأییدشده نامعتبر"
+            : Model.ApprovedAmount.Value < Model.ProposedAmount
+                ? "بخشی تأیید شده"
+                : "تأیید کامل شده";
+}
+
 <div class="page-container compact-form">
 
     <div class="page-header">
@@ -122,11 +132,12 @@
 
 
                 <div class="form-field">
-                    <label asp-for="Status"
-                           class="form-label"></label>
+                    <label class="form-label">وضعیت تأیید</label>
 
-                    <input asp-for="Status"
-                           class="form-control" />
+                    <input type="text"
+                        class="form-control"
+                        value="@approvalStatus"
+                        readonly />
                 </div>
 
             </div>

@@ -18,6 +18,10 @@ public class ProgressPayment
     public decimal? ApprovedAmount { get; set; }
     public string? Status { get; set; }
     public Contract Contract { get; set; } = null!;
+    public string? CreatedByPersonnelCode { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string? UpdatedByPersonnelCode { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public ICollection<Payment> Payments { get; set; } = new List<Payment>();
     public ICollection<PaymentAllocation> Allocations { get; set; } = new List<PaymentAllocation>();
 }

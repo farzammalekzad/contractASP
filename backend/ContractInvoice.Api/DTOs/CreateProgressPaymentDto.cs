@@ -38,5 +38,4 @@ public class CreateProgressPaymentDto
     [Display(Name = "مبلغ تایید شده")]
     public decimal? ApprovedAmount { get; set; }
 
-    [MaxLength(50)] [Display(Name = "وضعیت")] public string? Status { get; set; }
 }

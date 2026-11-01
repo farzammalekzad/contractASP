@@ -40,7 +40,10 @@ public class ProgressPaymentService : IProgressPaymentService
         Validate(context, progressPayment, null);
 
         // Do not accept an allocation/navigation graph through the progress-payment writer.
-        var created = new ProgressPayment();
+        var created = new ProgressPayment
+        {
+            CreatedAt = DateTime.UtcNow 
+        };
         CopyFields(context, progressPayment, created);
         context.ProgressPayments.Add(created);
         context.SaveChanges();
@@ -74,6 +77,7 @@ public class ProgressPaymentService : IProgressPaymentService
         Validate(context, progressPayment, id);
         context.ProgressPayments.Attach(existing);
         CopyFields(context, progressPayment, existing);
+        existing.UpdatedAt = DateTime.UtcNow;
         context.SaveChanges();
         return existing;
     });
@@ -124,6 +128,23 @@ public class ProgressPaymentService : IProgressPaymentService
             PaymentPersistence.Money(progressPayment.ApprovedAmount.Value, "ApprovedAmount");
         if (context.ProgressPayments.Any(p => p.ContractId == progressPayment.ContractId && p.PaymentNo == progressPayment.PaymentNo && p.Id != currentId))
             throw new ArgumentException("Payment number already exists for this contract.");
+        if (progressPayment.ApprovedAmount.HasValue)
+        {
+            if (progressPayment.ApprovedAmount.Value > progressPayment.ProposedAmount)
+                throw new ArgumentException(
+                    "مبلغ تایید شده نمی‌تواند بیشتر از مبلغ پیشنهادی باشد.");
+
+            if (progressPayment.ApprovedAmount.Value > 0)
+            {
+                if (string.IsNullOrWhiteSpace(progressPayment.ApprovalLetterNo))
+                    throw new ArgumentException(
+                        "ثبت شماره نامه تایید برای مبلغ تایید شده الزامی است.");
+
+                if (string.IsNullOrWhiteSpace(progressPayment.ApprovalDate))
+                    throw new ArgumentException(
+                        "ثبت تاریخ نامه تایید برای مبلغ تایید شده الزامی است.");
+            }
+        }
     }
 
     private static void CopyFields(AppDbContext context, ProgressPayment source, ProgressPayment target)
@@ -141,7 +162,12 @@ public class ProgressPaymentService : IProgressPaymentService
         target.ApprovalDate = source.ApprovalDate;
         target.ProposedAmount = source.ProposedAmount;
         target.ApprovedAmount = source.ApprovedAmount;
-        target.Status = source.Status;
+        target.Status = source.ApprovedAmount.GetValueOrDefault() switch
+        {
+            0m => "NotApproved",
+            _ when source.ApprovedAmount < source.ProposedAmount => "PartiallyApproved",
+            _ => "FullyApproved"
+        };
     }
 
     // Keep existing controller-compatible exception contracts without leaking raw SQL errors.

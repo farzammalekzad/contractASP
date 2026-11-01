@@ -69,6 +69,10 @@ public class AppDbContext : DbContext
             entity.Property(p => p.ProposedAmount).HasPrecision(18, 2).HasColumnName("RequestPrice");
             entity.Property(p => p.ApprovedAmount).HasPrecision(18, 2).HasColumnName("ApprovedPrice");
             entity.Property(p => p.Header_ContractNo).HasMaxLength(30).HasColumnName("Header_ContractNo");
+            entity.Property(p => p.CreatedByPersonnelCode).HasMaxLength(50);
+            entity.Property(p => p.CreatedAt).HasColumnType("datetime2");
+            entity.Property(p => p.UpdatedByPersonnelCode).HasMaxLength(50);
+            entity.Property(p => p.UpdatedAt).HasColumnType("datetime2");
 
             entity.HasIndex(p => new { p.ContractId, p.PaymentNo }).IsUnique();
             entity.HasOne(p => p.Contract)

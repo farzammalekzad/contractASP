@@ -74,23 +74,28 @@
                         </td>
 
                         <td>
-                            @if (item.PaymentType == "TEMPORARY")
+                            @switch (item.PaymentType)
                             {
-                                <span class="badge badge-soft-primary">
-                                    موقت
-                                </span>
-                            }
-                            else if (item.PaymentType == "FINAL")
-                            {
-                                <span class="badge badge-soft-success">
-                                    قطعی
-                                </span>
-                            }
-                            else if (item.PaymentType == "ADJUSTMENT")
-                            {
-                                <span class="badge badge-soft-warning">
-                                    تعدیل
-                                </span>
+                                case "موقت":
+                                    <span class="badge badge-soft-primary">موقت</span>
+                                    break;
+
+                                case "قطعی":
+                                    <span class="badge badge-soft-success">قطعی</span>
+                                    break;
+
+                                case "تعدیل":
+                                    <span class="badge badge-soft-warning">تعدیل</span>
+                                    break;
+
+                                case "پیش پرداخت":
+                                case "پیش‌پرداخت":
+                                    <span class="badge badge-soft-primary">پیش پرداخت</span>
+                                    break;
+
+                                default:
+                                    <span>-</span>
+                                    break;
                             }
                         </td>
 
@@ -103,15 +108,20 @@
                         </td>
 
                         <td>
-                            @if (!string.IsNullOrWhiteSpace(item.Status))
+                            @switch (item.Status)
                             {
-                                <span class="badge badge-soft-secondary">
-                                    @item.Status
-                                </span>
-                            }
-                            else
-                            {
-                                <span>-</span>
+                                case "FullyApproved":
+                                    <span class="badge bg-success">تأیید کامل شده</span>
+                                    break;
+
+                                case "PartiallyApproved":
+                                    <span class="badge bg-warning text-dark">بخشی تأیید شده</span>
+                                    break;
+
+                                case "NotApproved":
+                                default:
+                                    <span class="badge bg-danger">تأییدنشده</span>
+                                    break;
                             }
                         </td>
 

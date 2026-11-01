@@ -174,7 +174,7 @@ public class ProgressPaymentsController : Controller
         ContractId = dto.ContractId, PaymentNo = dto.PaymentNo, Title = dto.Title, PaymentType = dto.PaymentType,
         PeriodStartDate = dto.PeriodStartDate, PeriodEndDate = dto.PeriodEndDate, RequestLetterNo = dto.RequestLetterNo,
         RequestLetterDate = dto.RequestLetterDate, ApprovalLetterNo = dto.ApprovalLetterNo, ApprovalDate = dto.ApprovalDate,
-        ProposedAmount = dto.ProposedAmount, ApprovedAmount = dto.ApprovedAmount, Status = dto.Status
+        ProposedAmount = dto.ProposedAmount, ApprovedAmount = dto.ApprovedAmount
     };
 
     private static UpdateProgressPaymentDto ToDto(ProgressPayment p) => new()
@@ -182,6 +182,6 @@ public class ProgressPaymentsController : Controller
         ContractId = p.ContractId, PaymentNo = p.PaymentNo, Title = p.Title, PaymentType = p.PaymentType,
         PeriodStartDate = p.PeriodStartDate, PeriodEndDate = p.PeriodEndDate, RequestLetterNo = p.RequestLetterNo,
         RequestLetterDate = p.RequestLetterDate, ApprovalLetterNo = p.ApprovalLetterNo, ApprovalDate = p.ApprovalDate,
-        ProposedAmount = p.ProposedAmount, ApprovedAmount = p.ApprovedAmount, Status = p.Status
+        ProposedAmount = p.ProposedAmount, ApprovedAmount = p.ApprovedAmount
     };
 }
