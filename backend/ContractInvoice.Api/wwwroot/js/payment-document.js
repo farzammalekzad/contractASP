@@ -49,6 +49,33 @@
         } catch (e) { if (version === selectionVersion) { candidates = []; refreshPicker(); showError(e.message); } }
         finally { if (version === selectionVersion) picker.disabled = false; }
     }
+
+    function filterContracts() {
+        const typeSelect = form.querySelector('[name="Input.Type"]');
+        const searchInput = document.getElementById('contract-search');
+
+        const contractTypeMap = {
+            'دریافت از کارفرما': 'درآمدی',
+            'پرداخت به پیمانکار': 'هزینه‌ای'
+        };
+
+        const requiredType = contractTypeMap[typeSelect.value] || '';
+        const searchText = searchInput.value.trim().toLowerCase();
+
+        form.querySelectorAll('.contract-option').forEach(label => {
+            const checkbox = label.querySelector('[name="Input.SelectedContractIds"]');
+            const typeMatches = requiredType && label.dataset.type === requiredType;
+            const searchMatches = label.textContent.toLowerCase().includes(searchText);
+
+            label.classList.toggle('d-none', !(typeMatches && searchMatches));
+
+            // قراردادهای ناسازگار نباید در فهرست انتخاب‌شده باقی بمانند.
+            if (!typeMatches && checkbox.checked) {
+                checkbox.checked = false;
+            }
+        });
+    }
+
     function scheduleTotals() {
         const version = ++totalVersion;
         clearTimeout(timer);
@@ -114,10 +141,20 @@
         if (siblings.length) siblings[siblings.length - 1].after(row); else rows.append(row);
         reindex(); initialize(row); refreshPicker(); resetConfirmation(); preview(row); scheduleTotals();
     });
-    form.querySelectorAll('[name="Input.SelectedContractIds"]').forEach(el => el.addEventListener('change', loadEligible));
-    document.getElementById('contract-search').addEventListener('input', e => {
-        form.querySelectorAll('.contract-option').forEach(el => { el.classList.toggle('d-none', !el.textContent.includes(e.target.value)); });
+
+    form.querySelectorAll('[name="Input.SelectedContractIds"]').forEach(el =>
+        el.addEventListener('change', loadEligible)
+    );
+
+    const typeSelect = form.querySelector('[name="Input.Type"]');
+
+    typeSelect.addEventListener('change', () => {
+        filterContracts();
+        loadEligible();
     });
+
+    document.getElementById('contract-search').addEventListener('input', filterContracts);
+
     form.addEventListener('input', e => { if (e.target.matches('.allocation-amount, [name="Input.TotalAmount"]')) scheduleTotals(); });
     form.addEventListener('submit', e => {
         reindex();
@@ -126,5 +163,7 @@
             e.preventDefault(); showError('حداقل یک تخصیص لازم است. برای مبالغ کامل جدید، پیش‌نمایش دریافت و سپس تأیید کنید.'); message.scrollIntoView({ block: 'center' });
         }
     });
-    loadEligible(); scheduleTotals();
+    filterContracts();
+    loadEligible(); 
+    scheduleTotals();
 })();

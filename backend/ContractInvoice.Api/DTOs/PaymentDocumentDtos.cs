@@ -7,6 +7,10 @@ public class CreatePaymentDocumentDto
 {
     [Required, StringLength(100)] public string PaymentReferenceNo { get; set; } = "";
     [Required, StringLength(20)] public string PaymentDate { get; set; } = "";
+
+    [Required]
+    [StringLength(30)]
+    public string Type { get; set; } = "";
     public decimal TotalAmount { get; set; }
     [StringLength(500)] public string? Description { get; set; }
     [Required, MinLength(1)] public List<PaymentAllocationDto> Allocations { get; set; } = [];

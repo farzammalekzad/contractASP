@@ -9,7 +9,7 @@ public sealed record PaymentDocumentDisplayModel(PaymentDocument Document, decim
 public sealed record PaymentDocumentListModel(IReadOnlyList<PaymentDocumentDisplayModel> Documents, int Skip, int Take);
 public sealed record EligibleProgressPaymentModel(int Id, int ContractId, string ContractNo, string Topic,
     int PaymentNo, string Title, string PaymentType, decimal ApprovedAmount, decimal TotalAllocated, decimal RemainingAmount);
-public sealed record ContractOptionModel(int Id, string ContractNo, string Topic);
+public sealed record ContractOptionModel(int Id, string ContractNo, string Topic, string Type);
 public sealed record PaymentDocumentFormModel(CreatePaymentDocumentDto Input,
     IReadOnlyList<ContractOptionModel> Contracts, IReadOnlyList<EligibleProgressPaymentModel> EligibleProgressPayments,
     IReadOnlyList<AllocationPreview> RefreshedPreviews, IReadOnlyList<string> BalanceWarnings);

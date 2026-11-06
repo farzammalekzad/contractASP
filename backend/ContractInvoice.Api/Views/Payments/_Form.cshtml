@@ -13,15 +13,40 @@ var options = rowOptions.Concat(Model.EligibleProgressPayments).DistinctBy(p => 
 <div id="payment-message" class="alert alert-info" role="status" hidden></div>
 @if (edit != null) {
 <input type="hidden" name="Input.RowVersion" value="@Convert.ToBase64String(edit.RowVersion)" />
-<a asp-action="Edit" asp-route-id="@ViewContext.RouteData.Values["id"]" class="btn btn-outline-secondary mb-3">بارگذاری نسخه جدید (کنار گذاشتن تغییرات فرم)</a>
+<a asp-action="Edit" asp-route-id="@ViewContext.RouteData.Values["id"]" class="btn btn-outline-secondary mb-3">بارگذاری نسخه جدید (کنار گذاشتن تغییرات فرم)</a> 
 }
 <div class="row g-3 mb-4">
-<div class="col-md-4"><label asp-for="Input.PaymentReferenceNo" class="form-label">شماره مرجع</label><input asp-for="Input.PaymentReferenceNo" class="form-control" maxlength="100" required /></div>
-<div class="col-md-4"><label asp-for="Input.PaymentDate" class="form-label">تاریخ پرداخت (شمسی)</label><input asp-for="Input.PaymentDate" class="form-control" data-jdp maxlength="20" placeholder="1405/08/09" required /></div>
-<div class="col-md-4"><label asp-for="Input.TotalAmount" class="form-label">مبلغ سند (ریال)</label><input asp-for="Input.TotalAmount" type="text" inputmode="decimal" dir="ltr" class="form-control" required /></div>
-<div class="col-12"><label asp-for="Input.Description" class="form-label">توضیحات (اختیاری)</label><textarea asp-for="Input.Description" class="form-control" maxlength="500"></textarea></div></div>
+    <div class="col-md-4">
+        <label asp-for="Input.Type" class="form-label">نوع سند</label>
+        <select asp-for="Input.Type" class="form-select" required>
+            <option value="">انتخاب کنید</option>
+            <option value="دریافت از کارفرما">دریافت از کارفرما</option>
+            <option value="پرداخت به پیمانکار">پرداخت به پیمانکار</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Input.PaymentReferenceNo" class="form-label">شماره مرجع</label>
+        <input asp-for="Input.PaymentReferenceNo" class="form-control" maxlength="100" required />
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Input.PaymentDate" class="form-label">تاریخ پرداخت (شمسی)</label>
+        <input asp-for="Input.PaymentDate" class="form-control" data-jdp maxlength="20" placeholder="1405/08/09" required />
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Input.TotalAmount" class="form-label">مبلغ سند (ریال)</label>
+        <input asp-for="Input.TotalAmount" type="text" inputmode="decimal" dir="ltr" class="form-control" required />
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Input.Description" class="form-label">توضیحات (اختیاری)</label>
+        <textarea asp-for="Input.Description" class="form-control" maxlength="500"></textarea>
+    </div>
+</div>
 <fieldset class="border rounded p-3 mb-3"><legend class="float-none w-auto h5">انتخاب قراردادها</legend><label for="contract-search">جستجوی قرارداد</label><input id="contract-search" class="form-control mb-2" type="search" />
-@foreach (var c in Model.Contracts) { <label class="contract-option d-block"><input type="checkbox" name="Input.SelectedContractIds" value="@c.Id" checked="@Model.Input.SelectedContractIds.Contains(c.Id)" /> @c.ContractNo — @c.Topic</label> }
+@foreach (var c in Model.Contracts) { <label class="contract-option d-block" data-type="@c.Type"><input type="checkbox" name="Input.SelectedContractIds" value="@c.Id" checked="@Model.Input.SelectedContractIds.Contains(c.Id)" /> @c.ContractNo — @c.Topic</label> }
 <p class="form-text">تغییر فیلتر قرارداد، تخصیص‌های واردشده را حذف نمی‌کند.</p></fieldset>
 <label for="eligible-picker" class="form-label">صورت وضعیت واجد شرایط</label><div class="d-flex gap-2 mb-3"><select id="eligible-picker" class="form-select"><option value="">انتخاب کنید</option></select><button type="button" id="add-allocation" class="btn btn-primary text-nowrap">افزودن ردیف</button></div>
 <p id="eligible-info" class="small"></p>

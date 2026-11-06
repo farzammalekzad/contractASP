@@ -25,7 +25,7 @@ public class PaymentDocumentService : IPaymentDocumentService
 
     public PaymentServiceResult<List<ContractInvoice.Api.ViewModels.ContractOptionModel>> GetContractOptions() => Execute(context =>
         context.Contracts.AsNoTracking().OrderBy(c => c.ContractNo)
-            .Select(c => new ContractInvoice.Api.ViewModels.ContractOptionModel(c.Id, c.ContractNo, c.Topic)).ToList());
+            .Select(c => new ContractInvoice.Api.ViewModels.ContractOptionModel(c.Id, c.ContractNo, c.Topic, c.Type)).ToList());
 
     public PaymentServiceResult<ContractInvoice.Api.ViewModels.ProgressPaymentHistoryModel> GetProgressPaymentHistory(int id) => Execute(context =>
     {
@@ -105,6 +105,7 @@ public class PaymentDocumentService : IPaymentDocumentService
         using var transaction = context.Database.BeginTransaction(IsolationLevel.ReadCommitted);
         var ids = proposed.Allocations.Select(a => a.ProgressPaymentId).ToArray();
         var payments = PaymentPersistence.LockProgressPayments(context, ids);
+        ValidateContractTypes(context, proposed.Type, ids);
         var totals = PaymentPersistence.Totals(context, ids);
         EnsureUniqueReference(context, proposed.PaymentReferenceNo, null);
         ResolveAmounts(proposed, null, [], payments, totals, fullReviewTokens, fullAmountsConfirmed);
@@ -127,6 +128,7 @@ public class PaymentDocumentService : IPaymentDocumentService
         var ids = old.Select(a => a.ProgressPaymentId)
             .Concat(proposed.Allocations.Select(a => a.ProgressPaymentId)).Distinct().ToArray();
         var payments = PaymentPersistence.LockProgressPayments(context, ids);
+        ValidateContractTypes(context, proposed.Type, ids);
         var totals = PaymentPersistence.Totals(context, ids, id);
         EnsureUniqueReference(context, proposed.PaymentReferenceNo, id);
         var oldById = old.ToDictionary(a => a.Id);
@@ -148,6 +150,7 @@ public class PaymentDocumentService : IPaymentDocumentService
         context.PaymentDocuments.Attach(existing);
         existing.PaymentReferenceNo = proposed.PaymentReferenceNo;
         existing.PaymentDate = proposed.PaymentDate;
+        existing.Type = proposed.Type;
         existing.TotalAmount = proposed.TotalAmount;
         existing.Description = proposed.Description;
         // A detail-only change must also advance SQL Server's document rowversion.
@@ -188,6 +191,36 @@ public class PaymentDocumentService : IPaymentDocumentService
         transaction.Commit();
         return true;
     });
+
+    private static void ValidateContractTypes(
+        AppDbContext context,
+        string documentType,
+        IEnumerable<int> progressPaymentIds)
+    {
+        var ids = progressPaymentIds.Distinct().ToArray();
+
+        var contracts = context.ProgressPayments
+            .AsNoTracking()
+            .Where(p => ids.Contains(p.Id))
+            .Select(p => new
+            {
+                p.Id,
+                ContractType = p.Contract.Type
+            })
+            .ToList();
+
+        var expectedContractType = documentType == "دریافت از کارفرما"
+            ? "درآمدی"
+            : "هزینه‌ای";
+
+        if (contracts.Count != ids.Length ||
+            contracts.Any(c => c.ContractType != expectedContractType))
+        {
+            throw new PaymentRuleException(
+                "Validation",
+                "نوع قرارداد با نوع سند پرداخت مطابقت ندارد. قراردادهای داخلی نیز قابل تخصیص نیستند.");
+        }
+    }
 
     private void ResolveAmounts(PaymentDocument proposed, PaymentDocument? existing,
         List<PaymentAllocation> old, Dictionary<int, ProgressPayment> payments, Dictionary<int, decimal> paid,
@@ -297,6 +330,10 @@ public class PaymentDocumentService : IPaymentDocumentService
         if (reference.Length is < 1 or > 100)
             throw new PaymentRuleException("Validation", "Payment reference is required and must not exceed 100 characters.");
         var date = ValidateDate(source.PaymentDate);
+        var type = source.Type?.Trim() ?? "";
+
+        if (type != "دریافت از کارفرما" && type != "پرداخت به پیمانکار")
+            throw new PaymentRuleException("Validation", "نوع سند پرداخت معتبر نیست.");
         if (source.Description?.Length > 500)
             throw new PaymentRuleException("Validation", "Description must not exceed 500 characters.");
         PaymentPersistence.Money(source.TotalAmount, "TotalAmount", positive: true);
@@ -304,7 +341,11 @@ public class PaymentDocumentService : IPaymentDocumentService
             throw new PaymentRuleException("Validation", "At least one allocation is required.");
         var document = new PaymentDocument
         {
-            Id = source.Id, PaymentReferenceNo = reference, PaymentDate = date, TotalAmount = source.TotalAmount,
+            Id = source.Id,
+            PaymentReferenceNo = reference,
+            PaymentDate = date,
+            Type = type,
+            TotalAmount = source.TotalAmount,
             Description = string.IsNullOrWhiteSpace(source.Description) ? null : source.Description.Trim(),
             RowVersion = source.RowVersion?.ToArray() ?? []
         };

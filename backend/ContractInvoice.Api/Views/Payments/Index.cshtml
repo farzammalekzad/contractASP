@@ -3,9 +3,23 @@
 <div class="page-container" dir="rtl">
 <div class="page-header"><h1 class="page-title">اسناد پرداخت</h1><a asp-action="Create" class="btn btn-primary">ثبت سند پرداخت</a></div>
 <p>همه مبالغ به ریال، با دو رقم اعشار</p>
-<div class="table-responsive"><table class="table table-striped align-middle"><thead><tr><th>شماره مرجع</th><th>تاریخ شمسی</th><th>مبلغ سند</th><th>تخصیص‌یافته</th><th>تخصیص‌نیافته</th><th>توضیحات</th><th>عملیات</th></tr></thead><tbody>
+<div class="table-responsive"><table class="table table-striped align-middle"><thead><tr><th>شماره مرجع</th><th>نوع سند</th><th>تاریخ شمسی</th><th>مبلغ سند</th><th>تخصیص‌یافته</th><th>تخصیص‌نیافته</th><th>توضیحات</th><th>عملیات</th></tr></thead><tbody>
 @foreach (var row in Model.Documents) {
-<tr><td>@row.Document.PaymentReferenceNo</td><td>@row.Document.PaymentDate</td><td>@row.Document.TotalAmount.ToString("N2")</td><td>@row.TotalAllocated.ToString("N2")</td><td>@row.UnallocatedAmount.ToString("N2")</td><td>@row.Document.Description</td><td class="text-nowrap"><a asp-action="Details" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-primary">جزئیات</a> <a asp-action="Edit" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-warning">ویرایش</a> <a asp-action="Delete" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-danger">حذف</a></td></tr>
+<tr><td>@row.Document.PaymentReferenceNo</td><td>
+    @if (row.Document.Type == "دریافت از کارفرما")
+    {
+        <span class="badge bg-success">سند دریافتی</span>
+    }
+    else if (row.Document.Type == "پرداخت به پیمانکار")
+    {
+        <span class="badge bg-danger">سند پرداختی</span>
+    }
+    else
+    {
+        <span class="badge bg-secondary">@row.Document.Type</span>
+    }
+</td>
+<td>@row.Document.PaymentDate</td><td>@row.Document.TotalAmount.ToString("N2")</td><td>@row.TotalAllocated.ToString("N2")</td><td>@row.UnallocatedAmount.ToString("N2")</td><td>@row.Document.Description</td><td class="text-nowrap"><a asp-action="Details" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-primary">جزئیات</a> <a asp-action="Edit" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-warning">ویرایش</a> <a asp-action="Delete" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-danger">حذف</a></td></tr>
 }
 </tbody></table></div>
 @if (Model.Documents.Count == 0) { <p class="alert alert-info">سندی در این صفحه وجود ندارد.</p> }

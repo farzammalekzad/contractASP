@@ -15,8 +15,12 @@ public class PaymentDocument
     [MaxLength(20)]
     public string PaymentDate { get; set; } = string.Empty;
 
-    public decimal TotalAmount { get; set; }
+    [Required]
+    [MaxLength(30)]
+    public string Type { get; set; } = string.Empty;
 
+    public decimal TotalAmount { get; set; }
+    
     [MaxLength(500)]
     public string? Description { get; set; }
 

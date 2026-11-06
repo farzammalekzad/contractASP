@@ -59,8 +59,12 @@ public class PaymentsController(IPaymentDocumentService service) : Controller
         var document = result.Value!;
         var input = new UpdatePaymentDocumentDto
         {
-            PaymentReferenceNo = document.PaymentReferenceNo, PaymentDate = document.PaymentDate,
-            TotalAmount = document.TotalAmount, Description = document.Description, RowVersion = document.RowVersion,
+            PaymentReferenceNo = document.PaymentReferenceNo,
+            PaymentDate = document.PaymentDate,
+            Type = document.Type,
+            TotalAmount = document.TotalAmount,
+            Description = document.Description, 
+            RowVersion = document.RowVersion,
             SelectedContractIds = document.Allocations.Select(a => a.ProgressPayment.ContractId).Distinct().ToList(),
             Allocations = document.Allocations.Select(a => new PaymentAllocationDto
             {
@@ -225,8 +229,12 @@ public class PaymentsController(IPaymentDocumentService service) : Controller
 
     private static PaymentDocument Entity(CreatePaymentDocumentDto dto) => new()
     {
-        PaymentReferenceNo = dto.PaymentReferenceNo, PaymentDate = dto.PaymentDate, TotalAmount = dto.TotalAmount,
-        Description = dto.Description, RowVersion = (dto as UpdatePaymentDocumentDto)?.RowVersion ?? [],
+        PaymentReferenceNo = dto.PaymentReferenceNo,
+        PaymentDate = dto.PaymentDate,
+        Type = dto.Type,
+        TotalAmount = dto.TotalAmount,
+        Description = dto.Description,
+        RowVersion = (dto as UpdatePaymentDocumentDto)?.RowVersion ?? [],
         Allocations = dto.Allocations.Select(a => new PaymentAllocation
         {
             Id = a.Id, ProgressPaymentId = a.ProgressPaymentId, AllocationType = a.AllocationType, AllocatedAmount = a.AllocatedAmount,
