@@ -41,6 +41,82 @@
 
     </div>
 
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">
+                <i class="bi bi-search me-2"></i>
+                جستجو و فیلتر قراردادها
+            </h6>
+            <button type="button"
+                    id="clearContractFilters"
+                    class="btn btn-sm btn-outline-secondary">
+                پاک کردن فیلترها
+            </button>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- شماره قرارداد -->
+                <div class="col-md-2">
+                    <label class="form-label">شماره قرارداد</label>
+                    <input type="text" class="form-control contract-filter"
+                        data-column="0"
+                        placeholder="شماره قرارداد..." />
+                </div>
+
+                <!-- موضوع -->
+                <div class="col-md-4">
+                    <label class="form-label">موضوع قرارداد</label>
+                    <input type="text" class="form-control contract-filter"
+                        data-column="1"
+                        placeholder="موضوع قرارداد..." />
+                </div>
+
+                <!-- نوع قرارداد -->
+                <div class="col-md-1">
+                    <label class="form-label">نوع قرارداد</label>
+                    <select class="form-select contract-filter" data-column="2">
+                        <option value="">همه</option>
+                        <option value="درآمدی">درآمدی</option>
+                        <option value="هزینه‌ای">هزینه‌ای</option>
+                        <option value="داخلی">داخلی</option>
+                    </select>
+                </div>
+
+                <!-- وضعیت -->
+                <div class="col-md-1">
+                    <label class="form-label">وضعیت</label>
+                    <select class="form-select contract-filter" data-column="3">
+                        <option value="">همه</option>
+                        <option value="جاری">جاری</option>
+                        <option value="خاتمه یافته">خاتمه یافته</option>
+                        <option value="فسخ شده">فسخ شده</option>
+                    </select>
+                </div>
+
+                <!-- فعال بودن -->
+                <div class="col-md-1">
+                    <label class="form-label">فعال بودن</label>
+                    <select class="form-select contract-filter" data-column="4">
+                        <option value="">همه</option>
+                        <option value="فعال">فعال</option>
+                        <option value="غیرفعال">غیرفعال</option>
+                    </select>
+                </div>
+
+                <!-- کارفرما -->
+                <div class="col-md-3">
+                    <label class="form-label">کارفرما</label>
+                    <input type="text" class="form-control contract-filter"
+                        data-column="5"
+                        placeholder="نام کارفرما..." />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="modern-table-wrapper">
 
         <div class="table-responsive">
@@ -300,5 +376,67 @@
 
         </div>
     }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filters = document.querySelectorAll('.contract-filter');
+            const tableRows = document.querySelectorAll('.modern-table tbody tr');
+
+            function normalizeText(value) {
+                return value
+                    .replace(/\u200c/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+            }
+
+            function filterContracts() {
+
+                tableRows.forEach(row => {
+
+                    const cells = row.querySelectorAll('td');
+
+                    // رد کردن ردیف پیام «قراردادی ثبت نشده است»
+                    if (cells.length !== 8) return;
+
+                    let visible = true;
+
+                    filters.forEach(filter => {
+
+                        const columnIndex = Number(filter.dataset.column);
+                        const filterValue = normalizeText(filter.value);
+
+                        if (!filterValue) return;
+
+                        const cellValue = normalizeText(cells[columnIndex].textContent);
+
+                        if (!cellValue.includes(filterValue)) {
+                            visible = false;
+                        }
+
+                    });
+
+                    row.style.display = visible ? '' : 'none';
+                });
+            }
+
+            filters.forEach(filter => {
+                filter.addEventListener('input', filterContracts);
+                filter.addEventListener('change', filterContracts);
+            });
+
+            document.getElementById('clearContractFilters')
+                .addEventListener('click', function () {
+
+                    filters.forEach(filter => {
+                        filter.value = '';
+                    });
+
+                    filterContracts();
+                });
+
+        });
+    </script>
 
 </div>

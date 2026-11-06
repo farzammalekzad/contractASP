@@ -1,27 +1,294 @@
-﻿@model ContractInvoice.Api.ViewModels.PaymentDocumentListModel
-@{ ViewData["Title"] = "اسناد پرداخت"; }
-<div class="page-container" dir="rtl">
-<div class="page-header"><h1 class="page-title">اسناد پرداخت</h1><a asp-action="Create" class="btn btn-primary">ثبت سند پرداخت</a></div>
-<p>همه مبالغ به ریال، با دو رقم اعشار</p>
-<div class="table-responsive"><table class="table table-striped align-middle"><thead><tr><th>شماره مرجع</th><th>نوع سند</th><th>تاریخ شمسی</th><th>مبلغ سند</th><th>تخصیص‌یافته</th><th>تخصیص‌نیافته</th><th>توضیحات</th><th>عملیات</th></tr></thead><tbody>
-@foreach (var row in Model.Documents) {
-<tr><td>@row.Document.PaymentReferenceNo</td><td>
-    @if (row.Document.Type == "دریافت از کارفرما")
-    {
-        <span class="badge bg-success">سند دریافتی</span>
-    }
-    else if (row.Document.Type == "پرداخت به پیمانکار")
-    {
-        <span class="badge bg-danger">سند پرداختی</span>
-    }
-    else
-    {
-        <span class="badge bg-secondary">@row.Document.Type</span>
-    }
-</td>
-<td>@row.Document.PaymentDate</td><td>@row.Document.TotalAmount.ToString("N2")</td><td>@row.TotalAllocated.ToString("N2")</td><td>@row.UnallocatedAmount.ToString("N2")</td><td>@row.Document.Description</td><td class="text-nowrap"><a asp-action="Details" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-primary">جزئیات</a> <a asp-action="Edit" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-warning">ویرایش</a> <a asp-action="Delete" asp-route-id="@row.Document.Id" class="btn btn-sm btn-outline-danger">حذف</a></td></tr>
+﻿
+@model ContractInvoice.Api.ViewModels.PaymentDocumentListModel
+
+@{
+    ViewData["Title"] = "اسناد پرداخت";
 }
-</tbody></table></div>
-@if (Model.Documents.Count == 0) { <p class="alert alert-info">سندی در این صفحه وجود ندارد.</p> }
-<nav aria-label="صفحه‌بندی">@if (Model.Skip > 0) { <a asp-action="Index" asp-route-skip="@Math.Max(0, Model.Skip - Model.Take)" asp-route-take="@Model.Take" class="btn btn-outline-secondary">قبلی</a> } @if (Model.Documents.Count == Model.Take) { <a asp-action="Index" asp-route-skip="@(Model.Skip + Model.Take)" asp-route-take="@Model.Take" class="btn btn-outline-secondary">بعدی</a> }</nav>
+
+<div class="page-container" dir="rtl">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">اسناد پرداخت</h1>
+            <p class="page-subtitle">
+                مدیریت اسناد دریافتی و پرداختی
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary-modern">
+            + ثبت سند پرداخت
+        </a>
+    </div>
+
+    <div class="mb-3">
+        <small class="text-muted">
+            همه مبالغ به ریال و با دو رقم اعشار نمایش داده می‌شوند.
+        </small>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-header">
+            <strong>جستجو و فیلتر اسناد پرداخت</strong>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label">شماره مرجع</label>
+                    <input type="text"
+                        class="form-control payment-document-filter"
+                        data-field="reference"
+                        placeholder="شماره مرجع">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">نوع سند</label>
+                    <select class="form-select payment-document-filter"
+                            data-field="type">
+                        <option value="">همه</option>
+                        <option value="دریافت از کارفرما">سند دریافتی</option>
+                        <option value="پرداخت به پیمانکار">سند پرداختی</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">تاریخ شمسی</label>
+                    <input type="text"
+                        class="form-control payment-document-filter"
+                        data-field="date"
+                        data-jdp
+                        placeholder="1405/01/01"
+                        autocomplete="off">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">توضیحات</label>
+                    <input type="text"
+                        class="form-control payment-document-filter"
+                        data-field="description"
+                        placeholder="جستجو در توضیحات">
+                </div>
+
+            </div>
+
+            <div class="mt-3 text-end">
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        id="clearPaymentDocumentFilters">
+                    پاک کردن فیلترها
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modern-table-wrapper">
+
+        <table class="table modern-table">
+
+            <thead>
+                <tr>
+                    <th>شماره مرجع</th>
+                    <th>نوع سند</th>
+                    <th>تاریخ شمسی</th>
+                    <th>مبلغ سند</th>
+                    <th>تخصیص‌یافته</th>
+                    <th>تخصیص‌نیافته</th>
+                    <th>توضیحات</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model.Documents)
+                {
+                    <tr data-reference="@row.Document.PaymentReferenceNo"
+                        data-type="@row.Document.Type"
+                        data-date="@row.Document.PaymentDate"
+                        data-description="@row.Document.Description">
+                        <td>
+                            <strong>
+                                @row.Document.PaymentReferenceNo
+                            </strong>
+                        </td>
+
+                        <td>
+                            @if (row.Document.Type == "دریافت از کارفرما")
+                            {
+                                <span class="badge badge-soft-success">
+                                    سند دریافتی
+                                </span>
+                            }
+                            else if (row.Document.Type == "پرداخت به پیمانکار")
+                            {
+                                <span class="badge badge-soft-danger">
+                                    سند پرداختی
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    @row.Document.Type
+                                </span>
+                            }
+                        </td>
+
+                        <td>@row.Document.PaymentDate</td>
+
+                        <td>
+                            @row.Document.TotalAmount.ToString("N2")
+                        </td>
+
+                        <td>
+                            @row.TotalAllocated.ToString("N2")
+                        </td>
+
+                        <td>
+                            @row.UnallocatedAmount.ToString("N2")
+                        </td>
+
+                        <td>@row.Document.Description</td>
+
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@row.Document.Id"
+                                   class="btn btn-outline-primary btn-sm btn-soft">
+                                    جزئیات
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@row.Document.Id"
+                                   class="btn btn-outline-warning btn-sm btn-soft">
+                                    ویرایش
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@row.Document.Id"
+                                   class="btn btn-outline-danger btn-sm btn-soft">
+                                    حذف
+                                </a>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        @if (Model.Documents.Count == 0)
+        {
+            <p class="alert alert-info m-3">
+                سندی در این صفحه وجود ندارد.
+            </p>
+        }
+
+    </div>
+
+    <nav aria-label="صفحه‌بندی" class="mt-3">
+
+        @if (Model.Skip > 0)
+        {
+            <a asp-action="Index"
+               asp-route-skip="@Math.Max(0, Model.Skip - Model.Take)"
+               asp-route-take="@Model.Take"
+               class="btn btn-outline-secondary">
+                قبلی
+            </a>
+        }
+
+        @if (Model.Documents.Count == Model.Take)
+        {
+            <a asp-action="Index"
+               asp-route-skip="@(Model.Skip + Model.Take)"
+               asp-route-take="@Model.Take"
+               class="btn btn-outline-secondary">
+                بعدی
+            </a>
+        }
+
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filters = document.querySelectorAll('.payment-document-filter');
+            const rows = document.querySelectorAll('.modern-table tbody tr');
+            const clearButton = document.getElementById('clearPaymentDocumentFilters');
+
+            function normalizeText(value) {
+                return (value || '')
+                    .replace(/\u200c/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+            }
+
+            function applyFilters() {
+                rows.forEach(row => {
+
+                    const reference = normalizeText(row.dataset.reference);
+                    const type = normalizeText(row.dataset.type);
+                    const date = normalizeText(row.dataset.date);
+                    const description = normalizeText(row.dataset.description);
+
+                    let visible = true;
+
+                    filters.forEach(filter => {
+
+                        const filterValue = normalizeText(filter.value);
+
+                        if (!filterValue) return;
+
+                        const field = filter.dataset.field;
+                        let rowValue = '';
+
+                        switch (field) {
+                            case 'reference':
+                                rowValue = reference;
+                                break;
+
+                            case 'type':
+                                rowValue = type;
+                                break;
+
+                            case 'date':
+                                rowValue = date;
+                                break;
+
+                            case 'description':
+                                rowValue = description;
+                                break;
+                        }
+
+                        if (!rowValue.includes(filterValue)) {
+                            visible = false;
+                        }
+                    });
+
+                    row.style.display = visible ? '' : 'none';
+                });
+            }
+
+            filters.forEach(filter => {
+                filter.addEventListener('input', applyFilters);
+                filter.addEventListener('change', applyFilters);
+            });
+
+            if (clearButton) {
+                clearButton.addEventListener('click', function () {
+
+                    filters.forEach(filter => {
+                        filter.value = '';
+                    });
+
+                    applyFilters();
+                });
+            }
+        });
+    </script>
+
 </div>
