@@ -36,6 +36,66 @@
 
     </div>
 
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">
+                جستجو و فیلتر صورت‌وضعیت‌ها
+            </h6>
+
+            <button type="button"
+                    id="clearProgressPaymentFilters"
+                    class="btn btn-sm btn-outline-secondary">
+                پاک کردن فیلترها
+            </button>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label">شماره قرارداد</label>
+                    <input type="text"
+                        class="form-control progress-payment-filter"
+                        data-field="contract-no"
+                        placeholder="شماره قرارداد..." />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">موضوع قرارداد</label>
+                    <input type="text"
+                        class="form-control progress-payment-filter"
+                        data-column="0"
+                        data-field="contract-topic"
+                        placeholder="موضوع قرارداد..." />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">نوع صورت‌وضعیت</label>
+                    <select class="form-select progress-payment-filter"
+                            data-field="payment-type">
+                        <option value="">همه</option>
+                        <option value="موقت">موقت</option>
+                        <option value="قطعی">قطعی</option>
+                        <option value="تعدیل">تعدیل</option>
+                        <option value="پیش پرداخت">پیش پرداخت</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">وضعیت</label>
+                    <select class="form-select progress-payment-filter"
+                            data-field="status">
+                        <option value="">همه</option>
+                        <option value="FullyApproved">تأیید کامل شده</option>
+                        <option value="PartiallyApproved">بخشی تأیید شده</option>
+                        <option value="NotApproved">تأییدنشده</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="modern-table-wrapper">
 
         <table class="table modern-table">
@@ -57,7 +117,10 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr data-contract-no="@item.Contract.ContractNo"
+                        data-contract-topic="@item.Contract.Topic"
+                        data-payment-type="@item.PaymentType"
+                        data-status="@item.Status">
 
                         <td>
                             <strong>
@@ -256,5 +319,77 @@
         }
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filters = document.querySelectorAll('.progress-payment-filter');
+            const rows = document.querySelectorAll('.modern-table tbody tr');
+            const clearButton = document.getElementById('clearProgressPaymentFilters');
+
+            function normalizeText(value) {
+                return (value || '')
+                    .replace(/\u200c/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+            }
+
+            function applyFilters() {
+                rows.forEach(row => {
+                    const contractNo = normalizeText(row.dataset.contractNo);
+                    const contractTopic = normalizeText(row.dataset.contractTopic);
+                    const paymentType = normalizeText(row.dataset.paymentType);
+                    const status = normalizeText(row.dataset.status);
+
+                    let visible = true;
+
+                    filters.forEach(filter => {
+                        const filterValue = normalizeText(filter.value);
+
+                        if (!filterValue) return;
+
+                        const field = filter.dataset.field;
+                        let rowValue = '';
+
+                        switch (field) {
+                            case 'contract-no':
+                                rowValue = contractNo;
+                                break;
+                            case 'contract-topic':
+                                rowValue = contractTopic;
+                                break;
+                            case 'payment-type':
+                                rowValue = paymentType;
+                                break;
+                            case 'status':
+                                rowValue = status;
+                                break;
+                        }
+
+                        if (!rowValue.includes(filterValue)) {
+                            visible = false;
+                        }
+                    });
+
+                    row.style.display = visible ? '' : 'none';
+                });
+            }
+
+            filters.forEach(filter => {
+                filter.addEventListener('input', applyFilters);
+                filter.addEventListener('change', applyFilters);
+            });
+
+            if (clearButton) {
+                clearButton.addEventListener('click', function () {
+                    filters.forEach(filter => {
+                        filter.value = '';
+                    });
+
+                    applyFilters();
+                });
+            }
+        });
+    </script>
 
 </div>
